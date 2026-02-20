@@ -46,13 +46,41 @@ $DEF_ROOT = "/home/www";	# ex01
 my $DOC_ROOT=$ENV{DOCUMENT_ROOT};
 $DOC_ROOT = $DEF_ROOT unless($DOC_ROOT);
 
-$SQL_DB_HOST=$ENV{SQL_DB_HOST};
 ## print STDERR "SQL_DB_HOST: $SQL_DB_HOST\n";
 
-if (!$SQL_DB_HOST ) {
-  $SQL_DB_HOST="wrpa48.bioch.virginia.edu";
-  $ENV{SQL_DB_HOST}=$SQL_DB_HOST;
+my %db_defaults = ("HOST"=>"wrpa48.bioch.virginia.edu",
+		   "USER"=>"web_user",
+		   "PASSWORD"=>"fasta_www",
+		   "NAME"=>"pfam37_qfo");
+
+foreach $k (keys(%db_defaults)) {
+
+  my $sql_var = "SQL_DB_".$k;
+  my $db_var = "DB_".$k;
+
+  print STDERR "$k $db_var ..$ENV{$db_var}..\n";
+
+  if (defined($ENV{$db_var})) {
+    ${$sql_var} = $ENV{$db_var};
+##    print STDERR "$sql_var set ${$sql_var}\n";
+  }
+
+  if (!defined(${$sql_var}) || !${$sql_var}) {
+    ${$sql_var} = $db_defaults{$k};
+##    print STDERR "$sql_var default set ${$sql_var}\n";
+  }
+
+  $ENV{$sql_var} = ${$sql_var};
+  ${$db_var} = ${$sql_var};
+
+  print STDERR "$k $db_var ${$db_var} $sql_var ${$sql_var}\n";
 }
+
+
+## if (!$SQL_DB_HOST ) {
+##  $SQL_DB_HOST="wrpa48.bioch.virginia.edu";
+##   $ENV{DB_HOST}=$SQL_DB_HOST;
+## }
 
 ####
 # variables/script used to set temporary file directory
@@ -64,8 +92,9 @@ $DOC_ROOT =~ s/[^$OK_CHARS]/_/go;
 my @TMP_ROOTL = split(/\//,$DOC_ROOT);
 my $TMP_ROOT = "/".join("/",@TMP_ROOTL[1 .. ($#TMP_ROOTL-1)])."/tmp/www";
 
-if (defined($ENV{FASTA_TMP_ROOT})) {
-  $TMP_ROOT=$ENV{FASTA_TMP_ROOT}
+if (defined($ENV{FAWWW_TMP_ROOT})) {
+  $TMP_ROOT=$ENV{FAWWW_TMP_ROOT};
+  print STDERR "TMP_ROOT defined by FAWWW_TMP_ROOT $ENV{FAWWW_TMP_ROOT}\n";
 }
 
 unless ($TMP_ROOT) {

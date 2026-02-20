@@ -763,6 +763,9 @@ sub mark_site {
 sub draw_regions {
   my ($annot_arr_r, $xc_start, $xc_stop) = @_;
 
+  return unless (defined($xc_start) && $xc_start =~ m/^\d+$/);
+  return unless (defined($xc_stop) && $xc_stop =~ m/^\d+$/);
+
   for my $annot ( @$annot_arr_r) {
     next if ($annot->{end1} < $xc_start);
     next if ($annot->{beg1} > $xc_stop);
@@ -782,6 +785,9 @@ sub draw_regions {
 sub draw_sites {
   my ($annot_arr_r, $xc_start, $xc_stop) = @_;
 
+  return unless (defined($xc_start) && $xc_start =~ m/^\d+$/);
+  return unless (defined($xc_stop) && $xc_stop =~ m/^\d+$/);
+
   for my $annot ( @$annot_arr_r) {
     next if ($annot->{lPos} < $xc_start);
     next if ($annot->{lPos} > $xc_stop);
@@ -791,6 +797,9 @@ sub draw_sites {
 
 sub q_draw_sites {
   my ($annot_arr_r, $xc_start, $xc_stop) = @_;
+
+  return unless (defined($xc_start) && $xc_start =~ m/^\d+$/);
+  return unless (defined($xc_stop) && $xc_stop =~ m/^\d+$/);
 
   for my $annot ( @$annot_arr_r) {
     next if ($annot->{qPos} < $xc_start);
@@ -804,6 +813,9 @@ sub q_draw_sites {
 
 sub draw_doms {
   my ($annot_arr_r, $xc_off, $y_off, $xc_start, $xc_stop, $xscale, $bottom, $paper, $coords) = @_;
+
+  return unless (defined($xc_start) && $xc_start =~ m/^\d+$/);
+  return unless (defined($xc_stop) && $xc_stop =~ m/^\d+$/);
 
   my ($y_delta, $y_shift) = (9,0);
 

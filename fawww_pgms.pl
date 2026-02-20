@@ -38,7 +38,7 @@ require "./process_domain_colors.pl";
 #      every template should get a RUN_MODE
 #
 
-my $pfam_qfo_db="pfam37_qfo";
+my $pfam_qfo_db=$SQL_DB_NAME;
 my $pfam_db="pfam37";
 my $db_host= $SQL_DB_HOST;
 my $neg_opt='';
