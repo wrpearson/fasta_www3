@@ -1200,6 +1200,7 @@ sub display_result {
     $output =~ s%$TMP_DIR\/%%g;
 #    $output =~ s%FA_WWW.*?\.%TMP.%g;
     $output =~ s%$BIN_DIR\/%%g;
+    $output =~ s/\+\-\-host=[^+]+/+/g;
   }
 
   $output .= "\n" ;
