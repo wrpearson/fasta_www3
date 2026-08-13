@@ -523,7 +523,7 @@ sub do_search {
   }
 
 # get program binary name
-  my $fa_pgm = $pgm_name{$q->param("pgm")};
+  my $fa_pgm = $pgm_name{scalar($q->param("pgm"))};
 
 #
 #  allow $fa_pgm to be a function reference, as well as a string.  If
