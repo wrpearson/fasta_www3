@@ -418,9 +418,17 @@ sub get_fastacmd {
 sub get_protein {
   my ($db, $acc) = @_;
 
-  ($acc) =~ m/(\w+)/;
+  ($acc) =~ m/([\w\|]+)/;
 
-  return scalar(join('',`$BIN_DIR/get_protein.py \'$acc\'`));
+##  return scalar(join('',`$BIN_DIR/get_protein.py \'$acc\'`));
+
+  my $result = '';
+
+  open(my $fh, '-|', "$BIN_DIR/get_protein.py",$acc) or die "Cannot open: $!";
+  while (<$fh>) {
+    $result .= <$fh>;
+  }
+  return $result;
 }
 
 
@@ -515,8 +523,14 @@ sub get_uniprot {
 
     ## get_protein.py replaces get $url because perl urllib follows redirects
 
-    ($seq_in) =~ m/(\w+)/;
-    $sequence = `$BIN_DIR/get_protein.py \'$seq_in\'`;
+    ($seq_in) =~ m/([\w\|]+)/;
+##    $sequence = `$BIN_DIR/get_protein.py \'$seq_in\'`;
+
+    $sequence = '';
+    open(my $fh, '-|', "$BIN_DIR/get_protein.py", $seq_in) or die "Cannot open: $!";
+    while (<$fh>) {
+      $sequence .= <$fh>;
+    }
 
     return $sequence;
 }
@@ -629,9 +643,12 @@ sub load_vars {
 
     my $value = $input_href->{$tmpl_var};    # get the TMPL_VAR name from the list
 
-    unless ($value) {
-      warn "Missing value for $tmpl_var";
-      next;
+    if ($tmpl_var ne 'DEBUG') {
+      my $value = $input_href->{$tmpl_var};    # get the TMPL_VAR name from the list
+      unless ($value) {
+	warn "Missing value for $tmpl_var";
+	next;
+      }
     }
 
     if ($tmpl->query('name' => $tmpl_var)) { # check that it's in the template
