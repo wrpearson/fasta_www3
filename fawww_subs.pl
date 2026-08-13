@@ -70,7 +70,7 @@ sub get_safe_number {
   if ($p_arg =~ m/DEFAULT/i) {return "";}
 
   ($p_arg) = ($p_arg =~ m/([E\d\-\.]+)/i);
-  unless (length($p_arg)>0) {return "";}
+  unless (defined($p_arg) && length($p_arg)>0) {return "";}
 
 #  return "$opt $p_arg";
   if ($opt =~ m/%/) {
@@ -91,7 +91,7 @@ sub get_safe_string {
   ($p_arg) = ($p_arg =~ m/([$OK_CHARS]+)/);
 
   if ($opt =~ m/%/) {
-    return sprintf($opt,$p_arg);
+    return sprintf($opt, (defined($p_arg) ? $p_arg : ''));
   }
   elsif (length($opt)>0) {
     return "$opt $p_arg";

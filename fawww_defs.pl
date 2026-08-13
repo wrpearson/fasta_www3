@@ -71,7 +71,7 @@ foreach $k (keys(%db_defaults)) {
   $ENV{$sql_var} = ${$sql_var};
   ${$db_var} = ${$sql_var};
 
-  print STDERR "$k $db_var ${$db_var} $sql_var ${$sql_var}\n";
+##  print STDERR "$k $db_var ${$db_var} $sql_var ${$sql_var}\n";
 }
 
 
