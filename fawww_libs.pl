@@ -141,7 +141,7 @@
 @blp_list = (
 	     ["a","PIR1 Annotated (rel. 66)","pir1_bl"],
              ["p","QFO20 (150K)","qfo20_bl"],
-	     ["q","QFO78 (0.9M)","pfam34_qfo78_bl"],
+	     ["q","QFO81 (1.1M)","qfo81_2026_02"],
 	     ["s","Swissprot (550K)","uniprot_sprot_bl"],
 	     ["d","PDBaa (structures)","pdbaa"],
 	     ["t","Shuffled Swissprot","random_sprot"],
