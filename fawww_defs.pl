@@ -51,18 +51,16 @@ $DOC_ROOT = $DEF_ROOT unless($DOC_ROOT);
 my %db_defaults = ("HOST"=>"wrpa48.bioch.virginia.edu",
 		   "USER"=>"web_user",
 		   "PASSWORD"=>"fasta_www",
-		   "NAME"=>"pfam37_qfo");
+		   "NAME"=>"pfam38_qfo");
 
 foreach $k (keys(%db_defaults)) {
 
   my $sql_var = "SQL_DB_".$k;
   my $db_var = "DB_".$k;
 
-  print STDERR "$k $db_var ..$ENV{$db_var}..\n";
-
   if (defined($ENV{$db_var})) {
+##    print STDERR "$k $db_var ..$ENV{$db_var}..\n";
     ${$sql_var} = $ENV{$db_var};
-##    print STDERR "$sql_var set ${$sql_var}\n";
   }
 
   if (!defined(${$sql_var}) || !${$sql_var}) {
