@@ -425,8 +425,8 @@ sub get_protein {
   my $result = '';
 
   open(my $fh, '-|', "$BIN_DIR/get_protein.py",$acc) or die "Cannot open: $!";
-  while (<$fh>) {
-    $result .= <$fh>;
+  while (my $line=<$fh>) {
+    $result .= $line;
   }
   return $result;
 }
@@ -528,8 +528,8 @@ sub get_uniprot {
 
     $sequence = '';
     open(my $fh, '-|', "$BIN_DIR/get_protein.py", $seq_in) or die "Cannot open: $!";
-    while (<$fh>) {
-      $sequence .= <$fh>;
+    while (my $line = <$fh>) {
+      $sequence .= $line;
     }
 
     return $sequence;

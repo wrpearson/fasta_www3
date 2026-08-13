@@ -1351,8 +1351,8 @@ sub get_model_info {
 ##  my $annot_info = `./check_pfamseq28.pl '$q_name'`;
   my $annot_info = '';
   open(my $fh, '-|',"./check_pfamseq28.pl",$q_name) or die "cannot open $!";
-  while (<$fh>) {
-      $annot_info .= <$fh>;
+  while (my $line = <$fh>) {
+      $annot_info .= $line;
   }
 
   my @annots = split(/\n/s,$annot_info);
