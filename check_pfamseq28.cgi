@@ -6,7 +6,7 @@ use HTML::Template;
 use DBI;
 use CGI qw(header param start_html end_html);
 
-my ($host,$db, $user, $pass) = ("wrpa48.bioch.virginia.edu", "pfam37", "web_user", "fasta_www");
+my ($host,$db, $user, $pass) = ("wrpa48.bioch.virginia.edu", "pfam38", "web_user", "fasta_www");
 
 my $dbh = DBI->connect(qq{dbi:MariaDB:database=$db;host=$host},
 		       $user,
