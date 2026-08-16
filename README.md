@@ -1,6 +1,6 @@
 16-Aug-2026
 
-release: prod-0.0.2 -- use back_tick() function rather than '`' for
+release: fasta_www3_rel-0.1.1 -- use back_tick() function rather than '`' for
 webserver safety
 
 This package of perl scripts implements the current FASTA WWW site.
