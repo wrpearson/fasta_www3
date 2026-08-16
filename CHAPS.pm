@@ -134,7 +134,9 @@ sub gen_pssm {
   $ENV{BLASTMAT} = $BL_DATA_DIR;
   $ENV{BLASTFILTER} = $BL_DATA_DIR;
 
-  `$BIN_DIR/blastpgp -t 1 -i $queryfile -B $alignfile -Q $pssmfile -o /dev/null -d $BL_DB_DIR/$BL_DUMMY_DB`;
+#  -`$BIN_DIR/blastpgp -t 1 -i $queryfile -B $alignfile -Q $pssmfile -o /dev/null -d $BL_DB_DIR/$BL_DUMMY_DB`;
+
+  back_tick("$BIN_DIR/blastpgp",qw(-t 1 -o /dev/null), "-i","$queryfile","-B","$alignfile","-Q","$pssmfile","-d","$BL_DB_DIR/$BL_DUMMY_DB");
 
   open(POS, "<$pssmfile") or die $!;
   $tmpl->param(PROFILE => join("", grep { m/^\s*(\d+|(A\s+R\s+N\s+D\s+C))/o } <POS>));
@@ -175,8 +177,9 @@ sub gen_hmm {
 
   close($alignfh);
 
-#  `$BIN_DIR/hmmbuild -F --informat CLUSTAL $hmmfile $alignfile`;
-  `$BIN_DIR/hmmbuild $hmmfile $alignfile`;
+#  -`$BIN_DIR/hmmbuild -F --informat CLUSTAL $hmmfile $alignfile`;
+#  -`$BIN_DIR/hmmbuild $hmmfile $alignfile`;
+  back_tick("$BIN_DIR/hmmbuild","$hmmfile","$alignfile");
 
   open(HMMER, "<$hmmfile") or die $!;
   $is = do { local ($/); <HMMER> };	# undef $/ for slurp;
@@ -259,7 +262,8 @@ sub cal_hmm {
   print $hmmfh $is;
   close $hmmfh;
 
-  `$BIN_DIR/hmmcalibrate $hmmfile`;
+#  -`$BIN_DIR/hmmcalibrate $hmmfile`;
+  back_tick("$BIN_DIR/hmmcalibrate","$hmmfile");
 
   open(HMMER, "<$hmmfile") or die $!;
   $is = do { local ($/); <HMMER> };	# undef $/ for slurp;
@@ -294,7 +298,7 @@ sub gen_msa {
   my $ids = "";
   if ($q->param("q_type") && $q->param("q_type") =~ m/^acc/i) {
     for my $acc (split(/[\s,]+/, $is)) {
-      my $query = get_query($acc, $q->param("q_type"));
+      my $query = get_query($acc, scalar($q->param("q_type")));
       $query =~ s/^>gi\|\d+\|/>/;
       my ($id) = ($query =~ m/^>(\S{1,6})/);
       $id =~ s/\|//g;
@@ -314,7 +318,8 @@ sub gen_msa {
   close($ifh);
 
   if ($q->param('msa_pgm') =~ m/muscle/) {
-      `$BIN_DIR/muscle -quiet -align $ifilename -output $ofilename`;
+#      -`$BIN_DIR/muscle -quiet -align $ifilename -output $ofilename`;
+      back_tick("$BIN_DIR/muscle","-quiet","-align","$ifilename","-output","$ofilename")
   }
 #   elsif ($q->param('msa_pgm') =~ m/tcoffee/) {
 #       $ENV{HOME_4_TCOFFEE} = $TMP_DIR;
@@ -323,11 +328,12 @@ sub gen_msa {
 #       $ENV{NO_ERROR_REPORT_4_TCOFFEE} = 1;
 #       $ENV{NO_WARNING_4_TCOFFEE} = 1;
 # #      print STDERR "$BIN_DIR/t_coffee -infile $ifilename -outfile $ofilename\n";
-#       `$BIN_DIR/t_coffee -infile $ifilename -outfile $ofilename -quiet -no_warning -newtree $tfilename`;
+#       -`$BIN_DIR/t_coffee -infile $ifilename -outfile $ofilename -quiet -no_warning -newtree $tfilename`;
 #       unlink($tfilename);
 #   }
   else {	# run clustalw
-      `$BIN_DIR/clustalw -infile=$ifilename -outfile=$ofilename -type=protein`;
+#      -`$BIN_DIR/clustalw -infile=$ifilename -outfile=$ofilename -type=protein`;
+     back_tick("$BIN_DIR/clustalw","-infile=$ifilename","-outfile=$ofilename", "-type=protein");
   }
   open(OUT, "<$ofilename") or die $!;
   #    <OUT>;  #skip CLUSTAL W line

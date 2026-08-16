@@ -415,6 +415,21 @@ sub get_fastacmd {
   return "$header\n$line";
 }
 
+## back_tick($command, @args)
+## same as perl '`' back_tick, but no shell
+## for safety with user supplied arguments
+##
+sub back_tick {
+  my @args = @_;
+
+  my $ret_text = '';
+  open(my $fh, '-|', @args) or die "cannot open: $!";
+  while (my $line = <$fh>) {
+    $ret_text .= $line;
+  }
+  return $ret_text;
+}
+
 sub get_protein {
   my ($db, $acc) = @_;
 
@@ -422,13 +437,14 @@ sub get_protein {
 
 ##  return scalar(join('',`$BIN_DIR/get_protein.py \'$acc\'`));
 
-  my $result = '';
+##  my $result = '';
+##  open(my $fh, '-|', "$BIN_DIR/get_protein.py",$acc) or die "Cannot open: $!";
+##  while (my $line=<$fh>) {
+##    $result .= $line;
+##  }
+##  return $result;
 
-  open(my $fh, '-|', "$BIN_DIR/get_protein.py",$acc) or die "Cannot open: $!";
-  while (my $line=<$fh>) {
-    $result .= $line;
-  }
-  return $result;
+  return back_tick("$BIN_DIR/get_protein.py",$acc);
 }
 
 
@@ -526,13 +542,15 @@ sub get_uniprot {
     ($seq_in) =~ m/([\w\|]+)/;
 ##    $sequence = `$BIN_DIR/get_protein.py \'$seq_in\'`;
 
-    $sequence = '';
-    open(my $fh, '-|', "$BIN_DIR/get_protein.py", $seq_in) or die "Cannot open: $!";
-    while (my $line = <$fh>) {
-      $sequence .= $line;
-    }
+    # $sequence = '';
+    # open(my $fh, '-|', "$BIN_DIR/get_protein.py", $seq_in) or die "Cannot open: $!";
+    # while (my $line = <$fh>) {
+    #   $sequence .= $line;
+    # }
 
-    return $sequence;
+    # return $sequence;
+
+    return back_tick("$BIN_DIR/get_protein.py", $seq_in);
 }
 
 ################################################################
@@ -713,5 +731,6 @@ sub check_bad_query {
 
     return $query;
 }
+
 
 1;
