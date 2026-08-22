@@ -1612,30 +1612,38 @@ sub get_query {
   if ($file && scalar($q->param($file))) {
     my $qfh;
     $qfh = $q->upload($file);
+
+    ## detaint uploaded sequence
     unless($qfh) {return "";}
 
 # $q->tmpFileName($qfd) contains the name of the temporary file,
 # which could be used for the search, or stat'ed for size
 #
     if (scalar($q->param($type)) && scalar($q->param($type)) =~ m/^acc/i) {
-      @acc_list = <$qfh>;
-      chomp @acc_list;
+      my @r_acc_list = <$qfh>;
+      chomp @r_acc_list;
+      for my $acc (@r_acc_list) {
+	  $acc =~ s/[^A-Za-z0-9_, \|]/_/g;
+	  push @acc_list;
+      }
     }
     else {
       while (<$qfh>) {$q_library .= $_;}
       close($qfh);
       $q_library =~ s/\r\n/\n/gos;
       $q_library =~ s/\r/\n/go;
+      $q_library =~ s/[^A-Za-z\s>\| ]/_/g;
+
       return $q_library;
     }
   }
   else {			# use param($name), not $param($file)
     my $q_acc_name = scalar($q->param($name));
-    if ((scalar($q->param($type)) && scalar($q->param($type)) =~ m/^acc/i
-	 && $q_acc_name !~ m/^>/ && length($q_acc_name) < 100) || (
-	$q_acc_name !~ m/^>/ && ($q_acc_name =~ m/^gi\|/ ||
-	$q_acc_name =~ m/^\s*\d+\s*$/ || $q_acc_name =~ m/_/ ||
-	$q_acc_name =~ m/^[A-Z]\w{5}$/))) {
+    if ((scalar($q->param($type)) && scalar($q->param($type)) =~ m/^acc/i) ||
+	 ($q_acc_name !~ m/^>/ && length($q_acc_name) < 100) || (
+	    $q_acc_name !~ m/^>/ && ($q_acc_name =~ m/^[ANXYW][CGMPRTZ]_\d+$/i ||
+				     $q_acc_name =~ m/^\d+$/g ||
+	     $q_acc_name =~ m/^[OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9][A-Z][A-Z0-9]{2}[0-9]([A-Z][A-Z0-9]{2}[0-9])?$/ig || $q_acc_name =~ m/^[A-Z][A-Z0-9]+_[A-Z0-9]{5}$/ig))) {
 
       my $acc_list = $q_acc_name;
       $acc_list =~ s/\r//go;

@@ -498,7 +498,7 @@ sub get_ncbi {
 	      $efetch .= $this_fetch;
 	    }
 	    else {
-	      print STDERR "get(url) empty count: $count restart:$restart url: $url\n";
+	      print STDERR "get(url) empty count: $count retstart: $retstart url: $url\n";
 	    }
 	}
 #	print STDERR $efetch;
