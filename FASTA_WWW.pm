@@ -1612,8 +1612,6 @@ sub get_query {
   if ($file && scalar($q->param($file))) {
     my $qfh;
     $qfh = $q->upload($file);
-
-    ## detaint uploaded sequence
     unless($qfh) {return "";}
 
 # $q->tmpFileName($qfd) contains the name of the temporary file,
@@ -1621,10 +1619,12 @@ sub get_query {
 #
     if (scalar($q->param($type)) && scalar($q->param($type)) =~ m/^acc/i) {
       my @r_acc_list = <$qfh>;
+
       chomp @r_acc_list;
+
       for my $acc (@r_acc_list) {
-	  $acc =~ s/[^A-Za-z0-9_, \|]/_/g;
-	  push @acc_list;
+	  $acc =~ s/[^A-Z0-9_, \|]/_/gi;
+	  push @acc_list, $acc;
       }
     }
     else {
@@ -1632,7 +1632,7 @@ sub get_query {
       close($qfh);
       $q_library =~ s/\r\n/\n/gos;
       $q_library =~ s/\r/\n/go;
-      $q_library =~ s/[^A-Za-z\s>\| ]/_/g;
+      $q_library =~ s/[^A-Z0-9\.\s>\|,=]/_/ig;
 
       return $q_library;
     }
