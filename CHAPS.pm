@@ -98,7 +98,7 @@ sub gen_pssm {
   my ($queryroot) = ($queryfile =~ m/^(.*)\.msa$/);
 
   my $alignfile = $queryroot .".baln";
-  open(ALN_FH, ">$alignfile");
+  open(ALN_FH, ">", "$alignfile");
 
   my $pssmfile = $queryroot . ".pssm";
 
@@ -138,7 +138,7 @@ sub gen_pssm {
 
   back_tick("$BIN_DIR/blastpgp",qw(-t 1 -o /dev/null), "-i","$queryfile","-B","$alignfile","-Q","$pssmfile","-d","$BL_DB_DIR/$BL_DUMMY_DB");
 
-  open(POS, "<$pssmfile") or die $!;
+  open(POS, "<", "$pssmfile") or die $!;
   $tmpl->param(PROFILE => join("", grep { m/^\s*(\d+|(A\s+R\s+N\s+D\s+C))/o } <POS>));
   close(POS);
 }
@@ -181,7 +181,7 @@ sub gen_hmm {
 #  -`$BIN_DIR/hmmbuild $hmmfile $alignfile`;
   back_tick("$BIN_DIR/hmmbuild","$hmmfile","$alignfile");
 
-  open(HMMER, "<$hmmfile") or die $!;
+  open(HMMER, "<", "$hmmfile") or die $!;
   $is = do { local ($/); <HMMER> };	# undef $/ for slurp;
 
 #  $is = join("", grep { 1 } <HMMER>);
@@ -265,7 +265,7 @@ sub cal_hmm {
 #  -`$BIN_DIR/hmmcalibrate $hmmfile`;
   back_tick("$BIN_DIR/hmmcalibrate","$hmmfile");
 
-  open(HMMER, "<$hmmfile") or die $!;
+  open(HMMER, "<","$hmmfile") or die $!;
   $is = do { local ($/); <HMMER> };	# undef $/ for slurp;
 
 #  $is = join("", grep { 1 } <HMMER>);
@@ -335,7 +335,7 @@ sub gen_msa {
 #      -`$BIN_DIR/clustalw -infile=$ifilename -outfile=$ofilename -type=protein`;
      back_tick("$BIN_DIR/clustalw","-infile=$ifilename","-outfile=$ofilename", "-type=protein");
   }
-  open(OUT, "<$ofilename") or die $!;
+  open(OUT, "<","$ofilename") or die $!;
   #    <OUT>;  #skip CLUSTAL W line
   {
     $tmpl->param(MSA_QUERY => join("", grep { $_ =~ m/ (^\s*$) | ^($ids) /x } <OUT>));

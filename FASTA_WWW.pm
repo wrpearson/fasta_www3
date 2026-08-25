@@ -695,7 +695,7 @@ sub do_search {
 # (later, put the important parameters to retrieve the result:
 # rm, pgm, db -- possibly use json
 #
-      open(SFH, ">$out_filename"."_PID") || die "cannot open $out_filename" . "_PID after fork()";
+      open(SFH, ">", "$out_filename"."_PID") || die "cannot open $out_filename" . "_PID after fork()";
       print SFH "pid:$$\npgm:$pgm\nresult_rm:$run_mode\njson_parms:$json_params\n";
       my $remote_file = get_safe_filename($q,"remote_file");
       if ($remote_file) {print SFH "remote_file:$remote_file\n";}
@@ -842,6 +842,8 @@ sub wait_result {
     ($start_time) = ($start_time =~ m/(\d+)/);
     my $elapsed_time = time() - $start_time;
     my $refresh = $q->param("refresh_time") || 2;
+    ($refresh) = ($refresh =~ m/^(\d+)$/);
+    if ($refresh eq "") {$refresh=30;}
     if ($refresh < 30) { $refresh *= 2; }
     $q->param(-name=>"refresh_time", -value => $refresh);
     my $spaces = $q->param("spaces") || 1;
@@ -910,7 +912,7 @@ sub wait_result {
 ################
 # read the file
   $res_file .= ".res";
-  open(FH, "$TMP_DIR/$res_file") || die("cannot open results file\n");
+  open(FH, "<", "$TMP_DIR/$res_file") || die("cannot open results file\n");
   my $run_output = "";
   while (<FH>) {
     if ($_ =~ m/^<body>/) {
@@ -1068,7 +1070,7 @@ sub retrieve_result {
 
   my $pid_file = $res_file . "_PID";
   my %param_hash = ();
-  open PFH,"$TMP_DIR/$pid_file" || die "cannot open $pid_file";
+  open PFH,"<", "$TMP_DIR/$pid_file" || die "cannot open $pid_file";
   while (my $line = <PFH>) {
     chomp $line;
     my ($key, $val) = ($line =~ m/^(\w+):(.+)$/);
@@ -1114,7 +1116,7 @@ sub retrieve_result {
 
 ################
 # read the file
-  open(FH, "$TMP_DIR/$res_file") || die("cannot open results file\n");
+  open(FH, "<", "$TMP_DIR/$res_file") || die("cannot open results file\n");
   my $run_output ="";
   while (<FH>) {
     if ($_ =~ m/^<body>/) {
@@ -1404,7 +1406,7 @@ sub remote {
 ################
 # generate a PID file
 #
-  open(SFH, ">$out_filename"."_PID") ||
+  open(SFH, ">", "$out_filename"."_PID") ||
       die "Cannot open $out_filename"."_PID in remote()\n";
   print SFH "pgm:$pgm\nresult_rm:$rem_rm\nremote_host:$n_host\nraw_mode:1\n";
   if (defined(scalar($q->param('hide_align')))) {
@@ -1572,7 +1574,7 @@ sub lib_list {
 sub fast2libs {
   my ($fast_libs, $libp_ref, $libn_ref) = @_;
 
-  open (FH, $fast_libs) || die " cannot open $fast_libs\n";
+  open (FH, "<", $fast_libs) || die " cannot open $fast_libs\n";
 
   while (<FH>) {
     chomp $_;
@@ -1772,7 +1774,7 @@ sub get_lib_full {
 sub scan_fastlibs {
     my ($abbr, $fastlibs, $lib_type) = @_;
 
-    unless (open(FLIBS, "<$fastlibs")) {
+    unless (open(FLIBS, "<", "$fastlibs")) {
 	print STDERR "could not open $fastlibs\n";
 	return "";
     }
@@ -2387,7 +2389,7 @@ sub process_svg_out {
   if ($res_opts_hr->{aln_output}) {
     my $tmp_file = $res_opts_hr->{aln_output}->{file};
     my $tmp_query = '';
-    open (my $F_ALN, $tmp_file) || die "cannot open alignment file: ".$tmp_file;
+    open (my $F_ALN, "<", $tmp_file) || die "cannot open alignment file: ".$tmp_file;
     $_ = <$F_ALN>;
     s/$tmp_file/TMPF/g;
     ($tmp_query) = (m/\s(\S+)$/);
@@ -2561,13 +2563,13 @@ sub check_remote_result {
     $remote_output = $res->content;
     if ($remote_output =~ m/<!-- DONE -->/ ) {
 #	if (! -e "$TMP_DIR/$res_file".".res") {
-	    open(RFH,">$TMP_DIR/$res_file".".res") || die "Cannot open $res_file".".res for output";
+	    open(RFH,">", "$TMP_DIR/$res_file".".res") || die "Cannot open $res_file".".res for output";
 	    print RFH $remote_output;
 	    close(RFH);
 #	}
 
 #	if (! -e "$TMP_DIR/$res_file".".res_DONE") {
-	    open(RFH,">$TMP_DIR/$res_file".".res_DONE") ||
+	    open(RFH,">", "$TMP_DIR/$res_file".".res_DONE") ||
 		die "Cannot open $res_file".".res_DONE for status";
 	    print RFH `/bin/date`;
 	    close(RFH);

@@ -22,5 +22,5 @@ use CGI::Carp qw(fatalsToBrowser carpout warningsToBrowser);
   ## $TMP_ROOT = "/var/tmp/www";
   ## print STDERR "TMP_ROOT: $TMP_ROOT - DOCUMENT_ROOT: $DOC_ROOT\n";
 
-  open(LOG, ">> $TMP_ROOT/logs/errors.log") or die "$TMP_ROOT $!";
+  open(LOG, ">>","$TMP_ROOT/logs/errors.log") or die "$TMP_ROOT $!";
   carpout(\*LOG);

@@ -15,7 +15,7 @@ sub begin_log {
   ## print STDERR "TMP_ROOT0: $TMP_ROOT - DOCUMENT_ROOT: $DOC_ROOT\n";
   ## $TMP_ROOT = "/var/tmp/www";
   ## print STDERR "TMP_ROOT: $TMP_ROOT - DOCUMENT_ROOT: $DOC_ROOT\n";
-  open(LOG, ">> $TMP_ROOT/logs/errors.log") or die "$TMP_ROOT $!";
+  open(LOG, ">>","$TMP_ROOT/logs/errors.log") or die "$TMP_ROOT $!";
   carpout(\*LOG);
 
   return $TMP_ROOT;

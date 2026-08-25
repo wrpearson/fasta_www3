@@ -698,7 +698,7 @@ sub get_node_host {
 
   if (-e $NODE_STATUS_FILE) {
     my @node_list = ();
-    open(FH, $NODE_STATUS_FILE) || goto random;
+    open(FH, "<", $NODE_STATUS_FILE) || goto random;
     while (my $node_line = <FH>) {
       chomp $node_line;
       my %node_entry;

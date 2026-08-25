@@ -254,7 +254,7 @@ sub Do_log
     ## print STDERR "opening fasta_www.log: $log_file\n";
     ## print STDERR "log::: $date\t$r_host\t$0\t$pgm_log\n";
 
-    open(LOG,">> $log_file") || return;
+    open(LOG,">>","$log_file") || return;
     print LOG "$date\t$r_host\t$0\t$pgm_log\n";
     close(LOG);
 }
