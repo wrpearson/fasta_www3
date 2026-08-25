@@ -297,6 +297,8 @@ sub gen_msa {
 
   my $ids = "";
   if ($q->param("q_type") && $q->param("q_type") =~ m/^acc/i) {
+    my ($max_accs, $acc_cnt) = (100, 0);
+
     for my $acc (split(/[\s,]+/, $is)) {
       my $query = get_query($acc, scalar($q->param("q_type")));
       $query =~ s/^>gi\|\d+\|/>/;
@@ -308,6 +310,8 @@ sub gen_msa {
       } else {
 	warn "$acc not found\n";
       }
+      $acc_cnt += 1;
+      last if ($acc_cnt > $max_accs);
     }
   } else {
     print $ifh $is;

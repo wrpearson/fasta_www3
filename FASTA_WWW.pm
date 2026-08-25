@@ -1644,8 +1644,14 @@ sub get_query {
 
       chomp @r_acc_list;
 
+      my ($max_accs, $acc_cnt) = (100, 0);
+
       for my $acc (@r_acc_list) {
 	  $acc =~ s/[^A-Z0-9_, \|]/_/gi;
+	  $acc_cnt += 1;
+	  if ($acc_cnt >= $max_accs) {
+	      last;
+	  }
 	  push @acc_list, $acc;
       }
     }

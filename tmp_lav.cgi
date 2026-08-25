@@ -109,7 +109,7 @@ if ($tmp_lav) {
   }
   else {
     $lav_cmd = "$LAV_GS $z_param  $tmp_lav | $GS_BIN -q $size -dNOPAUSE -sDEVICE=$device -sOutputFile=- -";
-    my @lav_cmds = ("$LAV_GS $z_param  $tmp_lav","$GS_BIN -q $size -dNOPAUSE -sDEVICE=$device -sOutputFile=- -");
+    my @lav_cmds = ("$LAV_GS $z_param  $tmp_lav","$GS_BIN -q $size -dNOPAUSE -sDEVICE=$device -dSAFER -sOutputFile=- -");
 
     my $lav_result = back_tick(split(" ",$lav_cmds[0]));
 

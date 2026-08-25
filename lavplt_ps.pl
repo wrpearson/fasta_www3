@@ -255,6 +255,7 @@ sub yaxis {
 #  for (bp = strchr(title,')'); (bp!=NULL); bp = strchr(bp+1,')')) *bp=' ';
   $title =~ s/\(/\\(/g;
   $title =~ s/\)/\\)/g;
+  $title =~ s/\\//g;
   printf("(%s) vcprint\n",$title);
 
 }
