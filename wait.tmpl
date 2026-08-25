@@ -33,22 +33,22 @@ function onloadf(){
 <!-- $Revision$ -->
 
 <form name="myform" action="fasta_www.cgi" method="post">
-<input type="hidden" name="rm" value="<!-- TMPL_VAR NAME=RUN_MODE -->" />
-<input type="hidden" name="result_rm" value="<!-- TMPL_VAR NAME=RESULT_RM -->" />
-<input type="hidden" name="debug" value="<!-- TMPL_VAR NAME=DEBUG -->" />
-<input type="hidden" name="dbg_output" value="<!-- TMPL_VAR NAME=DBG_OUTPUT -->" />
-<input type="hidden" name="result_pgm" value="<!-- TMPL_VAR NAME=RESULT_PGM -->" />
-<input type="hidden" name="result_file" value="<!-- TMPL_VAR NAME=RESULT_FILE -->" />
-<input type="hidden" name="refresh_time" value="<!-- TMPL_VAR NAME=REFRESH_TIME -->" />
-<input type="hidden" name="query_info" value="<!-- TMPL_VAR QUERY_INFO -->" />
-<input type="hidden" name="lib_info" value="<!-- TMPL_VAR LIB_INFO -->" />
-<input type="hidden" name="comments" value="<!-- TMPL_VAR COMMENTS -->" />
-<input type="hidden" name="spaces" value="<!-- TMPL_VAR NAME=SPACES -->" />
-<input type="hidden" name="s_time" value="<!-- TMPL_VAR NAME=S_TIME -->" />
-<input type="hidden" name="hide_align" value="<!-- TMPL_VAR NAME=HIDE_ALIGN -->" />
+<input type="hidden" name="rm" value="<!-- TMPL_VAR NAME=RUN_MODE ESCAPE="HTML" -->" />
+<input type="hidden" name="result_rm" value="<!-- TMPL_VAR NAME=RESULT_RM ESCAPE="HTML" -->" />
+<input type="hidden" name="debug" value="<!-- TMPL_VAR NAME=DEBUG ESCAPE="HTML" -->" />
+<input type="hidden" name="dbg_output" value="<!-- TMPL_VAR NAME=DBG_OUTPUT ESCAPE="HTML" -->" />
+<input type="hidden" name="result_pgm" value="<!-- TMPL_VAR NAME=RESULT_PGM ESCAPE="HTML" -->" />
+<input type="hidden" name="result_file" value="<!-- TMPL_VAR NAME=RESULT_FILE ESCAPE="HTML" -->" />
+<input type="hidden" name="refresh_time" value="<!-- TMPL_VAR NAME=REFRESH_TIME ESCAPE="HTML" -->" />
+<input type="hidden" name="query_info" value="<!-- TMPL_VAR NAME=QUERY_INFO ESCAPE="HTML" -->" />
+<input type="hidden" name="lib_info" value="<!-- TMPL_VAR NAME=LIB_INFO  ESCAPE="HTML" -->" />
+<input type="hidden" name="comments" value="<!-- TMPL_VAR NAME=COMMENTS  ESCAPE="HTML" -->" />
+<input type="hidden" name="spaces" value="<!-- TMPL_VAR NAME=SPACES ESCAPE="HTML" -->" />
+<input type="hidden" name="s_time" value="<!-- TMPL_VAR NAME=S_TIME ESCAPE="HTML" -->" />
+<input type="hidden" name="hide_align" value="<!-- TMPL_VAR NAME=HIDE_ALIGN ESCAPE="HTML" -->" />
 <!-- TMPL_IF REMOTE_HOST -->
-<input type="hidden" name="remote_host" value="<!-- TMPL_VAR NAME=REMOTE_HOST -->" />
-<input type="hidden" name="remote_file" value="<!-- TMPL_VAR NAME=REMOTE_FILE -->" />
+<input type="hidden" name="remote_host" value="<!-- TMPL_VAR NAME=REMOTE_HOST ESCAPE="HTML" -->" />
+<input type="hidden" name="remote_file" value="<!-- TMPL_VAR NAME=REMOTE_FILE ESCAPE="HTML" -->" />
 <!-- /TMPL_IF -->
 <input type="hidden" name="on_remote" value="<!-- TMPL_VAR NAME=ON_REMOTE -->" />
 <!-- <input type="submit" name="submit" value="Check Result"/> -->
@@ -57,13 +57,13 @@ function onloadf(){
 </form>
 <!-- TMPL_INCLUDE name="footer2.html" -->
 <p>Searching ...<!-- TMPL_VAR SPACES --> Elapsed time: <!-- TMPL_VAR E_TIME --> secs<br />
-Result ID <b>RID</b>: <input type='text' name='rid' size='15' value='<!-- TMPL_VAR RESULT_FILE -->' /> (The <b>RID</b> can be used to retrieve long searches.)
+Result ID <b>RID</b>: <input type='text' name='rid' size='15' value='<!-- TMPL_VAR RESULT_FILE ESCAPE="HTML" -->' /> (The <b>RID</b> can be used to retrieve long searches.)
 </p>
-<br /><b>Query: </b><!-- TMPL_VAR QUERY_INFO -->
+<br /><b>Query: </b><!-- TMPL_VAR QUERY_INFO ESCAPE="HTML" -->
 <!-- TMPL_IF LIB_INFO -->
-<br /><b>Library: </b><!-- TMPL_VAR LIB_INFO -->
+<br /><b>Library: </b><!-- TMPL_VAR LIB_INFO ESCAPE="HTML" -->
 <!-- /TMPL_IF -->
-<br /><!-- TMPL_IF COMMENTS --><p><b>Comments:</b> <!-- TMPL_VAR COMMENTS --></p><!-- /TMPL_IF -->
+<br /><!-- TMPL_IF COMMENTS --><p><b>Comments:</b> <!-- TMPL_VAR NAME="COMMENTS" ESCAPE="HTML" --></p><!-- /TMPL_IF -->
 <p>  Checking in <!-- TMPL_VAR REFRESH_TIME --> sec.</p>
 <!-- TMPL_INCLUDE name="footer2.html" -->
 </body>

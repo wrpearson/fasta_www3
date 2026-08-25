@@ -24,15 +24,15 @@ require "./fawww_defs.pl";
 
 my @ann_scripts = ("", 
 		   "", 
-		   qq('\!./annot/ann_feats2ipr.pl --host $SQL_DB_HOST --lav'),
-		   qq('\!./annot/ann_feats_up_sql.pl --host $SQL_DB_HOST --lav'),
-		   qq('\!./annot/ann_feats2ipr.pl --host $SQL_DB_HOST --lav'),
-		   qq('\!./annot/ann_pfam_sql.pl --host $SQL_DB_HOST --lav'),
-##		   qq('\!./annot/ann_pfam_www2.pl --lav --pfacc'),
-		   qq('\!./annot/ann_pfam_sql.pl --host $SQL_DB_HOST --lav --pfacc'),
-##		   qq('\!./annot/ann_pfam_www2.pl --lav --pfacc'),
-		   qq('\!./annot/ann_pdb_cath.pl --host $SQL_DB_HOST --lav'),
-		   qq('\!./annot/ann_pdb_cath.pl --host $SQL_DB_HOST --class --lav'),
+		   qq(\!./annot/ann_feats2ipr.pl+--host=$SQL_DB_HOST+--lav),
+		   qq(\!./annot/ann_feats_up_sql.pl+--host=$SQL_DB_HOST+--lav),
+		   qq(\!./annot/ann_feats2ipr.pl+--host=$SQL_DB_HOST+--lav),
+		   qq(\!./annot/ann_pfam_sql.pl+--host=$SQL_DB_HOST+--lav),
+##		   qq(\!./annot/ann_pfam_www2.pl+--lav+--pfacc),
+		   qq(\!./annot/ann_pfam_sql.pl+--host=$SQL_DB_HOST+--lav+--pfacc),
+##		   qq(\!./annot/ann_pfam_www2.pl+--lav+--pfacc),
+		   qq(\!./annot/ann_pdb_cath.pl+--host=$SQL_DB_HOST+--lav),
+		   qq(\!./annot/ann_pdb_cath.pl+--host=$SQL_DB_HOST+--class+--lav),
 );
 
 my $dopts = "";
@@ -102,16 +102,24 @@ $|  = 1;
 if ($tmp_lav) {
   $tmp_lav = "$TMP_DIR/$tmp_lav";
   if ($device eq 'svg') {
-    $lav_cmd = "$LAV_SVG $z_param < $tmp_lav" ;
+    $lav_cmd = "$LAV_SVG $z_param $tmp_lav" ;
+    ($lav_cmd) = ($lav_cmd =~ m/([$OK_CHARS]+)/);
+    my $lav_result = back_tick(split(" ",$lav_cmd));
+    print $lav_result;
   }
   else {
-    $lav_cmd = "$LAV_GS $z_param < $tmp_lav | $GS_BIN -q $size -dNOPAUSE -sDEVICE=$device -sOutputFile=- -";
+    $lav_cmd = "$LAV_GS $z_param  $tmp_lav | $GS_BIN -q $size -dNOPAUSE -sDEVICE=$device -sOutputFile=- -";
+    my @lav_cmds = ("$LAV_GS $z_param  $tmp_lav","$GS_BIN -q $size -dNOPAUSE -sDEVICE=$device -sOutputFile=- -");
+
+    my $lav_result = back_tick(split(" ",$lav_cmds[0]));
+
+    open(my $GS, '|-', split(" ",$lav_cmds[1]));
+    print $GS $lav_result;
+    close $GS;
   }
 
-  my $SOK_CHARS=$OK_CHARS.'<\|';
-
-  ($lav_cmd) = ($lav_cmd =~ m/([$SOK_CHARS]+)/);
-  system("$lav_cmd");
+#   system(split(/ /,$lav_cmd));
+#  system($lav_cmd);
 
   if (param("del") && (param("del") eq "yes")) {unlink "$tmp_lav";}
   exit(0);
@@ -138,4 +146,19 @@ sub get_safe_number {
       return "$opt $p_arg";
   }
   return $p_arg;
+}
+
+## back_tick($command, @args)
+## same as perl '`' back_tick, but no shell
+## for safety with user supplied arguments
+##
+sub back_tick {
+  my @args = @_;
+
+  my $ret_text = '';
+  open(my $fh, '-|', @args) or die "cannot open: $!";
+  while (my $line = <$fh>) {
+    $ret_text .= $line;
+  }
+  return $ret_text;
 }

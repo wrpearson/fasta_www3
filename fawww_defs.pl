@@ -167,7 +167,8 @@ $NODE_RUN_CGI="/fasta_www3/fasta_www.cgi";
 ####
 # list of hosts to distribute across
 #@NODE_HOSTS = qw( ex01 ex01 ex02 ex02);
-@NODE_HOSTS = qw( http://ex02 http://ex02 https://fasta.bioch.virginia.edu https://fasta.bioch.virginia.edu );
+#@NODE_HOSTS = qw( http://ex02 http://ex02 https://fasta.bioch.virginia.edu https://fasta.bioch.virginia.edu );
+@NODE_HOSTS = ();
 
 $NODE_EXT="";   # domain for $NODE_HOSTS, $node = $NODE_HOSTS[0] . $NODE_EXT
 

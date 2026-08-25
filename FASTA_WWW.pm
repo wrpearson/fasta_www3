@@ -209,11 +209,12 @@ sub do_form {
     }
   }
 
-  if ($q->param("DEBUG")) {
-      $DEBUG = $q->param("DEBUG");
-  }
+#  if ($q->param("DEBUG")) {
+#      $DEBUG = $q->param("DEBUG");
+#  }
 
-  my $show_debug = $q->param("DEBUG") || $DEBUG;
+#  my $show_debug = $q->param("DEBUG") || $DEBUG;
+  my $show_debug = $DEBUG;
   $tmpl->param(DEBUG => $show_debug);
 
   if ($form_href->{CAN_REMOTE} && $tmpl->query(name => "RUN_MODE")) {
@@ -807,6 +808,8 @@ sub wait_result {
 
   my $run_mode = $q->param("result_rm") || "search";
   my $res_file = get_safe_filename($q,"result_file");
+  ($res_file) =  ($res_file =~ m/(\w+)/);
+
   my $run_href = $run_list{$run_mode};
   unless ($run_href) {
     return fasta_error("Run parameters undefined for $run_mode\n");
@@ -818,10 +821,19 @@ sub wait_result {
   my $r_host = "";
   my $remote_file  = "";
   my $raw_mode = 0;
+  my $have_r_host = 0;
 
   if ($q->param("remote_host")) {
     $r_host = get_safe_string("%s", scalar($q->param("remote_host")));
+
+    if (grep { $_ eq $r_host } @NODE_HOSTS ) {
+	$have_r_host = 1;
+    }
+  }
+
+  if ($have_r_host) {
     $remote_file = get_safe_filename($q,"remote_file");
+    ($remote_file) = ($remote_file =~ m/(\w+)/);
 
     $output="<h3>Search on $r_host</h3>";
     check_remote_result($q, $r_host, $remote_file, $res_file);
@@ -845,6 +857,8 @@ sub wait_result {
     ($refresh) = ($refresh =~ m/^(\d+)$/);
     if ($refresh eq "") {$refresh=30;}
     if ($refresh < 30) { $refresh *= 2; }
+    else { $refresh = 30;}
+
     $q->param(-name=>"refresh_time", -value => $refresh);
     my $spaces = $q->param("spaces") || 1;
     ($spaces) = ($spaces =~ m/(\d+)/);
@@ -862,6 +876,7 @@ sub wait_result {
     $q->param(-name=>"lib_info", -value => $lib_info);
 
     my $comments = get_safe_string("%s", scalar($q->param("comments"))) || "";
+    $comments =~ s/[<>]//g;
     $comments = HTML::Entities::encode($comments);
     $q->param(-name=>"comments", -value => $comments);
 
@@ -899,7 +914,7 @@ sub wait_result {
 ################
 # have the .res_DONE file
   my $pgm = $q->param("result_pgm") || "fap";
-  $DEBUG = $q->param("DEBUG");
+##  $DEBUG = $q->param("DEBUG");
 
   if ($q->param("json_parms")) {
     my $json_param = $q->param("json_parms");
@@ -1596,7 +1611,7 @@ sub fast2libs {
 # my $query = get_query($q,"query","q_type","",$query_db);
 #
 
-use vars qw( $test_aa );
+use vars qw( $test_aa $test2_aa );
 
 sub get_query {
   my ($q, $name, $type, $file, $db )  = @_;
@@ -1605,8 +1620,13 @@ sub get_query {
 
   unless (($file && scalar($q->param($file))) || scalar($q->param($name))) {return "";}
 
-  if (scalar($q->param($name)) && scalar($q->param($name)) =~ m/^TEST/) {
-    return $test_aa;
+  if (scalar($q->param($name))) {
+      if (scalar($q->param($name)) =~ m/^TEST$/) {
+	  return $test_aa;
+      }
+      elsif (scalar($q->param($name)) =~ m/^TEST2$/) {
+	  return $test2_aa;
+      }
   }
 #
 # file_name trumps name, but needs type

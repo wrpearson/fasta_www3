@@ -75,7 +75,7 @@ sub do_form {
 #
   my $q = $self->query();
 
-  $DEBUG = $DEBUG || ($q->param('DEBUG') && ($q->param('DEBUG') == 1));
+  ##  $DEBUG = $DEBUG || ($q->param('DEBUG') && ($q->param('DEBUG') == 1));
 
   load_inputs($form_href,$tmpl,$q);
 
