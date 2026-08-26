@@ -624,7 +624,7 @@ sub do_search {
   my $comments = get_safe_string("%s", scalar($q->param("comments"))) || "";
   $comments = HTML::Entities::encode($comments);
   unless ($comments) {
-    $comments = "$pgm_title search started " . `/bin/date`;
+      $comments = "$pgm_title search started " . `/bin/date | tr -d '\n'`;
   }
 
   $q->param(-name=>"comments", value => $comments);
@@ -887,7 +887,7 @@ sub wait_result {
 		 "RESULT_FILE"=>$res_file,
 		 "REFRESH_TIME"=>$refresh,
 		 "SPACES"=>"." x $spaces,
-		 "QUERY_INFO"=> HTML::Entities::encode($query_info),
+		 "QUERY_INFO"=> $query_info,
 		 "LIB_INFO"=> $lib_info,
 		 "COMMENTS"=> $comments,
 		 "HIDE_ALIGN" => $HIDE_ALIGN,

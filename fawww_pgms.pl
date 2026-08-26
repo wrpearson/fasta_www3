@@ -348,37 +348,6 @@ my $vdom_opt='';
      },
    },
 ###
-   'rmch_select' =>
-   { tmpl=>"select_rmch.tmpl",
-     pgm_ref=>[@pgm_fslist], pgm_def=>"sw",
-     lib_p_def => 'B',
-     ws_lib_list => \@ws_libs,
-     lib_env=> $FAST_LIBS,
-     CAN_REMOTE => 1,
-     inputs =>
-     { query => {SEARCH_QUERY => "this", SEARCH_FRM_ACC => "selected",
-		 SSR => \&get_query_range},
-       remote => {SHOW_REMOTE => "this", RUNMODE => 'remote'},
-       acc => {SEARCH_FRM_ACC=>"selected"},
-       annot_seq1 => {ANNOT1_SEQ => "this"},
-       annot_seq2 => {ANNOT2_SEQ => "this"},
-     },
-     www_opts => {
-        hide_align => { arg => \$HIDE_ALIGN, val => \&get_option, cmd_arg=>1},
-     },
-     outputs =>
-     { RUN_MODE=>'rmch_search',
-       REM_RUN_MODE=>'rmch_search',
-       TITLE => qq(RDP2 Sequence Comparison),
-       OPTION1 => $select_opt1,
-       LIB_OPT => $lib_opt,
-       OPTION2 => $select_opt2,
-       OPTION3 => $select_opt3_rmch,
-       OPTION4 => $select_opt4,
-       MSA_PSSM_FILE => $shuff_msa_opt,
-     },
-   },
-###
    'selectg' =>
    { tmpl=>"select.tmpl",
      pgm_ref=>[@pgm_flist, @pgm_slist], pgm_def=>"fap",
@@ -574,8 +543,8 @@ my $vdom_opt='';
 	     msa_asn_file => [\&get_file2file, 'msa_asn_file'],
 	     msa_asn_rid => [\&get_rid2file, 'msa_asn_file']
 	 },
-	 header => $rmch_footer,
-	 footer => $rmch_footer,
+	 header => $fa_footer,
+	 footer => $fa_footer,
      },
 ####
      'compare_r'=> {
@@ -853,69 +822,6 @@ my $vdom_opt='';
 	 domain_color => \&process_domain_colors,
 	 header => $fa_footer,
 	 footer => $fa_footer,
-     },
-
-     'rmch_search'=> {
-	 pgm_ref=>[@pgm_flist, @pgm_slist, @pgm_hlist],
-	 ws_lib_ref => \@ws_libs,
-	 n_q => 1, lib_env=> $FAST_LIBS, remote=>1, have_ssr=>1,
-	 run_bkgd => 1,
-	 run_ws => 1,
-	 pgm_args => "-q -w 80",
-	 q_arg => "query",
-	 qt_arg => "q_type",
-	 qf_arg => "query_file",
-#	 use_query1 => 1,
-         query1_type => 'tmp',
-         query1_opt => '',
-	 query2_type => 'lib',
-	 get_lib_sub => \&get_lib,
-	 ws_get_lib_sub => \&ws_get_lib,
-	 use_ktup => 1,
-	 link_url_ref => "",
-#	 no_html => 1,
-	 ws_no_html => 1,
-	 opts => {
-	     %fa_opt_params,
-	     db_range =>{ cmd_arg => "-M", val=> \&get_safe_range, ws_arg =>"dbrange"},
-	     ev_lim => { cmd_arg => "-E %g", val=> \&get_safe_number, ws_arg => "expupperlim"},
-	     ev_top => { cmd_arg => "-F %g", val=> \&get_safe_number, ws_arg => "explowlim"},
-	     aln_type => { cmd_arg => ["","-m 1","-m 2"], val=>\&put_indexed_args, default_arg=>""},
-	     show_hist => { cmd_arg => ["","-H"],val=> \&put_indexed_args, ws_arg => "histogram", default_arg=>""},
-#	     annot_seq1 => { cmd_arg => "-Vq\!ann_feats2ipr_e.pl", val=>\&get_option },
-	     annot_seq1 => { cmd_arg => \@annot_seq1_arr,
-			     val=>\&put_indexed_args, ws_flag => 'annotfeats' },
-	     annot_seq1_file => { cmd_arg => qq(-V "q\<%s"), val=>\&get_file2file },
-	     annot_seq2 => { cmd_arg => \@annot_seq2_arr,
-			     val=>\&put_indexed_args, ws_flag => 'annotfeats' },
-	     tab_format => { cmd_arg => [ "-m 9I -m6",
-					  "-m 9I -m 6",
-					  "-m 9 -d 0",
-					  "-m B -m 9I -m6",
-					  "-m 8",
-					  "-m 9c -d 0",
-					  "-m 8CC"],
-			     val => \&put_indexed_args, default_arg=>"-m 9I -m 6" },
-
-	     zstat => { cmd_arg => "-z %d",val=> \&get_safe_number},
-	     max_align => { cmd_arg => "-d %d", val=>\&get_safe_number, default_arg=>""},
-	     msa_asn_file => { cmd_arg => "-P \"%s 2\"", val=> \&get_pssm2file},
-#	     msa_asn_rid => { cmd_arg => "-P \"%s 2\"", val=> \&get_rid2file},
-#	     rem_asn_text => { cmd_arg => "-P \"%s 2\"", val=> \&get_text2file},
-	 },
-	 post_opts => {
-		       ktup => { cmd_arg => " %d", val=> \&get_safe_number},
-		      },
-	 rem_files => {
-	     msa_asn_file => [\&get_file2file, 'msa_asn_file'],
-#	     msa_asn_rid => [\&get_rid2file, 'msa_asn_file']
-	 },
-	 www_opts => {
-		      hide_align => { arg => \$HIDE_ALIGN, val => \&get_option, cmd_arg=>1},
-		     },
-	 domain_color => \&process_domain_colors,
-	 header => $rmch_footer,
-	 footer => $rmch_footer,
      },
 
      'searchg'=> {
@@ -1196,9 +1102,6 @@ my $vdom_opt='';
 	       link => qq(fasta_www.cgi?rm=psi2_select),
 	     },
 
-   rmch_select => { desc => qq(Search RPD3 with FASTA),
-	       link => qq(fasta_www.cgi?rm=rmch_select),
-	     },
    selectg => { desc => qq(Search Proteomes/Genomes),
 		link => qq(fasta_www.cgi?rm=selectg)},
    blast => { desc => qq(Search Databases with BLAST),
@@ -1227,7 +1130,6 @@ my $vdom_opt='';
 %page_link_list =
   (
    select => [[qw(this blast psi2_select shuffle lplalign misc1)],$select_text],
-   rmch_select => [[qw(this selectg shuffle lplalign misc1)],$select_text],
    selectg =>[[qw(this select shuffle lplalign misc1)],$selectg_text],
    psi2_select => [[qw(this select shuffle lplalign misc1)],$select_text],
    blast =>[[qw(this select psi2_select lplalign)], $blast_text],

@@ -340,9 +340,9 @@ sub get_fastacmd {
     return "";
   }
 
-  $query =~ s/^\w+\|//;
+  $query =~ s/^\w+\|\.//;
 
-  ($query) = ($query =~ m/(\w+)/);
+  ($query) = ($query =~ m/([\w+\|\.])/);
 
   # check for PDB entry
   if ( !($query =~  m/^\d+$/ || $query =~ m/[A-Z][A-Z0-9]{6}/i || $query =~ m/_/ || $query =~ m/[A-Z][A-Z0-9]{10}/i)

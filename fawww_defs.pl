@@ -24,9 +24,9 @@ $BACK_TIMEOUT = 2400; # 40 min CPU time (5 min elapsed)
 $RUN_TIMEOUT = 120; # 2 min for IPC::Run in foreground
 
 ####
-# string used for sanitizing file names
+# string used for sanitizing strings
 #$OK_CHARS='\"\+\-a-zA-Z0-9_.@ \/%:';
-$OK_CHARS='\'"=!\+\-\w\.@\s\\\\/%\:';
+$OK_CHARS='\'"=!\+\-\w\.@ \\\\/%\:\|\(\)#';
 
 ################
 # (2) Site-specific file locations
