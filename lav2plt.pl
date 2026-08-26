@@ -96,12 +96,12 @@ while (my $line = <>) {
     unless ($open_plt) {
       if ($y_upd_script) {
 # $ss_desc1 needs to be an accession
-	  ($ss_desc1) = ($ss_desc1 =~ m/[\w\.\|]+/);
+	  ($ss_desc1) = ($ss_desc1 =~ m/([\w\.\|]+)/);
 	  $y_annot_arr_r = get_annot($ss_desc1, $y_upd_script);
       }
       if ($x_upd_script) {
 # $ss_desc0 needs to be an accession
-	  ($ss_desc0) = ($ss_desc0 =~ m/[\w\.\|]+/);
+	  ($ss_desc0) = ($ss_desc0 =~ m/([\w\.\|]+)/);
 	  $x_annot_arr_r = get_annot($ss_desc0, $x_upd_script);
       }
       openplt($g_n0, $g_n1, $p0_beg, $p1_beg,  $s_desc0, $s_desc1, $x_annot_arr_r, $y_annot_arr_r,$have_zdb, $have_bits);
