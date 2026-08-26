@@ -17,7 +17,7 @@ use vars qw($pminx $pmaxx $pminy $pmaxy $lvstr $max_x $max_y
 	    $have_zdb $have_bits $zdb_size
 );
 
-my $OK_CHARS='\'"=!\+\-\|\w\.@ \\\\/%\:';
+my $OK_CHARS='\'"=!\+\-\|\w\.@ \\\\/%\:\(\)#';
 
 @line_colors=qw(black blue brown green lightgreen);
 @block_colors = qw( slategrey lightgreen lightblue pink cyan tan gold plum darkgreen );
@@ -84,8 +84,8 @@ while (my $line = <>) {
       $s_desc1 = substr($s_desc1,0,50);
       $s_desc0 =~ s/[^$OK_CHARS]/_/g;
       $s_desc1 =~ s/[^$OK_CHARS]/_/g;
-      $ss_desc0 = ($s_desc0 =~ m/^(\S+)\s*/);
-      $ss_desc1 = ($s_desc1 =~ m/^(\S+)\s*/);
+      ($ss_desc0) = ($s_desc0 =~ m/^(\S+)\s*/);
+      ($ss_desc1) = ($s_desc1 =~ m/^(\S+)\s*/);
   }
   elsif ($line =~ m/^s \{/) {
     ($s_name0, $p0_beg, $p0_end,$s_name1, $p1_beg, $p1_end) = get_seq_info();
@@ -96,13 +96,13 @@ while (my $line = <>) {
     unless ($open_plt) {
       if ($y_upd_script) {
 # $s_desc1 needs to be an accession
-	  ($s_desc1) = ($s_desc1 =~ m/[\w\.\|]+/g);
-	  $y_annot_arr_r = get_annot($s_desc1, $y_upd_script);
+	  ($ss_desc1) = ($ss_desc1 =~ m/[\w\.\|]+/g);
+	  $y_annot_arr_r = get_annot($ss_desc1, $y_upd_script);
       }
       if ($x_upd_script) {
 # $s_desc0 needs to be an accession
-	  ($s_desc0) = ($s_desc0 =~ m/[\w\.\|]+/g);
-	  $x_annot_arr_r = get_annot($s_desc0, $x_upd_script);
+	  ($ss_desc0) = ($ss_desc0 =~ m/[\w\.\|]+/g);
+	  $x_annot_arr_r = get_annot($ss_desc0, $x_upd_script);
       }
       openplt($g_n0, $g_n1, $p0_beg, $p1_beg,  $s_desc0, $s_desc1, $x_annot_arr_r, $y_annot_arr_r,$have_zdb, $have_bits);
       if (($g_n0 == $g_n1) && ($p0_beg == $p1_beg) && ($p0_end == $p1_end) && $ss_desc0 eq $ss_desc1) {
