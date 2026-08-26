@@ -196,7 +196,7 @@ else {
   @arg_names = $q->param();
 ##  %args = map { $_ => scalar($q->param($_)) if defined($valid_args{$_} && $q->param($_)) } @arg_names;
   my $tmp_arg = "";
-  my $ROK_CHARS = $OK_CHARS.";\{\}\|~";
+  my $ROK_CHARS = $OK_CHARS.";\{\}\|~ \n\t";
   for my $arg (@arg_names) {
       if (defined($valid_args{$arg}) && defined($q->param($arg)) && $q->param($arg)) {
 	  $tmp_arg = scalar($q->param($arg));
@@ -290,7 +290,8 @@ if ($invert) {
 my ($region_info_r, $site_info_r, $q_site_info_r, $q_dom_info_r, $l_dom_info_r);
 
 if ($args{regions}) {
-    ($region_info_r, $site_info_r, $q_site_info_r) = parse_regions(uri_unescape($args{regions}));
+    ##    ($region_info_r, $site_info_r, $q_site_info_r) = parse_regions(uri_unescape($args{regions}));
+    ($region_info_r, $site_info_r, $q_site_info_r) = parse_regions($args{regions});
 }
 else {$region_info_r = [];}
 
