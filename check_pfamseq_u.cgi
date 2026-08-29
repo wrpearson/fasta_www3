@@ -8,6 +8,25 @@ use CGI qw(header param start_html end_html);
 use LWP::Simple;
 use XML::Twig;
 
+use vars qw($host $db $port $user $pass);
+use vars qw($DB_HOST $DB_NAME $DB_PORT $DB_USER $DB_PASSWORD);
+
+my %db_defaults = ("HOST"=>"wrpa48.bioch.virginia.edu",
+		   "USER"=>"web_user",
+		   "PASSWORD"=>"fasta_www",
+		   "NAME"=>"pfam37_qfo");
+{
+    no strict "refs";
+    foreach my $k (keys(%db_defaults)) {
+	my $db_var = "DB_".$k;
+	if (defined($ENV{$db_var})) {
+	    ${$db_var} = $ENV{$db_var};
+	} elsif (!defined(${$db_var}) || !${$db_var}) {
+	    ${$db_var} = $db_defaults{$k};
+	}
+    }
+}
+
 my @fields = qw(pfA_acc pfA_id s_start s_end s_len m_start m_end m_len m_cov evalue clan_acc clan_id );
 
 my ($q, $acc, $doms_only, $show_seq, $seq_only, $www_flag) = (0,0,0,0,0,0);
@@ -16,7 +35,7 @@ my $DOC_ROOT = $ENV{'DOCUMENT_ROOT'};
 
 $q = new CGI;
 $acc=$q->param('acc');
-($acc) =~ m/(\w+)/;
+($acc) = ($acc =~ m/(\w+)/);
 
 $doms_only = $q->param('doms_only') || 0;
 ($doms_only) =~ m/(\w+)/;
@@ -29,7 +48,6 @@ $seq_only = $q->param('seq_only') || 0;
 
 $www_flag = $q->param('www') || 0;
 ($www_flag) =~ m/(\w+)/;
-
 
 my @f_titles = ();
 
@@ -74,7 +92,6 @@ if ($acc) {
     my $dbh = init_dbh();
     $dom_data_ref = get_pfam_dom_sql($dbh, $acc);
     $seq_data_ref = get_pfam_seq_sql($dbh, $acc);
-
   }
 
   for my $dom_ref (@$dom_data_ref) {
@@ -177,7 +194,23 @@ EOSQL
 }
 
 sub init_dbh {
-  my ($host,$db, $user, $pass) = ("wrpa48.bioch.virginia.edu", "pfam37", "web_user", "fasta_www");
+
+    my %db_defaults = ("HOST"=>"wrpa48.bioch.virginia.edu",
+		       "USER"=>"web_user",
+		       "PASSWORD"=>"fasta_www",
+		       "NAME"=>"pfam37_qfo");
+    {
+	no strict "refs";
+	foreach my $k (keys(%db_defaults)) {
+	    my $db_var = "DB_".$k;
+	    if (defined($ENV{$db_var})) {
+		${$db_var} = $ENV{$db_var};
+	    } elsif (!defined(${$db_var}) || !${$db_var}) {
+		${$db_var} = $db_defaults{$k};
+	    }
+	}
+    }
+
   my $dbh = DBI->connect(qq{dbi:MariaDB:database=$db;host=$host},
 			 $user,
 			 $pass

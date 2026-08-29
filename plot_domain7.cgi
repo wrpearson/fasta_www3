@@ -66,6 +66,8 @@ use vars qw( $OK_CHARS $HOST_NAME $HOST_DIR $CGI_DIR $BIN_DIR $SQL_DB_HOST
 	     $PPM_BIN $LOG_FILE $lhost $PFAM_FAM_URL $IPRO_FAM_URL
 	     $file $device $tmp_lav $size $z_param);
 
+my $ROK_CHARS = $OK_CHARS.";\{\}\|~ \n\t";
+
 #use URI::Escape;
 
 require "./fawww_defs.pl";
@@ -166,14 +168,15 @@ $g_ticksize *= $g_mag;
 # place in %args{}
 #
 if ($q->param("file")) { # read "real" args from file, but still get embed from command line
-  my $file_name = $q->param("file");
-  $file_name =~ s/[^$OK_CHARS]/_/go;
-  my $file_offset = get_safe_number("",scalar($q->param("offset")));
-  my $file_cnt = get_safe_number("",scalar($q->param("a_cnt")));
+    my $file_name = $q->param("file");
+    ($file_name) = ($file_name =~ m/([\w\.]+)$/);
+    $file_name =~ s/[^$OK_CHARS]/_/go;
+    my $file_offset = get_safe_number("",scalar($q->param("offset")));
+    my $file_cnt = get_safe_number("",scalar($q->param("a_cnt")));
 
-  if ($file_offset !~ m/^\d+$/) {
-      die "file_offset: $file_offset non-numeric";
-  }
+    if ($file_offset !~ m/^\d+$/) {
+	die "file_offset: $file_offset non-numeric";
+    }
 
   open(my $ann_fd, "<", "$TMP_DIR/$file_name") || die "cannot open $TMP_DIR/$file_name";
   seek($ann_fd, $file_offset, 0);
@@ -187,6 +190,7 @@ if ($q->param("file")) { # read "real" args from file, but still get embed from 
   my @args = split(/&amp;/,$arg_line);
   for my $arg (@args) {
     my ($key, $val) = ($arg =~ m/^(\w+)=(.+)$/);
+    $val =~ s/[^ROK_CHARS]/_/go;
     if (defined($key) && defined($valid_args{$key}) && defined($val) && $key && $val) {
       $args{$key} = uri_unescape($val);
     }
@@ -196,7 +200,6 @@ else {
   @arg_names = $q->param();
 ##  %args = map { $_ => scalar($q->param($_)) if defined($valid_args{$_} && $q->param($_)) } @arg_names;
   my $tmp_arg = "";
-  my $ROK_CHARS = $OK_CHARS.";\{\}\|~ \n\t";
   for my $arg (@arg_names) {
       if (defined($valid_args{$arg}) && defined($q->param($arg)) && $q->param($arg)) {
 	  $tmp_arg = scalar($q->param($arg));

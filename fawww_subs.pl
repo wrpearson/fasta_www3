@@ -81,12 +81,52 @@ sub get_safe_number {
   }
   return $p_arg;
 }
+################
+# get a safe number from $p_arg;
+#
+sub get_safe_integer {
+  my ($opt, $p_arg) = @_;
+
+  unless (defined($p_arg)) {return "";}
+
+  if ($p_arg =~ m/DEFAULT/i) {return "";}
+
+  ($p_arg) = ($p_arg =~ m/(\d+)/);
+  unless (defined($p_arg) && length($p_arg)>0) {return "";}
+
+#  return "$opt $p_arg";
+  if ($opt =~ m/%/) {
+    return sprintf($opt,$p_arg);
+  }
+  elsif (length($opt)>0) {
+    return "$opt $p_arg";
+  }
+  return $p_arg;
+}
 
 sub get_safe_string {
   my ($opt,$p_arg) = @_;
 
   unless (defined($p_arg)) {return "";}
 
+  $p_arg =~ s/[^$OK_CHARS]/_/go;
+  ($p_arg) = ($p_arg =~ m/([$OK_CHARS]+)/);
+
+  if ($opt =~ m/%/) {
+    return sprintf($opt, (defined($p_arg) ? $p_arg : ''));
+  }
+  elsif (length($opt)>0) {
+    return "$opt $p_arg";
+  }
+  return $p_arg;
+}
+
+sub get_safe_word {
+  my ($opt,$p_arg) = @_;
+
+  unless (defined($p_arg)) {return "";}
+
+  ($p_arg) = ($p_arg =~ m/^(\S+)/);
   $p_arg =~ s/[^$OK_CHARS]/_/go;
   ($p_arg) = ($p_arg =~ m/([$OK_CHARS]+)/);
 
@@ -217,6 +257,9 @@ sub get_local_file {
 #    if (defined($opt) && $opt) {carp("p_arg - missing: $opt");}
 #    else {carp("p_arg - missing");}
   }
+
+  ## ensure that it is only a word
+  ($p_arg) = ($p_arg =~ m/([\w\.]+)$/);
 
   if (-e "$TMP_DIR/$p_arg") {
     return sprintf($opt, "$TMP_DIR/$p_arg");
@@ -434,7 +477,7 @@ sub back_tick {
 sub get_protein {
   my ($db, $acc) = @_;
 
-  ($acc) =~ m/([\w\|]+)/;
+  ($acc) = ($acc =~ m/([\w\|]+)/);
 
 ##  return scalar(join('',`$BIN_DIR/get_protein.py \'$acc\'`));
 

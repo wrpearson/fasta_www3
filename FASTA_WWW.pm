@@ -225,7 +225,7 @@ sub do_form {
     $tmpl->param( SHOW_REMOTE => 0);	# to enable SHOW_REMOTE, this must be changed
   }
 
-  if ($show_debug) {
+  if ($DEBUG) {
       my $cmd_line = "command args:\n";
       for my $p ($q->param()) {
 	$cmd_line .= ( " $p=".$q->param($p));
@@ -580,6 +580,7 @@ sub do_search {
       ($lib_abbr, $lib_info) =
 	$run_href->{get_lib_sub}($q,$query2_db,$run_href);
 
+      ($lib_abbr)  = ($lib_abbr =~ m/(\S+)/);
       $pgm_args .= " $query2_opt$lib_abbr";
     }
     elsif ($run_href->{query2_type} eq 'q2') {
@@ -1284,7 +1285,12 @@ sub remote {
   my $rem_rm = scalar($q->param('rem_rm'));
 
   unless ($rem_rm) {
-      return "<h2> no rem_rm for remote search</h2>\n". $self->dump_html() . "\n</body>\n</html>\n";
+      if ($DEBUG) {
+	  return "<h2> no rem_rm for remote search</h2>\n". $self->dump_html() . "\n</body>\n</html>\n";
+      }
+      else {
+	  return "<h2> no rem_rm for remote search</h2>\n". "\n</body>\n</html>\n";
+      }
   }
 
   my $r_host = $q->remote_host();
@@ -1368,6 +1374,7 @@ sub remote {
     my ($query_db, $query2_db) = get_dbs($q,$pgm, $pgm_qdb_ldb{$pgm});
     ($lib_abbr, $lib_info) =
       $rem_href->{get_lib_sub}($q,$query2_db,$rem_href);
+    ($lib_abbr) = ($lib_abbr =~ m/(\S+)/);
   }
 
 # (2b) we also need to get other files that have been uploaded
@@ -1548,7 +1555,7 @@ sub remote {
 
 # (6) return the output
 #  actually start the program waiting for the output
-  if (scalar($q->param("debug"))) {
+  if ($DEBUG) {
     return $q->start_html() . "\n". $self->dump_html() . "\n" .  $output;
   }
 
@@ -1756,19 +1763,22 @@ sub get_lib {
 #
 # set up appropriate protein or DNA library, including defaults
 #
-  if (scalar($q->param("lib_abbr"))) {$fa_lib = scalar($q->param("lib_abbr"));}
+  if (scalar($q->param("lib_abbr"))) {
+      $fa_lib = scalar($q->param("lib_abbr"));
+  }
   elsif ($lib_db =~ /^P/i) {
     if (scalar($q->param("p_lib"))) {$fa_lib = $q->param("p_lib");}
     else {$fa_lib = "a";}
-    $fa_lib =~ s/\W+/_/g;
     ($fa_file, $fa_info) = scan_fastlibs($fa_lib, $run_href->{lib_env},0);
   }
   else {
     if (scalar($q->param("n_lib"))) {$fa_lib = scalar($q->param("n_lib"));}
     else {$fa_lib = "m";}
-    $fa_lib =~ s/\W+/_/g;
     ($fa_file, $fa_info) = scan_fastlibs($fa_lib, $run_href->{lib_env},1);
   }
+
+  ($fa_lib) = ($fa_lib =~ m/^(\S+)/);
+  $fa_lib =~ s/\W+/_/g;
 
   return ($fa_lib, $fa_info);
 }
@@ -1838,7 +1848,7 @@ sub scan_fastlibs {
       }
     }
     close FLIBS;
-    return "/slib2/blast/pir1.lseg";
+    return "/slib2/fa_dbs/pir1.lseg";
 }
 
 ################
@@ -2048,9 +2058,9 @@ sub get_query_range {
   }
 
   if ($q->param("start") || $q->param("stop")) {
-    $q->param("start","") unless ($q->param("start"));
-    $q->param("stop","") unless ($q->param("stop"));
-    return $q->param("start")."-" .$q->param("stop");
+    get_safe_integer("",$q->param("start","")) unless ($q->param("start"));
+    get_safe_integer("",$q->param("stop","")) unless ($q->param("stop"));
+    return get_safe_integer("",$q->param("start"))."-" .get_safe_integer("",$q->param("stop"));
     }
   else {
     return "";

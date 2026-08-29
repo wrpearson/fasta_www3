@@ -50,6 +50,9 @@ use vars qw( $OK_CHARS $HOST_NAME $HOST_DIR $CGI_DIR $BIN_DIR $SQL_DB_HOST
 
 require "./fawww_defs.pl";
 
+my $ROK_CHARS = $OK_CHARS.";\{\}\|~";
+
+
 my $q = new CGI;
 
 my @valid_args=qw( q_name l_name pgm q_cstart q_cstop l_cstart l_cstop q_astart q_astop l_astart l_astop regions doms );
@@ -57,6 +60,7 @@ my %valid_args = map { $_ => 1 } @valid_args;
 
 my @arg_names = ();
 my %args = ();
+
 
 ################################################################
 # get alignment arguments (coordinates, scores, domains)
@@ -66,6 +70,7 @@ my %args = ();
 #
 if ($q->param("file")) { # read "real" args from file, but still get embed from command line
   my $file_name = $q->param("file");
+  ($file_name) = ($file_name =~ m/([\w\.]+)$/);
   $file_name =~ s/[^$OK_CHARS]/_/go;
   my $file_offset = get_safe_number("",scalar($q->param("offset")));
   my $file_cnt = get_safe_number("",scalar($q->param("a_cnt")));
@@ -82,13 +87,14 @@ if ($q->param("file")) { # read "real" args from file, but still get embed from 
   my @args = split(/&amp;/,$arg_line);
   for my $arg (@args) {
     my ($key, $val) = ($arg =~ m/^(\w+)=(.+)$/);
+    $key =~ s/[^\w\.]/_/go;
+    $val =~ s/[^$ROK_CHARS]/_/go;
     $args{$key} = uri_decode(uri_unescape($val));
   }
 }
 else {
   @arg_names = $q->param();
   my $tmp_arg = "";
-  my $ROK_CHARS = $OK_CHARS.";\{\}\|~";
   for my $arg (@arg_names) {
       if (defined($valid_args{$arg}) && defined($q->param($arg)) && $q->param($arg)) {
 	  $tmp_arg = scalar($q->param($arg));
