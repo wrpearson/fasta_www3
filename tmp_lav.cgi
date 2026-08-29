@@ -29,7 +29,8 @@ $file = param("name") || "";
 $file =~ s/[;><&\*`\|\s]//g;
 
 if (param("file")) {
-    $this_file = param("file")
+    $this_file = param("file");
+    ($this_file) = ($this_file =~ m/([\w\.]+)$/);
 }
 
 $LAV_SVG = "./lav2plt.pl --dev svg -Z 1" . $dopts;
