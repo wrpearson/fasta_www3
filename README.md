@@ -1,5 +1,9 @@
 29-Aug-2026
 
+release: fasta_www3_rel-0.1.5 -- bug patch for plot_domain7.cgi
+
+29-Aug-2026
+
 release: fasta_www3_rel-0.1.4 -- removal of system() calls that include user input
 
 16-Aug-2026
