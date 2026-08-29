@@ -15,6 +15,7 @@ HTML::FillInForm
 HTTP::Request::Common
 IO::Scalar
 IPC::Run
+IPC::Run3
 JSON
 LWP::Simple
 LWP::UserAgent
