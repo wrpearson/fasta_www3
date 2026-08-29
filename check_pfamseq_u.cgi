@@ -11,22 +11,6 @@ use XML::Twig;
 use vars qw($host $db $port $user $pass);
 use vars qw($DB_HOST $DB_NAME $DB_PORT $DB_USER $DB_PASSWORD);
 
-my %db_defaults = ("HOST"=>"wrpa48.bioch.virginia.edu",
-		   "USER"=>"web_user",
-		   "PASSWORD"=>"fasta_www",
-		   "NAME"=>"pfam37_qfo");
-{
-    no strict "refs";
-    foreach my $k (keys(%db_defaults)) {
-	my $db_var = "DB_".$k;
-	if (defined($ENV{$db_var})) {
-	    ${$db_var} = $ENV{$db_var};
-	} elsif (!defined(${$db_var}) || !${$db_var}) {
-	    ${$db_var} = $db_defaults{$k};
-	}
-    }
-}
-
 my @fields = qw(pfA_acc pfA_id s_start s_end s_len m_start m_end m_len m_cov evalue clan_acc clan_id );
 
 my ($q, $acc, $doms_only, $show_seq, $seq_only, $www_flag) = (0,0,0,0,0,0);
@@ -210,6 +194,8 @@ sub init_dbh {
 	    }
 	}
     }
+
+  ($host, $db, $port, $user, $pass)  = ($DB_HOST, $DB_NAME, $DB_PORT, $DB_USER, $DB_PASSWORD);
 
   my $dbh = DBI->connect(qq{dbi:MariaDB:database=$db;host=$host},
 			 $user,
