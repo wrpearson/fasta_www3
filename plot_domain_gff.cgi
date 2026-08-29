@@ -52,7 +52,6 @@ require "./fawww_defs.pl";
 
 my $ROK_CHARS = $OK_CHARS.";\{\}\|~";
 
-
 my $q = new CGI;
 
 my @valid_args=qw( q_name l_name pgm q_cstart q_cstop l_cstart l_cstop q_astart q_astop l_astart l_astop regions doms );
@@ -196,8 +195,8 @@ sub parse_regions {
     $data{descr} =~ s/^C=//;
 
     if ($data{descr} =~ m/^(.+)\{([^}]+)\}\s*$/) {
-      $data{descr} =
-	$1; $data{dom_acc} = $2;
+      $data{descr} = 1;
+      $data{dom_acc} = $2;
     }
 
     if (defined($data{dom_acc})) {
@@ -260,6 +259,8 @@ sub parse_domains {
 	$data{descr} = $1;
 	$data{dom_acc} = $2;
     }
+
+    $data{descr} =~ s/[^$ROK_CHARS]/_/go;
 
     if ($data{color} =~ m/v$/) {
       $data{color} =~ s/v$//;

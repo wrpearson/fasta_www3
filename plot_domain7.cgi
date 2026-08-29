@@ -66,11 +66,11 @@ use vars qw( $OK_CHARS $HOST_NAME $HOST_DIR $CGI_DIR $BIN_DIR $SQL_DB_HOST
 	     $PPM_BIN $LOG_FILE $lhost $PFAM_FAM_URL $IPRO_FAM_URL
 	     $file $device $tmp_lav $size $z_param);
 
-my $ROK_CHARS = $OK_CHARS.";\{\}\|~ \n\t";
-
 #use URI::Escape;
 
 require "./fawww_defs.pl";
+
+my $ROK_CHARS = $OK_CHARS.";\{\}\|~ \n\t";
 
 use vars qw($pminx $pmaxx $pminy $pmaxy $lvstr $max_x $max_y
 	    $fxscal $fyscal $fxoff $fyoff $x_rev $y_rev
@@ -1228,11 +1228,13 @@ sub parse_regions {
 	$data{color} =~ s/v$//;
 	$data{virtual} = 1;
       }
+
       if ($data{descr} =~ m/^(.+)\{([^\}]+)\}\s*$/) {
 	$data{descr} = $1;
-	$data{dom_acc} = $1;
+	$data{dom_acc} = $2;
       }
       
+      $data{descr} =~ s/[^$ROK_CHARS]/_/go;
 
       $dom_colors{$data{descr}}=$data{color} unless defined($dom_colors{$data{descr}});
       $max_color = $data{color} if ($data{color} > $max_color);
@@ -1318,8 +1320,10 @@ sub parse_domains {
 
     if ($data{descr} =~ m/^(.+)\{([^\}]+)\}\s*$/) {
 	$data{descr} = $1;
-	$data{dom_acc} = $1;
+	$data{dom_acc} = $2;
     }
+
+    $data{descr} =~ s/[^$OK_CHARS]/_/go;
 
     if ($data{color} =~ m/v$/) {
       $data{color} =~ s/v$//;
