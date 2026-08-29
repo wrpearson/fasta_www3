@@ -209,37 +209,6 @@ $select_opt3 = <<EOS
 EOS
 ;
 
-$select_opt3_rmch = <<EOS
-<td>
-<table>
-<tr>
-<th colspan="2" align="left">Output&nbsp;limits:</th><th align="center">Max</th><td><input type="checkbox" name='show_hist' value='1' />Show Histogram</td>
-</tr>
-<tr>
-<td><b>E():</b><br /><select name="ev_lim">
-<option value='1e-10'>1E-10</option>
-<option value='1e-6'>1E-6</option>
-<option value='1e-3'>0.001</option>
-<option value='1e-2'>0.01</option>
-<option value='1e-1'>0.1</option>
-<option value='1.0'>1.0</option>
-<option value='2.0' selected>2.0</option>
-<option value='5.0'>5.0</option>
-<option value='10'>10</option>
-<option value='100'>100</option>
-</select>
-<!-- <input type="text" name="eval" maxlength="8" size="5" /> -->
-</td>
-<td><b>Best&nbsp;E():</b><br /><input type="text" name="etop" maxlength="8" size="5" /></td>
-<td><b>aligns:</b><br /><input type="text" name="max_align" maxlength="6" size="4" /></td>
-<td>&nbsp;<br /><input type="checkbox" name="hide_align" value='1' checked />Hide Alignments</td>
-</tr>
-</table>
-</td>
-</tr>
-EOS
-;
-
 $select_opt4 = <<EOF
 <tr><td colspan="2"><hr /></td></tr>
 <tr>
@@ -468,17 +437,6 @@ $psi2_footer = <<EOS ;
 <hr />
 EOS
 
-
-$rmch_footer = <<EOS
-<hr />
-<center>
-<a href="fasta_www.cgi?rm=rmch_select">Search RPD2 Database with FASTA</a> |
-<a href="fasta_www.cgi?rm=lalign">Find Duplications</a> |
-<a href="fasta_www.cgi?rm=status">Search Status</a>
-</center>
-<hr />
-EOS
-    ;
 
 $fa_footer_s = <<EOS
 <center>

@@ -294,7 +294,7 @@ sub xgrid {
     # show rotated label
     my $xpos = SX(($annot->{end} - $annot->{beg})/2 + $annot->{beg} - $sq_off) + 4;
     my $ypos = SY($n1) + $text_offset;
-    # printf("<text x=\"0\" y=\"0\" text-anchor=\"left\" transform=\"translate($xpos, $ypos) rotate(-90,0,0)\">%s</text>\n",$annot->{sdescr});
+    # printf("<text x=\"0\" y=\"0\" text-anchor=\"left\" transform=\"translate($xpos, $ypos) rotate(-90,0,0)\">%s</text>\n",$annot->{sname});
     if ($show_block) {
       draw_block(SX($annot->{beg} - $sq_off), SY($n1) + 6, 
 		 SX($annot->{end} - $sq_off)-SX($annot->{beg} - $sq_off),12,

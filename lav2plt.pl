@@ -2,6 +2,9 @@
 
 # lav2plt.pl - produce plot from lav output */
 
+# 26-Aug-2028 modified to read annotation from .lav file if available
+# this strategy reads all the annotation information and plots it at the end
+
 # $Id: lav2plt.c 625 2011-03-23 17:21:38Z wrp $ */
 # $Revision: 625 $  */
 
@@ -70,14 +73,17 @@ else {
   $zdb_size = 1;
 }
 
+my @xa_annot = ();
+my @ya_annot = ();
+
 while (my $line = <>) {
   chomp $line;
   next unless ($line);
   next if ($line =~ m/^#/);
 
   if ($line =~ m/^d \{/) {$pgm_desc = get_str();}
-  elsif ($line =~ m/^h/) {
-      ($s_desc0, $s_desc1) = get_str2();
+  elsif ($line =~ m/^h \{/) {
+      ($s_desc0, $s_desc1) = get_lav_header(\@xa_annot, \@ya_annot);
       $s_desc0 =~ s/^gi\|\d+\|//;
       $s_desc1 =~ s/^gi\|\d+\|//;
       $s_desc0 = substr($s_desc0,0,50);
@@ -86,6 +92,13 @@ while (my $line = <>) {
       $s_desc1 =~ s/[^$OK_CHARS]/_/g;
       ($ss_desc0) = ($s_desc0 =~ m/^(\S+)\s*/);
       ($ss_desc1) = ($s_desc1 =~ m/^(\S+)\s*/);
+
+      if (@xa_annot) {
+	  $x_annot_arr_r = \@xa_annot;
+      }
+      if (@ya_annot) {
+	  $y_annot_arr_r = \@ya_annot;
+      }
   }
   elsif ($line =~ m/^s \{/) {
     ($s_name0, $p0_beg, $p0_end,$s_name1, $p1_beg, $p1_end) = get_seq_info();
@@ -110,7 +123,7 @@ while (my $line = <>) {
       }
       $open_plt = 1;
     }
-    do_alignment($p0_beg, $p1_beg);
+    do_alignment($p0_beg, $p1_beg, \@xa_annot, \@ya_annot);
   }
 }
 
@@ -126,6 +139,12 @@ while (my $line = <>) {
 # }
 
 if ($open_plt) {
+    if (@xa_annot > 0) {
+    }
+
+    if (@ya_annot > 0) {
+    }
+
     closeplt();
 }
 exit(0);
@@ -153,15 +172,44 @@ sub get_str {
   return $str;
 }
 
+sub parse_h_info {
+    my ($line, $annot_r) = @_;
+    
+
+    chomp $line;
+    my @a_coords = split(/\s:\s/, $line);
+
+    my %fields = ();
+    @fields{qw(beg end descr)}  = split(/\t/,$a_coords[1]);
+
+    my ($s_descr, $color) = split('~',$fields{descr});
+
+    $fields{sdescr} = substr($fields{descr},0,12);
+    ($fields{sname}) = ($fields{sdescr} =~ m/^(\S+)/);
+    ($fields{sname}) = ($fields{sname} =~ m/^([^~]+)/);
+
+    push @$annot_r, \%fields;
+    unless ($annot_names{$fields{sname}}) {
+      $annot_names{$fields{sname}} = $color
+    }
+}
+
 # get two quote enclosed strings
 # h {
+# # qInfo : 7	42	EF-hand_1 {ECO:0000255|PROSITE-ProRule:PRU00448}~1
+# # qInfo : 43	78	EF-hand_2 {ECO:0000255|PROSITE-ProRule:PRU00448}~2
+# # qInfo : 80	115	EF-hand_3 {ECO:0000255|PROSITE-ProRule:PRU00448}~3
+# # qInfo : 116	148	EF-hand_4 {ECO:0000255|PROSITE-ProRule:PRU00448}~4
+# # Info : 9	73	C.EF_hand~1
+# # Info : 82	146	C.EF_hand~1
 #    "MCHU - Calmodulin - Human, rabbit, bovine, rat, a - 148 aa"
 #    "MCHU - Calmodulin - Human, rabbit, bovine, rat, and ch"
 # }
 #
-#void get_str2(FILE *file, char *str0, size_t len0,  char *str1, size_t len1)
+#void get_lav_hdr(FILE *file, char *str0, size_t len0,  char *str1, size_t len1)
 
-sub get_str2 {
+sub get_lav_header {
+    my ($x_annot_r, $y_annot_r) = @_;
 
   my @str = ();
   my ($str0,$str1) = ("","");
@@ -169,6 +217,14 @@ sub get_str2 {
   while (my $line = <>) {
     chomp $line;
     next unless $line;
+    if ($line =~ m/^# qInfo\s*:/) {
+	parse_h_info($line, $x_annot_r);
+	next;
+    }
+    elsif ($line =~ m/^# Info\s*:/) {
+	parse_h_info($line, $y_annot_r);
+	next;
+    }
     next if ($line =~ m/^#/);
     last if ($line =~ m/}/);
     push @str, $line;
@@ -222,14 +278,26 @@ sub get_seq_info {
 
 # void do_alignment(FILE *file, int p0_beg, int p1_beg)
 sub do_alignment {
+  my ($p0_beg, $p1_beg, $x_annot_r, $y_annot_r ) = @_;
+  my ($score, $bits, $s0_beg, $s1_beg, $s0_end, $s1_end, $percent);
 
-  my ($score, $s0_beg, $s0_end, $s1_beg, $s1_end, $percent, $bits);
   my $have_line = 0;
 
   while (my $line = <>) {
     chomp $line;
     next unless $line;
-    next if ($line =~ m/^#/);
+   
+    if ($line =~ m/^#\s+Region:/) {
+	my ($region_line) = ($line =~ m/^# (.+)$/);
+	push @$x_annot_r, parse_annot($region_line);
+	next;
+    } elsif ($line =~ m/^#\s+qRegion:/) {
+	my ($region_line) = ($line =~ m/^# (.+)$/);
+	push @$y_annot_r, parse_annot($region_line);
+	next;
+    } elsif ($line =~ m/^#/) {
+	next;
+    }
     last if ($line =~ m/}/);
 
     my @fields = split(/\s+/,$line);
@@ -308,7 +376,6 @@ sub get_annot {
   return \@annots;
 }
 
-
 # produce e_val from bit score */
 
 #double bit_to_E (double bit)
@@ -322,6 +389,31 @@ sub bit_to_E {
   if ($p_val > 0.01) {$p_val = 1.0 - exp(-$p_val);}
 
   return $zdb_size * $p_val;
+}
+
+## parse_annot($region_line): parse
+## #  qRegion: 10-74:86-147 : score=191; bits=39.9; Id=0.479; Q=79.1 :  C.EF_hand~1
+## #  Region: 7-74:83-147 : score=205; bits=42.8; Id=0.479; Q=86.7 :  C.EF_hand~1
+## return: 
+sub parse_annot {
+    my ($region_line) = @_;
+    my ($r_beg, $r_end);
+
+    my @r_fields = split(/\s*:\s+/,$region_line);
+    my @range_list = split(':',$r_fields[1]);
+    if ($region_line =~ m/qRegion/) {
+	($r_beg, $r_end) = split('-',$range_list[0]);
+    }
+    else {
+	($r_beg, $r_end) = split('-',$range_list[1]);
+    }
+
+    my ($r_desc) = ($r_fields[-1] =~ m/\s*(\S.*)$/);
+    my $r_sdesc = substr($r_desc,0,12);
+    my ($r_sname)= ($r_sdesc =~ m/^(\S+)/);
+
+    my %r_info = ('beg'=> $r_beg, 'end'=> $r_end, 'descr'=>$r_desc, 'sdescr'=>$r_sdesc, 'sname'=>$r_sname);
+    return \%r_info;
 }
 
 =pod

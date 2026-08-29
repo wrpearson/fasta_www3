@@ -228,7 +228,7 @@ sub ygrid {
 		 SY($annot->{beg} - $sq_off) - SY($annot->{end} - $sq_off),
 		 $annot_names{$annot->{sname}});
     }
-    printf("<text x=\"$xpos\" y=\"$ypos\" text-anchor=\"left\">%s</text>\n",$annot->{sdescr});
+    printf("<text x=\"$xpos\" y=\"$ypos\" text-anchor=\"left\">%s</text>\n",$annot->{sname});
   }
 }
 
