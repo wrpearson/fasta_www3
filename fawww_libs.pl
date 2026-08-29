@@ -100,13 +100,13 @@
 		   );
 
 @pgm_lalign_list = (
-    {pgm=>"lpal", label=>"LALIGN/PLALIGN: protein:protein", binary=>"lalign36 -T 16", q_sq=>0, l_sq=>0, title=>"LALIGN/PLALIGN"},
-    {pgm=>"lal", label=>"LALIGN: protein:protein", binary=>"lalign36 -T 16", q_sq=>0, l_sq=>0, title=>"LALIGN"},
-    {pgm=>"pal", label=>"PLALIGN: plot protein:protein", binary=>"lalign36 -T 16", q_sq=>0, l_sq=>0, title=>"PLALIGN"},
-    {pgm=>"", label=>"---", binary=>"lalign36 -T 16", q_sq=>0, l_sq=>0, title=>"PLALIGN"},
-    {pgm=>"lpald", label=>"LALIGN/PLALIGN: DNA:DNA", binary=>"lalign36 -T 16", q_sq=>1, l_sq=>1, title=>"LALIGN/PLALIGN"},
-    {pgm=>"lald", label=>"LALIGN: DNA:DNA", binary=>"lalign36 -T 16", q_sq=>1, l_sq=>1, title=>"LALIGN"},
-    {pgm=>"pald", label=>"PLALIGN: plot DNA:DNA", binary=>"lalign36 -T 16", q_sq=>1, l_sq=>1, title=>"PLALIGN"},
+    {pgm=>"lpal", label=>"LALIGN/PLALIGN: protein:protein", binary=>"lalign36 -T 1", q_sq=>0, l_sq=>0, title=>"LALIGN/PLALIGN"},
+    {pgm=>"lal", label=>"LALIGN: protein:protein", binary=>"lalign36 -T 1", q_sq=>0, l_sq=>0, title=>"LALIGN"},
+    {pgm=>"pal", label=>"PLALIGN: plot protein:protein", binary=>"lalign36 -T 1", q_sq=>0, l_sq=>0, title=>"PLALIGN"},
+    {pgm=>"", label=>"---", binary=>"lalign36 -T 1", q_sq=>0, l_sq=>0, title=>"PLALIGN"},
+    {pgm=>"lpald", label=>"LALIGN/PLALIGN: DNA:DNA", binary=>"lalign36 -T 1", q_sq=>1, l_sq=>1, title=>"LALIGN/PLALIGN"},
+    {pgm=>"lald", label=>"LALIGN: DNA:DNA", binary=>"lalign36 -T 1", q_sq=>1, l_sq=>1, title=>"LALIGN"},
+    {pgm=>"pald", label=>"PLALIGN: plot DNA:DNA", binary=>"lalign36 -T 1", q_sq=>1, l_sq=>1, title=>"PLALIGN"},
     );
 
 @pgm_mlist =
