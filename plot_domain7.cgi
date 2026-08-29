@@ -101,8 +101,7 @@ my ($x0c_off, $x1c_off, $xdc_off) = (0,0,0);
 my ($x0f3, $x1f3) = (1,1);	# set to 3 for fastx (x0f3) or tfastx (x1f3)
 
 # tick array - values */
-my @tarr = (50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000);
-my $MAX_INTERVAL=20000;
+my @tarr = (50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000 100000 200000 500000 1000000);
 
 my $q = new CGI;
 
@@ -1058,6 +1057,8 @@ sub xaxis2 {
 
   # make two groupings: (1) captures ticks and numbers; (2) capture everything
   my $xx_max_ticks = int(($n0+$offset0)/$tick_inc);
+  $xx_max_ticks = 10 unless ($xx_max_ticks <= 10);
+
   unless ($x0_rev) {
     $xx0c_off -= $offset0;
     # draw up-tick
@@ -1126,6 +1127,8 @@ sub xaxis2 {
   }
 
   $xx_max_ticks = int(($n1+$offset1)/$tick_inc);
+  $xx_max_ticks = 10 unless ($xx_max_ticks <= 10);
+
   unless ($x1_rev) { 
     $xx1c_off -= $offset1;
     # draw down-tick

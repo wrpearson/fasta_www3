@@ -246,8 +246,8 @@ sub yaxis {
   for ($i=0; $i< @tarr; $i++) {
     if (($jm = $n/$tarr[$i])< $n_div) {goto found;}
   }
-  $jm = $n/5000;
   $i= scalar(@tarr)-1;
+  $jm = $n/$tarr[$i];
 
  found:
   $js = $tarr[$i];

@@ -148,7 +148,10 @@ sub xaxis {
     if (($jm = $n/$tarr[$i])<$n_div) {goto found;}
   }
   $i=scalar(@tarr)-1;
-  $jm = $n/$tarr[$i];
+  $jm = $n/$tarr[-1];
+
+  $jm = 10 unless ($jm <= 10);
+
  found:
   # js is the start of the value - modify to accomodate offset */
   $js = $tarr[$i];
@@ -210,8 +213,10 @@ sub yaxis {
   for ($i=0; $i<@tarr; $i++) {
     if (($jm = $n/$tarr[$i])<$n_div) {goto found;}
   }
-  $jm = $n/5000;
-  $i= scalear(@tarr)-1;
+  $i= scalar(@tarr)-1;
+  $jm = $n/$tarr[-1];
+
+  $jm = 10 unless ($jm <= 10);
 
  found:
   $js = $tarr[$i];

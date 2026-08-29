@@ -103,7 +103,10 @@ while (my $line = <>) {
   elsif ($line =~ m/^s \{/) {
     ($s_name0, $p0_beg, $p0_end,$s_name1, $p1_beg, $p1_end) = get_seq_info();
     $g_n0 = $p0_end - $p0_beg + 1;
+    if ($g_n0 < 10) { $g_n0 = 10;}
+
     $g_n1 = $p1_end - $p1_beg + 1;
+    if ($g_n1 < 10) { $g_n1 = 10;}
   }
   elsif ($line =~ m/^a \{/) {
     unless ($open_plt) {
@@ -399,6 +402,8 @@ sub parse_annot {
     my ($region_line) = @_;
     my ($r_beg, $r_end);
 
+    my $DOK_CHARS = $OK_CHARS . "~{} ";
+
     my @r_fields = split(/\s*:\s+/,$region_line);
     my @range_list = split(':',$r_fields[1]);
     if ($region_line =~ m/qRegion/) {
@@ -407,8 +412,8 @@ sub parse_annot {
     else {
 	($r_beg, $r_end) = split('-',$range_list[1]);
     }
-
     my ($r_desc) = ($r_fields[-1] =~ m/\s*(\S.*)$/);
+    $r_desc =~ s/[^$DOK_CHARS]/_/go;
     my $r_sdesc = substr($r_desc,0,12);
     my ($r_sname)= ($r_sdesc =~ m/^(\S+)/);
 
