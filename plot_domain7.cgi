@@ -190,9 +190,9 @@ if ($q->param("file")) { # read "real" args from file, but still get embed from 
   my @args = split(/&amp;/,$arg_line);
   for my $arg (@args) {
     my ($key, $val) = ($arg =~ m/^(\w+)=(.+)$/);
-    $val =~ s/[^ROK_CHARS]/_/go;
     if (defined($key) && defined($valid_args{$key}) && defined($val) && $key && $val) {
       $args{$key} = uri_unescape($val);
+      $args{$key} =~ s/[^$ROK_CHARS]/_/go;
     }
   }
 }

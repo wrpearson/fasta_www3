@@ -87,8 +87,8 @@ if ($q->param("file")) { # read "real" args from file, but still get embed from 
   for my $arg (@args) {
     my ($key, $val) = ($arg =~ m/^(\w+)=(.+)$/);
     $key =~ s/[^\w\.]/_/go;
-    $val =~ s/[^$ROK_CHARS]/_/go;
     $args{$key} = uri_decode(uri_unescape($val));
+    $args{$key} =~ s/[^$ROK_CHARS]/_/go;
   }
 }
 else {

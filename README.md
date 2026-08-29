@@ -1,6 +1,6 @@
 29-Aug-2026
 
-release: fasta_www3_rel-0.1.5 -- bug patch for plot_domain7.cgi
+release: fasta_www3_rel-0.1.5a -- bug patch for plot_domain7.cgi
 
 29-Aug-2026
 
