@@ -1301,7 +1301,7 @@ sub remote {
 
   my $output;
 
-  $DEBUG = scalar($q->param("debug"));
+  ## $DEBUG = scalar($q->param("debug"));
 
 # (1) - check for a valid program
 
@@ -1662,12 +1662,15 @@ sub get_query {
       my ($max_accs, $acc_cnt) = (100, 0);
 
       for my $acc (@r_acc_list) {
-	  $acc =~ s/[^A-Z0-9_, \|]/_/gi;
+	  $acc =~ s/[^\w\|\.]/_/gi;
 	  $acc_cnt += 1;
 	  if ($acc_cnt >= $max_accs) {
 	      last;
 	  }
-	  push @acc_list, $acc;
+	  ($acc) = ($acc =~ m/^([\w\|\.]+)/);
+	  if ($acc) {
+	      push @acc_list, $acc;
+	  }
       }
     }
     else {
