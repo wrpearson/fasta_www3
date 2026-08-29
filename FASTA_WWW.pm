@@ -711,13 +711,21 @@ sub do_search {
 
 ################
 # build the command
-      my $command = "( ". join(" ",@cmd_list) . " >" . $out_filename . "; echo `/bin/date` > " .$out_filename."_DONE ) &";
+#      my $command = "( ". join(" ",@cmd_list) . " >" . $out_filename . "; echo `/bin/date` > " .$out_filename."_DONE ) &";
 #      my @command = (" ", @cmd_list, " >$out_filename", shellwords("; echo `/bin/date` > " .$out_filename."_DONE ) &"));
 #      print STDERR '@command: '.join("::",@command) . "\n";
 #      Do_log($r_host, '$command: '. $command);
 ################
 # echo the $query to the command and run it
-      system("ulimit -t $BACK_TIMEOUT; $command");
+
+#      my @cmd_list = split(/\s+/,$command);
+#      system(\@cmd_list);
+#      system("ulimit -t $BACK_TIMEOUT; $command");
+
+      IPC::Run::run \@cmd_list, '>', $out_filename, (my $t=timeout $BACK_TIMEOUT)
+	  or carp("cannot run $cmd_list[0] -- " . (($?)>>8).":".($?&255) . "\n");
+      system("echo `/bin/date` > ".$out_filename."_DONE");
+      
       chmod 0644, $out_filename;
       exit(0);
     }
