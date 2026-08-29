@@ -1,6 +1,6 @@
 29-Aug-2026
 
-release: fasta_www3_rel-0.1.3 -- removal of system() calls that include user input
+release: fasta_www3_rel-0.1.4 -- removal of system() calls that include user input
 
 16-Aug-2026
 
