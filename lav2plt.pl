@@ -88,8 +88,8 @@ while (my $line = <>) {
       $s_desc1 =~ s/^gi\|\d+\|//;
       $s_desc0 = substr($s_desc0,0,50);
       $s_desc1 = substr($s_desc1,0,50);
-      $s_desc0 =~ s/[^$OK_CHARS]/_/g;
-      $s_desc1 =~ s/[^$OK_CHARS]/_/g;
+      $s_desc0 =~ s/[^$OK_CHARS]/_/go;
+      $s_desc1 =~ s/[^$OK_CHARS]/_/go;
       ($ss_desc0) = ($s_desc0 =~ m/^(\S+)\s*/);
       ($ss_desc1) = ($s_desc1 =~ m/^(\S+)\s*/);
 
