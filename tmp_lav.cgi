@@ -18,41 +18,18 @@ BEGIN {
 use vars qw( $OK_CHARS $HOST_NAME $HOST_DIR $CGI_DIR $BIN_DIR 
 	     $TMP_DIR $GS_BIN $DEF_UNLINK $LAV_SVG $LAV_GS $lav_cmd
 	     $PPM_BIN $LOG_FILE $lhost $SQL_DB_HOST
-	     $file $device $tmp_lav $size $z_param);
+	     $file $this_file $device $tmp_lav $size $z_param);
 
 require "./fawww_defs.pl";
 
-my @ann_scripts = ("", 
-		   "", 
-		   qq(\!./annot/ann_feats2ipr.pl+--host=$SQL_DB_HOST+--lav),
-		   qq(\!./annot/ann_feats_up_sql.pl+--host=$SQL_DB_HOST+--lav),
-		   qq(\!./annot/ann_feats2ipr.pl+--host=$SQL_DB_HOST+--lav),
-		   qq(\!./annot/ann_pfam_sql.pl+--host=$SQL_DB_HOST+--lav),
-##		   qq(\!./annot/ann_pfam_www2.pl+--lav+--pfacc),
-		   qq(\!./annot/ann_pfam_sql.pl+--host=$SQL_DB_HOST+--lav+--pfacc),
-##		   qq(\!./annot/ann_pfam_www2.pl+--lav+--pfacc),
-		   qq(\!./annot/ann_pdb_cath.pl+--host=$SQL_DB_HOST+--lav),
-		   qq(\!./annot/ann_pdb_cath.pl+--host=$SQL_DB_HOST+--class+--lav),
-);
 
 my $dopts = "";
 
 $file = param("name") || "";
 $file =~ s/[;><&\*`\|\s]//g;
 
-if (param("xA")) {
-  my ($script_index) =  ( param("xA") =~ m/^(\d)$/ );
-
-  if ($script_index > 1 && $script_index < scalar(@ann_scripts)) {
-    $dopts .=   " --xA " . $ann_scripts[$script_index];
-  }
-}
-
-if (param("yA")) {
-  my ($script_index) =  ( param("yA") =~ m/^(\d)$/ );
-  if ($script_index > 1 && $script_index < scalar(@ann_scripts)) {
-    $dopts .=   " --yA " . $ann_scripts[$script_index];
-  }
+if (param("file")) {
+    $this_file = param("file")
 }
 
 $LAV_SVG = "./lav2plt.pl --dev svg -Z 1" . $dopts;
@@ -99,15 +76,21 @@ $|  = 1;
 
 # print STDERR "tmp_lav: $tmp_lav\n";
 
-if ($tmp_lav) {
+if ($this_file) {
+    $tmp_lav = $this_file;
+}
+elsif ($tmp_lav) {
   $tmp_lav = "$TMP_DIR/$tmp_lav";
-  if ($device eq 'svg') {
-    $lav_cmd = "$LAV_SVG $z_param $tmp_lav" ;
+}
+
+if ($tmp_lav) {
+    if ($device eq 'svg') {
+	$lav_cmd = "$LAV_SVG $z_param $tmp_lav" ;
     ($lav_cmd) = ($lav_cmd =~ m/([$OK_CHARS]+)/);
     my $lav_result = back_tick(split(" ",$lav_cmd));
     print $lav_result;
-  }
-  else {
+}
+else {
     $lav_cmd = "$LAV_GS $z_param  $tmp_lav | $GS_BIN -q $size -dNOPAUSE -sDEVICE=$device -sOutputFile=- -";
     my @lav_cmds = ("$LAV_GS $z_param  $tmp_lav","$GS_BIN -q $size -dNOPAUSE -sDEVICE=$device -dSAFER -sOutputFile=- -");
 
@@ -116,7 +99,7 @@ if ($tmp_lav) {
     open(my $GS, '|-', split(" ",$lav_cmds[1]));
     print $GS $lav_result;
     close $GS;
-  }
+}
 
 #   system(split(/ /,$lav_cmd));
 #  system($lav_cmd);
@@ -127,7 +110,6 @@ if ($tmp_lav) {
 else {
   die(" tmp_lav.cgi - no file to process");
 }
-
 
 sub get_safe_number {
   my ($opt, $p_arg) = @_;

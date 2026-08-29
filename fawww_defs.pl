@@ -26,7 +26,7 @@ $RUN_TIMEOUT = 120; # 2 min for IPC::Run in foreground
 ####
 # string used for sanitizing strings
 #$OK_CHARS='\"\+\-a-zA-Z0-9_.@ \/%:';
-$OK_CHARS='\'"=!\+\-\w\.@ \\\\/%\:\|\(\)#';
+$OK_CHARS='\'"=!\+\-\w\.@ \\\\/%\:\(\)#';
 
 ################
 # (2) Site-specific file locations
@@ -34,6 +34,9 @@ $OK_CHARS='\'"=!\+\-\w\.@ \\\\/%\:\|\(\)#';
 ####
 # FASTA/BLAST binaries
 $BIN_ROOT = "/app";
+if (! -d $BIN_ROOT ) {
+    $BIN_ROOT = "/seqprg";
+}
 
 ####
 # DocumentRoot for WWW server if not defined
@@ -196,7 +199,7 @@ $CGI_DIR = "";
 #$RUN_URL="fasta_www.cgi";	# fasta_www.cgi -- should not be needed,
                                 # FASTA_WWW.pm has $ENV{SCRIPT_NAME}
 $RUN_URL = $ENV{SCRIPT_NAME} unless ($RUN_URL);
-$RUN_URL = "fasta_ws.cgi" unless($RUN_URL);
+$RUN_URL = "fasta_www.cgi" unless($RUN_URL);
 
 $DOMAIN_PLOT_URL = "plot_domain7.cgi";
 $ENV{PLOT_PGM} = "plot_domain7.cgi";
