@@ -396,8 +396,8 @@ sub get_fasta_annots {
 
   my @feats = ();
   for my $feat (@feats2, @n_feats2) {
-    push @feats, [$feat->[0], '[', '-', $feat->[-2], $feat->[-1] ];
-    push @feats, [$feat->[2], ']', '-', "", ""];
+      my $info = "$feat->[-2] {$feat->[-1]}";;
+      push @feats, [$feat->[0], '-', $feat->[2], $info, $feat->[-1] ];
   }
 
   @feats = sort { $a->[0] <=> $b->[0] } (@sites, @feats);
