@@ -104,8 +104,8 @@ sub down_pssm {
 	print $alignfh $_ unless $sawblank && m/^\s*$/o;	# skip blanks unless non-blank
 	if ($sawblank && !m/^\s*$/o) {
 	    chomp;
-	    ($id, $seq) = m/^\s*(\S+)\s*(.*)/;
-	    $seq =~ s/\W//g;
+	    ($id, $seq) = m/^\s*(\S+)\s+(.*)/;
+	    $seq =~ s/\W//go;
 	    print $queryfh ">$id\n" unless $idprinted++;
 	    print $queryfh "$seq\n";
 	    $sawblank--;
@@ -123,6 +123,7 @@ sub down_pssm {
     my $buf;
     open (POS,"$pssmfile") || die "Cannot open $pssmfile\n";
 
+    $id = substr($id,0,100);
     my ($prefix) = ($id =~ m/^.*[^\|]*\|(.+)$/);
     $id =~ s/\|/_/g;
     $prefix = $id unless $prefix;
