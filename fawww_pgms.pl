@@ -81,53 +81,53 @@ my $vdom_opt='';
 
 @bl_annot_seq2_arr =
 	("", "",
-	 qq(--ann_script='/annot/ann_feats2ipr_e.pl+--host=$db_host+$neg_opt--acc_comment), 		#2
-	 qq(--ann_script='/annot/ann_feats2ipr_e.pl+--host=$db_host+$neg_opt--acc_comment+--no_mod), 	#3
-	 qq(--ann_script='/annot/ann_upfeats_pfam_www_e.pl+--host=$db_host+$neg_opt$vdom_opt--acc_comment),	#4
-	 qq(--ann_script='/annot/ann_feats2ipr_e.pl+--host=$db_host+$neg_opt--acc_comment+--no-feats),	#5
-	 qq(--ann_script='/annot/ann_pfam_sql.pl+--host=$db_host+--db=$pfam_qfo_db+$neg_opt$vdom_opt--acc_comment),			#6
-	 qq(--ann_script='/annot/ann_pfam_sql.pl+--host=$db_host+--db=$pfam_qfo_db+$neg_opt--pfacc+$vdom_opt--acc_comment),		#7
-	 qq(--ann_script='/annot/ann_pdb_cath.pl+--host=$db_host+--neg),				#8
-	 qq(--ann_script='/annot/ann_pdb_cath.pl+--host=$db_host+--class+--neg),			#9
-	 qq(--ann_script='/annot/ann_pfam_sql.pl+--host=$db_host+$neg_opt--pfacc+--db=RPD3+--vdoms),	#11
-	 qq(--ann_script='/annot/ann_pdb_vast.pl+--host=$db_host+--neg),				#11
-	 qq(--ann_script='/annot/ann_pfam_sql.pl+--host=$db_host+$neg_opt--pfacc+--db=RPD3+--vdoms),	#12  RPD3
-	 qq(--ann_script='/annot/ann_exons_ncbi.pl+--host=$db_host),				#13  ncbi_exons
-	 qq(--ann_script='/annot/ann_exons_up_sql.pl+--host=$db_host),				#14
+	 qq(--ann_script=./annot/ann_feats2ipr_e.pl+--host=$db_host+$neg_opt--acc_comment), 		#2
+	 qq(--ann_script=./annot/ann_feats2ipr_e.pl+--host=$db_host+$neg_opt--acc_comment+--no_mod), 	#3
+	 qq(--ann_script=./annot/ann_upfeats_pfam_www_e.pl+--host=$db_host+$neg_opt$vdom_opt--acc_comment),	#4
+	 qq(--ann_script=./annot/ann_feats2ipr_e.pl+--host=$db_host+$neg_opt--acc_comment+--no-feats),	#5
+	 qq(--ann_script=./annot/ann_pfam_sql.pl+--host=$db_host+--db=$pfam_qfo_db+$neg_opt$vdom_opt--acc_comment),			#6
+	 qq(--ann_script=./annot/ann_pfam_sql.pl+--host=$db_host+--db=$pfam_qfo_db+$neg_opt--pfacc+$vdom_opt--acc_comment),		#7
+	 qq(--ann_script=./annot/ann_pdb_cath.pl+--host=$db_host+--neg),				#8
+	 qq(--ann_script=./annot/ann_pdb_cath.pl+--host=$db_host+--class+--neg),			#9
+	 qq(--ann_script=./annot/ann_pfam_sql.pl+--host=$db_host+$neg_opt--pfacc+--db=RPD3+--vdoms),	#11
+	 qq(--ann_script=./annot/ann_pdb_vast.pl+--host=$db_host+--neg),				#11
+	 qq(--ann_script=./annot/ann_pfam_sql.pl+--host=$db_host+$neg_opt--pfacc+--db=RPD3+--vdoms),	#12  RPD3
+	 qq(--ann_script=./annot/ann_exons_ncbi.pl+--host=$db_host),				#13  ncbi_exons
+	 qq(--ann_script=./annot/ann_exons_up_sql.pl+--host=$db_host),				#14
 	);
 
 @psi2_annot_seq2_arr = ("","","--annot_db=pfam","--annot_db=rpd3","--annot_db=pfam","--annot_db=pfam","--annot_db=pfam","--annot_db=pfam",);
 
 @blp_annot_seq1_arr = ("","",
-	 qq(--q_ann_script='./annot/ann_feats2ipr_e.pl+--host=$db_host+$neg_opt--acc_comment), 		#2
-	 qq(--q_ann_script='./annot/ann_feats2ipr_e.pl+--host=$db_host+$neg_opt--acc_comment+--no_mod), 	#3
-	 qq(--q_ann_script='./annot/ann_upfeats_pfam_www_e.pl+--host=$db_host+$neg_opt$vdom_opt--acc_comment),	#4
-	 qq(--q_ann_script='./annot/ann_feats2ipr_e.pl+--host=$db_host+$neg_opt--acc_comment+--no-feats),	#5
-	 qq(--q_ann_script='./annot/ann_pfam_sql.pl+--host=$db_host+--db=$pfam_db+$neg_opt$vdom_opt--acc_comment),			#6
-	 qq(--q_ann_script='./annot/ann_pfam_sql.pl+--host=$db_host+--db=$pfam_db+$neg_opt--pfacc+$vdom_opt--acc_comment),		#7
-	 qq(--q_ann_script='./annot/ann_pdb_cath.pl+--host=$db_host+--neg),				#8
-	 qq(--q_ann_script='./annot/ann_pdb_cath.pl+--host=$db_host+--class+--neg),			#9
-	 qq(--q_ann_script='./annot/ann_pfam_sql.pl+--host=$db_host+$neg_opt--pfacc+--db=RPD3+--vdoms),	#11
-	 qq(--q_ann_script='./annot/ann_pdb_vast.pl+--host=$db_host+--neg),				#11
-	 qq(--q_ann_script='./annot/ann_pfam_sql.pl+--host=$db_host+$neg_opt--pfacc+--db=RPD3+--vdoms),	#12  RPD3
-	 qq(--q_ann_script='./annot/ann_exons_ncbi.pl+--host=$db_host),				#13  ncbi_exons
-	 qq(--q_ann_script='./annot/ann_exons_up_www.pl),				#14
+	 qq(--q_ann_script=./annot/ann_feats2ipr_e.pl+--host=$db_host+$neg_opt--acc_comment), 		#2
+	 qq(--q_ann_script=./annot/ann_feats2ipr_e.pl+--host=$db_host+$neg_opt--acc_comment+--no_mod), 	#3
+	 qq(--q_ann_script=./annot/ann_upfeats_pfam_www_e.pl+--host=$db_host+$neg_opt$vdom_opt--acc_comment),	#4
+	 qq(--q_ann_script=./annot/ann_feats2ipr_e.pl+--host=$db_host+$neg_opt--acc_comment+--no-feats),	#5
+	 qq(--q_ann_script=./annot/ann_pfam_sql.pl+--host=$db_host+--db=$pfam_db+$neg_opt$vdom_opt--acc_comment),			#6
+	 qq(--q_ann_script=./annot/ann_pfam_sql.pl+--host=$db_host+--db=$pfam_db+$neg_opt--pfacc+$vdom_opt--acc_comment),		#7
+	 qq(--q_ann_script=./annot/ann_pdb_cath.pl+--host=$db_host+--neg),				#8
+	 qq(--q_ann_script=./annot/ann_pdb_cath.pl+--host=$db_host+--class+--neg),			#9
+	 qq(--q_ann_script=./annot/ann_pfam_sql.pl+--host=$db_host+$neg_opt--pfacc+--db=RPD3+--vdoms),	#11
+	 qq(--q_ann_script=./annot/ann_pdb_vast.pl+--host=$db_host+--neg),				#11
+	 qq(--q_ann_script=./annot/ann_pfam_sql.pl+--host=$db_host+$neg_opt--pfacc+--db=RPD3+--vdoms),	#12  RPD3
+	 qq(--q_ann_script=./annot/ann_exons_ncbi.pl+--host=$db_host),				#13  ncbi_exons
+	 qq(--q_ann_script=./annot/ann_exons_up_www.pl),				#14
 	);
 
 @blp_annot_seq2_arr = ("","",
-	 qq(--ann_script='./annot/ann_feats2ipr_e.pl+--host=$db_host+$neg_opt--acc_comment), 		#2
-	 qq(--ann_script='./annot/ann_feats2ipr_e.pl+--host=$db_host+$neg_opt--acc_comment+--no_mod), 	#3
-	 qq(--ann_script='./annot/ann_upfeats_pfam_www_e.pl+--host=$db_host+$neg_opt$vdom_opt--acc_comment),	#4
-	 qq(--ann_script='./annot/ann_feats2ipr_e.pl+--host=$db_host+$neg_opt--acc_comment+--no-feats),	#5
-	 qq(--ann_script='./annot/ann_pfam_sql.pl+--host=$db_host+--db=$pfam_qfo_db+$neg_opt$vdom_opt--acc_comment),			#6
-	 qq(--ann_script='./annot/ann_pfam_sql.pl+--host=$db_host+--db=$pfam_qfo_db+$neg_opt--pfacc+$vdom_opt--acc_comment),		#7
-	 qq(--ann_script='./annot/ann_pdb_cath.pl+--host=$db_host+--neg),				#8
-	 qq(--ann_script='./annot/ann_pdb_cath.pl+--host=$db_host+--class+--neg),			#9
-	 qq(--ann_script='./annot/ann_pfam_sql.pl+--host=$db_host+$neg_opt--pfacc+--db=RPD3+--vdoms),	#11
-	 qq(--ann_script='./annot/ann_pdb_vast.pl+--host=$db_host+--neg),				#11
-	 qq(--ann_script='./annot/ann_pfam_sql.pl+--host=$db_host+$neg_opt--pfacc+--db=RPD3+--vdoms),	#12  RPD3
-	 qq(--ann_script='./annot/ann_exons_ncbi.pl+--host=$db_host),				#13  ncbi_exons
-	 qq(--ann_script='./annot/ann_exons_up_sql.pl+--host=$db_host),				#14
+	 qq(--ann_script=./annot/ann_feats2ipr_e.pl+--host=$db_host+$neg_opt--acc_comment), 		#2
+	 qq(--ann_script=./annot/ann_feats2ipr_e.pl+--host=$db_host+$neg_opt--acc_comment+--no_mod), 	#3
+	 qq(--ann_script=./annot/ann_upfeats_pfam_www_e.pl+--host=$db_host+$neg_opt$vdom_opt--acc_comment),	#4
+	 qq(--ann_script=./annot/ann_feats2ipr_e.pl+--host=$db_host+$neg_opt--acc_comment+--no-feats),	#5
+	 qq(--ann_script=./annot/ann_pfam_sql.pl+--host=$db_host+--db=$pfam_qfo_db+$neg_opt$vdom_opt--acc_comment),			#6
+	 qq(--ann_script=./annot/ann_pfam_sql.pl+--host=$db_host+--db=$pfam_qfo_db+$neg_opt--pfacc+$vdom_opt--acc_comment),		#7
+	 qq(--ann_script=./annot/ann_pdb_cath.pl+--host=$db_host+--neg),				#8
+	 qq(--ann_script=./annot/ann_pdb_cath.pl+--host=$db_host+--class+--neg),			#9
+	 qq(--ann_script=./annot/ann_pfam_sql.pl+--host=$db_host+$neg_opt--pfacc+--db=RPD3+--vdoms),	#11
+	 qq(--ann_script=./annot/ann_pdb_vast.pl+--host=$db_host+--neg),				#11
+	 qq(--ann_script=./annot/ann_pfam_sql.pl+--host=$db_host+$neg_opt--pfacc+--db=RPD3+--vdoms),	#12  RPD3
+	 qq(--ann_script=./annot/ann_exons_ncbi.pl+--host=$db_host),				#13  ncbi_exons
+	 qq(--ann_script=./annot/ann_exons_up_sql.pl+--host=$db_host),				#14
 	);
 
 %form_list =
