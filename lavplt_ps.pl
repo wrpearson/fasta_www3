@@ -306,7 +306,7 @@ sub xgrid {
 		 $annot_names{$annot->{sname}});
     }
     move($xpos, $ypos);
-    my $str = $annot->{sdescr};
+    my $str = $annot->{sname};
     $str =~ s/\(/\\(/g;
     $str =~ s/\)/\\)/g;
     print "($str) vprint\n";
@@ -353,9 +353,9 @@ sub ygrid {
 		 $annot_names{$annot->{sname}});
     }
 
-#    printf("<text x=\"$xpos\" y=\"$ypos\" text-anchor=\"left\">%s</text>\n",$annot->{sdescr});
+#    printf("<text x=\"$xpos\" y=\"$ypos\" text-anchor=\"left\">%s</text>\n",$annot->{sname});
     move($xpos, $ypos);
-    my $str = $annot->{sdescr};
+    my $str = $annot->{sname};
     $str =~ s/\(/\\(/g;
     $str =~ s/\)/\\)/g;
     print "($str) hprint\n";
