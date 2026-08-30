@@ -1,3 +1,6 @@
+30-Aug-2026
+release: fasta_www_rel-0.1.7 -- fixes for annotations on blast output
+
 29-Aug-2026
 release: fasta_www3_rel-0.1.6 -- more robust input/output filters
 release: fasta_www3_rel-0.1.5a -- bug patch for plot_domain7.cgi
