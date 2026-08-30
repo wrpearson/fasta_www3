@@ -32,8 +32,8 @@ sub openplt
   if ($x_annot_r) {
     my $x_comments = 0;
     for my $annot (@$x_annot_r) {
-      if (length($annot->{sdescr}) > $x_comments) {
-	$x_comments = length($annot->{sdescr})
+      if (length($annot->{sname}) > $x_comments) {
+	$x_comments = length($annot->{sname})
       }
     }
     $ybound += 24 + 6 * $x_comments;
@@ -43,8 +43,8 @@ sub openplt
   if ($y_annot_r) {
     my $y_comments = 0;
     for my $annot (@$y_annot_r) {
-      if (length($annot->{sdescr}) > $y_comments) {
-	$y_comments = length($annot->{sdescr})
+      if (length($annot->{sname}) > $y_comments) {
+	$y_comments = length($annot->{sname})
       }
     }
     $xbound += 6 * $y_comments;
@@ -194,7 +194,7 @@ sub xgrid {
     # show rotated label
     my $xpos = SX(($annot->{end} - $annot->{beg})/2 + $annot->{beg} - $sq_off) + 4;
     my $ypos = SY($n1) - $text_offset;
-    printf("<text x=\"0\" y=\"0\" text-anchor=\"left\" transform=\"translate($xpos, $ypos) rotate(-90,0,0)\">%s</text>\n",$annot->{sdescr});
+    printf("<text x=\"0\" y=\"0\" text-anchor=\"left\" transform=\"translate($xpos, $ypos) rotate(-90,0,0)\">%s</text>\n",$annot->{sname});
   }
 }
 

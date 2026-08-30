@@ -180,7 +180,6 @@ sub get_str {
 
 sub parse_h_info {
     my ($line, $annot_r) = @_;
-    
 
     chomp $line;
     my @a_coords = split(/\s:\s/, $line);
@@ -190,9 +189,9 @@ sub parse_h_info {
 
     my ($s_descr, $color) = split('~',$fields{descr});
 
-    $fields{sdescr} = substr($fields{descr},0,12);
+    $fields{sdescr} = substr($s_descr,0,12);
     ($fields{sname}) = ($fields{sdescr} =~ m/^(\S+)/);
-    ($fields{sname}) = ($fields{sname} =~ m/^([^~]+)/);
+##    ($fields{sname}) = ($fields{sname} =~ m/^([^~]+)/);
 
     push @$annot_r, \%fields;
     unless ($annot_names{$fields{sname}}) {
