@@ -614,11 +614,10 @@ sub do_search {
     $output .= "<pre>$pgm_cmd $pgm_args\n</pre>\n";
   }
 
+
 #  print STDERR "OK_CHARS:--$OK_CHARS--\n";
   $pgm_args =~ s/[^$OK_CHARS]/_/go;
   ($pgm_args) = $pgm_args =~ m/^\s*(.*)/; # de-taint and remove leading spaces
-
-#  print STDERR join("::",@cmd_list),"\n";
 
   my $start_time = time();
 
@@ -650,7 +649,12 @@ sub do_search {
 
   if ($run_href->{run_bkgd}) {
 
+#      print STDERR "pgm_cmd: $pgm_cmd\n";
+#      print STDERR "pgm_cmd: $pgm_args\n";
+
     my @cmd_list = (shellwords($pgm_cmd), quotewords('\s+',1,$pgm_args));
+
+#      print STDERR "post: ".join("::",@cmd_list),"\n";
 
     my $out_fh = new File::Temp(DIR=>$TMP_DIR,
 				TEMPLATE=>"FA_RID_XXXXXXXX",
