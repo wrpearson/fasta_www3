@@ -19,18 +19,32 @@ use Getopt::Long;
 use Pod::Usage;
 
 use vars qw($host $db $port $user $pass);
+use vars qw($DB_HOST $DB_NAME $DB_PORT $DB_USER $DB_PASSWORD);
+
+## pick up host, etc, from environment variables
+
+my %db_defaults = ("HOST"=>"wrpa48.bioch.virginia.edu",
+		   "USER"=>"web_user",
+		   "PASSWORD"=>"fasta_www",
+		   "NAME"=>"uniprot");
+{
+    no strict "refs";
+    foreach my $k (keys(%db_defaults)) {
+	my $db_var = "DB_".$k;
+	if (defined($ENV{$db_var})) {
+	    ${$db_var} = $ENV{$db_var};
+	} elsif (!defined(${$db_var}) || !${$db_var}) {
+	    ${$db_var} = $db_defaults{$k};
+	}
+    }
+}
+
+($host, $db, $port, $user, $pass)  = ($DB_HOST, $DB_NAME, $DB_PORT, $DB_USER, $DB_PASSWORD);
 
 my %domains = ();
 my $domain_cnt = 0;
 
 my $hostname = `hostname`;
-
-unless ($hostname =~ m/ebi/) {
-  ($host, $db, $port, $user, $pass)  = ("a48", "uniprot", 0, "web_user", "fasta_www");
-}
-else {
-  ($host, $db, $port, $user, $pass)  = ("mysql-pearson", "up_db", 4124, "web_user", "fasta_www");
-}
 
 my ($lav, $neg_doms, $no_doms, $no_feats, $shelp, $help, $ipr) = (0,0,0,0,0,0,0,0);
 

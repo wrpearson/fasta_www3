@@ -42,11 +42,29 @@ use Getopt::Long;
 use Pod::Usage;
 
 use vars qw($host $db $port $user $pass);
+use vars qw($DB_HOST $DB_NAME $DB_PORT $DB_USER $DB_PASSWORD);
 
 my $hostname = `/bin/hostname`;
 
-($host, $db, $port, $user, $pass)  = ("wrpa48.bioch.virginia.edu", "uniprot", 0, "web_user", "fasta_www");
+## pick up host, etc, from environment variables
 
+my %db_defaults = ("HOST"=>"wrpa48.bioch.virginia.edu",
+		   "USER"=>"web_user",
+		   "PASSWORD"=>"fasta_www",
+		   "NAME"=>"uniprot");
+{
+    no strict "refs";
+    foreach my $k (keys(%db_defaults)) {
+	my $db_var = "DB_".$k;
+	if (defined($ENV{$db_var})) {
+	    ${$db_var} = $ENV{$db_var};
+	} elsif (!defined(${$db_var}) || !${$db_var}) {
+	    ${$db_var} = $db_defaults{$k};
+	}
+    }
+}
+
+($host, $db, $port, $user, $pass)  = ($DB_HOST, $DB_NAME, $DB_PORT, $DB_USER, $DB_PASSWORD);
 my ($neg_doms, $lav, $shelp, $help, $class) = (0, 0, 0, 0, 0);
 my ($min_nodom) = (10);
 

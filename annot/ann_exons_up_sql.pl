@@ -43,13 +43,29 @@ my $domain_cnt = 0;
 
 my $hostname = `/bin/hostname`;
 
-unless ($hostname =~ m/ebi/) {
-  ($host, $db, $a_table, $port, $user, $pass)  = ("wrpa48.bioch.virginia.edu", "uniprot", "annot2", 0, "web_user", "fasta_www");
-#  $host = 'a48';
+use vars qw($host $db $port $user $pass);
+use vars qw($DB_HOST $DB_NAME $DB_PORT $DB_USER $DB_PASSWORD);
+
+## pick up host, etc, from environment variables
+
+my %db_defaults = ("HOST"=>"wrpa48.bioch.virginia.edu",
+		   "USER"=>"web_user",
+		   "PASSWORD"=>"fasta_www",
+		   "NAME"=>"uniprot");
+{
+    no strict "refs";
+    foreach my $k (keys(%db_defaults)) {
+	my $db_var = "DB_".$k;
+	if (defined($ENV{$db_var})) {
+	    ${$db_var} = $ENV{$db_var};
+	} elsif (!defined(${$db_var}) || !${$db_var}) {
+	    ${$db_var} = $db_defaults{$k};
+	}
+    }
 }
-else {
-  ($host, $db, $a_table, $port, $user, $pass)  = ("mysql-pearson-prod", "up_db", "annot", 4124, "web_user", "fasta_www");
-}
+
+($host, $db, $port, $user, $pass)  = ($DB_HOST, $DB_NAME, $DB_PORT, $DB_USER, $DB_PASSWORD);
+my  ($a_table)  = ("annot2");
 
 my ($sstr, $lav, $neg_doms, $no_vars, $no_doms, $no_feats, $shelp, $help, $pfam26) = (0,0,0,0,0,0,0,0,0,0);
 my ($min_nodom) = (10);

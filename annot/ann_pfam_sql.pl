@@ -52,7 +52,7 @@ use vars qw($DB_HOST $DB_NAME $DB_PORT $DB_USER $DB_PASSWORD);
 my %db_defaults = ("HOST"=>"wrpa48.bioch.virginia.edu",
 		   "USER"=>"web_user",
 		   "PASSWORD"=>"fasta_www",
-		   "NAME"=>"pfam37_qfo");
+		   "NAME"=>"pfam38_qfo");
 {
     no strict "refs";
     foreach my $k (keys(%db_defaults)) {
