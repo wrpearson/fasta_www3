@@ -182,11 +182,13 @@ EOS
       next;
     }
 
+    my $seq_producing_out = 0;
     if ($line =~ m/^The best scores/ || $line =~ m/^Sequences producing significant alignments:/) {
       $in_result_list = 1;
       if ($line =~ m/^Sequences producing/) {
 	$blast_fmt = 1;
 	$output .= "$line\n";
+	$seq_producing_out = 1;
 	next;
       }
 
@@ -236,6 +238,11 @@ EOS
 	$output .= "<pre>";
 	# include some arguments for next iteration
 	$output .= $line;
+	$seq_producing_out = 1;
+      }
+
+      if (!$seq_producing_out) {
+	$output .= "$line\n";
       }
       next;
     }

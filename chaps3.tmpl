@@ -64,7 +64,7 @@ below: <select name="q_type">
 </td></tr>
 <tr><td colspan=3 align=center>Select multiple alignment file: <input type="file" name="msa_file"  /> <input type="submit" value="Upload MSA" name="up_msa" onClick="this.form.rm.value='load_msa'; this.form.gen_msa.disabled=true; this.form.target='_self';" /></td></tr>
 <tr><td colspan=3 align=center>
-<textarea name="msa_query" rows="10" cols="100" style=""><!-- TMPL_VAR NAME=MSA_QUERY --></textarea>
+<textarea name="msa_query" rows="10" cols="100" style=""><!-- TMPL_VAR NAME=MSA_QUERY ESCAPE=HTML --></textarea>
 </td></tr>
 <tr><td colspan=3>
 Sequences aligned, and in Clustal/MSA format?
@@ -114,7 +114,7 @@ MSA method:
 <!-- <tr><td colspan=3 align=center>PSI-Blast PSSM:</td></tr> -->
 <tr><td colspan=3 align="center">
 <div id="pssm_box">
-<textarea name="profile" rows=20 cols=100 wrap="off"><!-- TMPL_VAR NAME=PROFILE --></textarea>
+<textarea name="profile" rows=20 cols=100 wrap="off"><!-- TMPL_VAR NAME=PROFILE ESCAPE=HTML --></textarea>
 </div>
 </td></tr>
 <tr><td> &nbsp; </td>
@@ -132,7 +132,7 @@ Show HMM: <input type="checkbox" checked name="show_hmm" value="1" onClick="show
 <tr>
 <td colspan=3 align="center">
 <div id="hmm_box">
-<textarea name="hmm" rows=20 cols=100 wrap="off"><!-- TMPL_VAR NAME=HMM --></textarea>
+<textarea name="hmm" rows=20 cols=100 wrap="off"><!-- TMPL_VAR NAME=HMM ESCAPE=HTML --></textarea>
 </div>
 </td>
 </tr>

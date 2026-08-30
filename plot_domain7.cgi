@@ -50,6 +50,7 @@ use lib qw(.);
 use Getopt::Long;
 use Pod::Usage;
 use URI::Escape;
+use URI::Encode qw(uri_encode uri_decode);
 use HTML::Entities;
 
 use CGI qw(header param start_html end_html);
@@ -101,7 +102,7 @@ my ($x0c_off, $x1c_off, $xdc_off) = (0,0,0);
 my ($x0f3, $x1f3) = (1,1);	# set to 3 for fastx (x0f3) or tfastx (x1f3)
 
 # tick array - values */
-my @tarr = (50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000 100000 200000 500000 1000000);
+my @tarr = (50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000);
 
 my $q = new CGI;
 
@@ -202,6 +203,7 @@ else {
   for my $arg (@arg_names) {
       if (defined($valid_args{$arg}) && defined($q->param($arg)) && $q->param($arg)) {
 	  $tmp_arg = scalar($q->param($arg));
+	  $tmp_arg = uri_unescape($tmp_arg);
 	  $tmp_arg =~ s/[^$ROK_CHARS]/_/go;
 	  $args{$arg} = $tmp_arg;
       }

@@ -51,6 +51,7 @@ use vars qw( $OK_CHARS $HOST_NAME $HOST_DIR $CGI_DIR $BIN_DIR $SQL_DB_HOST
 require "./fawww_defs.pl";
 
 my $ROK_CHARS = $OK_CHARS.";\{\}\|~";
+my ($HOK_CHARS) = ($ROK_CHARS =~ m/([^%]+)/);
 
 my $q = new CGI;
 
@@ -87,7 +88,8 @@ if ($q->param("file")) { # read "real" args from file, but still get embed from 
   for my $arg (@args) {
     my ($key, $val) = ($arg =~ m/^(\w+)=(.+)$/);
     $key =~ s/[^\w\.]/_/go;
-    $args{$key} = uri_decode(uri_unescape($val));
+    $args{$key} = urixb
+	_decode(uri_unescape($val));
     $args{$key} =~ s/[^$ROK_CHARS]/_/go;
   }
 }
@@ -97,6 +99,7 @@ else {
   for my $arg (@arg_names) {
       if (defined($valid_args{$arg}) && defined($q->param($arg)) && $q->param($arg)) {
 	  $tmp_arg = scalar($q->param($arg));
+	  $tmp_arg = uri_decode(uri_unescape($tmp_arg));
 	  $tmp_arg =~ s/[^$ROK_CHARS]/_/go;
 	  $args{$arg} = $tmp_arg;
       }

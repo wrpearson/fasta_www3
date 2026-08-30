@@ -90,6 +90,9 @@ while (my $line = <>) {
       $s_desc1 = substr($s_desc1,0,50);
       $s_desc0 =~ s/[^$OK_CHARS]/_/go;
       $s_desc1 =~ s/[^$OK_CHARS]/_/go;
+      ## remove '()'s that could be used by postscript interpreter
+      $s_desc0 =~ s/[()]/_/go;
+      $s_desc1 =~ s/[()]/_/go;
       ($ss_desc0) = ($s_desc0 =~ m/^(\S+)\s*/);
       ($ss_desc1) = ($s_desc1 =~ m/^(\S+)\s*/);
 
