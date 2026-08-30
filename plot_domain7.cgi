@@ -77,7 +77,7 @@ use vars qw($pminx $pmaxx $pminy $pmaxy $lvstr $max_x $max_y
 	    $fxscal $fyscal $fxoff $fyoff $x_rev $y_rev
 	    @block_colors %color_names $text_font $invert);
 
-my @valid_args=qw( q_name l_name pgm q_cstart q_cstop l_cstart l_cstop q_astart q_astop l_astart l_astop regions doms );
+my @valid_args=qw( q_name l_name pgm q_cstart q_cstop l_cstart l_cstop q_astart q_astop l_astart l_astop regions doms);
 my %valid_args = map { $_ => 1 } @valid_args;
 
 #$text_font = "sans-serif";
@@ -1499,8 +1499,8 @@ sub print_regions {
   }
 
   $output .= "<pre>\n";
-  $l_descr =~ s/[^\w\-\.]//g;
 
+  $l_descr =~ s/[^\w\-\.]/_/g;
   $output .= $l_descr . "\n";
 
   my ($q_pf_ix, $l_pf_ix) = (0,0);
@@ -1524,7 +1524,7 @@ sub print_regions {
 	    $output .= "$r_line\n";
 	  }
 	} else {		# have a domain, color it
-	  my ($prefix, $domain_info,$color) = ($r_line =~ m/(.+ :  )(.*)~(\d+)v?$/);
+	  my ($prefix, $domain_info,$color) = ($r_line =~ m/(.+:\s*)(.*)~(\d+)v?$/);
 	  my $domain_acc = "";
 	  # $domain_info has domain name
 	  $color = $color % 9;
