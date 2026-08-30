@@ -168,7 +168,7 @@ sub get_safe_filename {
 
   my $value=$q->param($p_arg);
 
-  ($value) = ($value =~ m/(\w+)/);
+  ($value) = ($value =~ m/([\w\.]+)/);
 
 ##  $value =~ s/[^$OK_CHARS]/_/go;
 

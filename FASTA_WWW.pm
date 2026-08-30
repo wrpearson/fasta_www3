@@ -439,13 +439,16 @@ sub do_search {
     $query_loc = $query_str;
     $query_loc =~ s/$TMP_DIR\///;
 
+    ## print STDERR "PRE: $query\n";
+
     ## check for uri_encoded query -- possibly from json??
     if ($query =~ m/^%(25)+3E/) {
-	$query =~ s/%(25)+/%/g;
-	$query = uri_decode($query);
+     	$query = uri_decode($query);
+	print STDERR "URI: $query\n";
     }
-    elsif ($query =~ m/^%3E.+%0A/) {
-	$query = uri_decode($query);
+    elsif ($query =~ m/%3E.+%0A/) {
+     	$query = uri_decode($query);
+	print STDERR "URI2: $query\n";
     }
 
     print $tmp_fh $query . "\n";
@@ -1703,7 +1706,8 @@ sub get_query {
     } else {		     # param($name) has sequences, return them
       my $query = $q_acc_name;
       $query =~ s/\r//go;
-      if ($name =~ m/^query/ && $query !~ m/^>/) {
+      $query = uri_decode($query);
+      if ($name =~ m/^query/i && $query !~ m/^>/) {
 	return ">QUERY\n" . $query ."\n";
       } else {
 	return $query . "\n";
