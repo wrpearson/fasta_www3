@@ -1229,10 +1229,11 @@ sub display_result {
 ################
 # remove $TMP_DIR references from output
 #
-    $output =~ s%$TMP_DIR\/%%g;
+    $output =~ s%$TMP_DIR\/?%%g;
 #    $output =~ s%FA_WWW.*?\.%TMP.%g;
     $output =~ s%$BIN_DIR\/%%g;
     $output =~ s/\+\-\-host=[^+]+/+/g;
+    $output =~ s/ \-\-host=[^ ]+/ /g;
   }
 
   $output .= "\n" ;
