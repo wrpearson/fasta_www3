@@ -372,9 +372,9 @@ EOS
 	if (@vars) {
 	  $output .= " ".join(';',@vars);
 	}
-	if ($btop_line) {
-	    $output .= qq(<!-- BTOP="$btop_line" -->);
-	}
+	# if ($btop_line) {
+	#      $output .= qq(<!-- BTOP="$btop_line" -->);
+	# }
 	$output .= "\n";
       }
       next;
