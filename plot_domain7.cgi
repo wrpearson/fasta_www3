@@ -867,14 +867,16 @@ sub draw_doms {
 }
 
 sub detaint_strings {
-    my ($arg_r, $detaint_r, $good_str) = @_;
+    my ($arg_r, $detaint_r, $bad_str) = @_;
 
-    if (!defined($good_str) || $good_str eq "") {
-	$good_str = '[^\w\.]+'
+    if (!defined($bad_str) || $bad_str eq "") {
+	$bad_str = '[^\w\.]+'
     }
 
     for my $this_string (@$detaint_r) {
-	$arg_r->{$this_string} =~ s/$good_str//g;
+	if ($arg_r->{$this_string}) {
+	    $arg_r->{$this_string} =~ s/$bad_str//g;
+	}
     }
 }
 
