@@ -86,7 +86,8 @@
     );
 
 @pgm_psi2list = (
-		 {pgm=>"psi2sw", label=>"PSI-SEARCH2: protein:protein", binary=>"psisearch2_msa.pl", q_sq=>0, l_sq=>0, title=>"PSI-SEARCH2"},
+		 {pgm=>"psi2sw", label=>"PSI-SEARCH2 (local): protein:protein", binary=>"psisearch2_msa.pl", q_sq=>0, l_sq=>0, title=>"PSI-SEARCH2"},
+		{ pgm=>"psi2gg", label=>"PSI-SEARCH2 (global): protein:protein", binary=>"psisearch2_msa.pl --pgm ggsearch", q_sq=>0, l_sq=>0, title=>"PSI-SEARCH2"},
 		);
 
 %pgm_pssm_br = ( psw => 'ssearch36',

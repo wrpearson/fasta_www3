@@ -794,6 +794,7 @@ sub draw_sites {
   return unless (defined($xc_stop) && $xc_stop =~ m/^\d+$/);
 
   for my $annot ( @$annot_arr_r) {
+    next unless (defined($annot->{lPos}) && $annot->{lPos} =~ m/^\d+$/);
     next if ($annot->{lPos} < $xc_start);
     next if ($annot->{lPos} > $xc_stop);
     mark_site(SX($annot->{lPos}+$x1c_off-$xc_start), SY(3), 6 * $g_mag, $annot->{stype}, $site_colors{$annot->{simV}}, 0);

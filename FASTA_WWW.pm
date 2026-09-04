@@ -2069,9 +2069,9 @@ sub get_query_range {
   }
 
   if ($q->param("start") || $q->param("stop")) {
-    get_safe_integer("",$q->param("start","")) unless ($q->param("start"));
-    get_safe_integer("",$q->param("stop","")) unless ($q->param("stop"));
-    return get_safe_integer("",$q->param("start"))."-" .get_safe_integer("",$q->param("stop"));
+    $q->param(-name=>"start",-value=>"") unless ($q->param("start"));
+    $q->param(-name=>"stop",-value=>"") unless ($q->param("stop"));
+    return get_safe_integer("",scalar($q->param("start")))."-" .get_safe_integer("",scalar($q->param("stop")));
     }
   else {
     return "";
