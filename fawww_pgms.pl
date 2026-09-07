@@ -143,6 +143,9 @@ my $vdom_opt='';
     outputs =>
     { TITLE => qq(Misc. Protein Analysis),
       RUN_MODE=>'misc1_rx',
+      OPTION1 => "",
+      OPTION2 => "",
+      MSA_PSSM_FILE => "",
     }
    },
 ###
@@ -221,6 +224,7 @@ my $vdom_opt='';
        SSR_FLAG => '1',
        HAVE_SSR2 => '1',
        SSR_FLAG => '1',
+      MSA_PSSM_FILE => "",
      },
    },
 ###
