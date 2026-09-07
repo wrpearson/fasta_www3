@@ -118,7 +118,7 @@ function get_sel_accs_n() {
 
 function OnSubmitForm()
 {
-  document.myform.method ="post";
+  document.myform.method ="POST";
   document.myform.enctype ="multipart/form-data";
   document.myform.action = "$submit_dest";
   var sel_accs_list = get_sel_accs_n();
@@ -209,7 +209,7 @@ EOS
 #	my $this_lib_info = $run_data_hr->{lib_abbr};
 	$submit_cnt++;
 	$output .= '</pre>';
-	$output .= qq(<form name="myform" action="" enctype="multipart/form-data" onsubmit="return OnSubmitForm();">);
+	$output .= qq(<form name="myform" action="$submit_dest" method="POST" enctype="multipart/form-data" onsubmit="return OnSubmitForm();">);
 	$output .= <<EOS ;
 <input type="hidden" id="sel_accs_list_id" name="sel_accs_list" value="-" />
 EOS
