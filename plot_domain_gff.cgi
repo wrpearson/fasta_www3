@@ -132,9 +132,9 @@ if ($args{doms}) {
 }
 
 open_gff(($args{q_cstop}-$args{q_cstart})+1,
-	($args{l_cstop}-$args{l_cstart})+1,
-	scalar(@{$q_dom_info_r}),
-	scalar(@{$l_dom_info_r}));
+	 ($args{l_cstop}-$args{l_cstart})+1,
+	 defined($q_dom_info_r) && scalar(@{$q_dom_info_r}),
+	 defined($l_dom_info_r) && scalar(@{$l_dom_info_r}));
 
 if (scalar(@$q_region_info_r)) {
   print_regions_gff($args{q_name},$q_region_info_r, $bed_fmt);
@@ -287,10 +287,10 @@ sub parse_domains {
 sub canon_file_name {
   my ($q_name, $l_name) = @_;
 
-  if ($q_name =~ m/^(sp|tr|ref)\|([A-Z][A-Z0-9]{5}|[NX]P_\d{5})\|/) {
+  if ($q_name && $q_name =~ m/^(sp|tr|ref)\|([A-Z][A-Z0-9]{5}|[NX]P_\d{5})\|/) {
     $q_name = $2;
   }
-  if ($l_name =~ m/^(sp|tr|ref)\|([A-Z][A-Z0-9]{5}|[NX]P_\d{5})\|/) {
+  if ($l_name && $l_name =~ m/^(sp|tr|ref)\|([A-Z][A-Z0-9]{5}|[NX]P_\d{5})\|/) {
     $l_name = $2;
   }
 

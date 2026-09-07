@@ -808,6 +808,7 @@ sub q_draw_sites {
   return unless (defined($xc_stop) && $xc_stop =~ m/^\d+$/);
 
   for my $annot ( @$annot_arr_r) {
+    next unless $annot->{qPos};
     next if ($annot->{qPos} < $xc_start);
     next if ($annot->{qPos} > $xc_stop);
     mark_site(SX($annot->{qPos}+$x0c_off - $xc_start), SY(21), 6 * $g_mag, $annot->{stype}, $site_colors{$annot->{simV}}, 1);
@@ -1477,7 +1478,7 @@ sub canon_file_name {
 sub print_regions {
   my ($region_str, $l_descr, $hscores, $q_dom_info_r, $l_dom_info_r) = @_;
 
-  if ($region_str eq "") {
+  if (!defined($region_str) || $region_str eq "") {
       return;
   }
 
