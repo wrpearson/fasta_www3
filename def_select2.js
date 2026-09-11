@@ -52,6 +52,8 @@ function switch_off(box) {
     return true;
 }
 
+// get protein library, decide whether to set ann2_pfam
+
 function can_annot(form) {
   var f_value_f = form['p_lib'];
 
@@ -302,7 +304,7 @@ function update_pgm(form) {
 
     if (pgm_val == 'fap' || pgm_val == 'rss' ||
 	pgm_val == 'lal' || pgm_val == 'pal' || pgm_val == 'lpal' ||
-	pgm_val == 'sw' ||
+	pgm_val == 'sw' || pgm_val == 'psi2sw' || pgm_val == 'psi2gg || 
 	pgm_val == 'gnw' || pgm_val == 'lnw' ||
 	pgm_val == 'bp' ) {
       if (form['n_lib']) {form['n_lib'].disabled = true;}

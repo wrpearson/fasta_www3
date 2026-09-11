@@ -15,7 +15,7 @@ use Text::ParseWords;
 use Data::Dumper;
 
 use vars qw( $DEF_UNLINK $OK_CHARS $HOST_NAME $HOST_DIR $CGI_DIR $RUN_URL
-	     $BIN_DIR $DEBUG $TMP_DIR $BL_BIN_DIR $BL_DATA_DIR
+	     $BIN_DIR $DEBUG $TMP_DIR $BL_BIN_DIR $BL_DATA_DIR $DB_NAME $DB_HOST $DB_USER $DB_PASSWORD
              $BL_DB_DIR $BL_DUMMY_DB $BL_DB_NT_DIR %form_list %run_subs );
 
 require "./fawww_defs.pl";

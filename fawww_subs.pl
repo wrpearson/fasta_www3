@@ -707,7 +707,7 @@ sub load_vars {
 
     if ($tmpl_var ne 'DEBUG') {
       my $value = $input_href->{$tmpl_var};    # get the TMPL_VAR name from the list
-      unless ($value) {
+      unless (defined($value)) {
 	warn "Missing value for $tmpl_var";
 	next;
       }

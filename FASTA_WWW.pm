@@ -866,7 +866,7 @@ sub wait_result {
     $res_file =~ s/\.res$//;
     $res_file = HTML::Entities::encode($res_file);
 
-    my $start_time = $q->param("s_time");
+    my $start_time = $q->param("s_time") || time();
     ($start_time) = ($start_time =~ m/(\d+)/);
     my $elapsed_time = time() - $start_time;
     my $refresh = $q->param("refresh_time") || 2;

@@ -77,7 +77,7 @@
 		 {pgm=>"pbp2", label=>"PSI-BLAST2: protein:protein", binary=>"psiblast", q_sq=>0, l_sq=>0, title=>"PSI-BLAST2"},
 		 {pgm=>"jkhs", label=>"JACK-HMMER: protein:protein", binary=>"jackhmmer", q_sq=>0, l_sq=>0, title=>"JACK-HMMER"},
 		 {pgm=>"pbp2", label=>"PSI-BLAST+: protein:protein", binary=>"psiblast", q_sq=>0, l_sq=>0, title=>"PSI-BLAST2"},
-#		 {pgm=>"pgg", label=>"PSI-GGSEARCH: protein:protein", binary=>\&build_run_pssm, q_sq=>0, l_sq=>0, title=>"PSI-GGSEARCH"},
+		 {pgm=>"psi2gg", label=>"PSI-GGSEARCH: protein:protein", binary=>"psisearch2_msa.pl", q_sq=>0, l_sq=>0, title=>"PSI-GGSEARCH"},
 #		 {pgm=>"pgl", label=>"PSI-GLSEARCH: protein:protein", binary=>\&build_run_pssm, q_sq=>0, l_sq=>0, title=>"PSI-GLSEARCH"},
 		 );
 
