@@ -208,6 +208,7 @@ EOS
 #	my $this_query_info = $run_data_hr->{query_seq};
 #	my $this_lib_info = $run_data_hr->{lib_abbr};
 	$submit_cnt++;
+	$submit_dest = 'fasta_www.cgi' unless ($submit_dest);
 	$output .= '</pre>';
 	$output .= qq(<form name="myform" action="$submit_dest" method="POST" enctype="multipart/form-data" onsubmit="return OnSubmitForm();">);
 	$output .= <<EOS ;
