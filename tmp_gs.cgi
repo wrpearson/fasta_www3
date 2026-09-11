@@ -54,7 +54,7 @@ else {$tmp_ps = ""; exit(1);}
 # print STDERR "tmp_ps: $tmp_ps\n";
 
 if ($tmp_ps) {
-  system($GS_BIN,split(' ',"-q $size -dNOPAUSE -sDEVICE=$device -sOutputFile=- $tmp_ps -c quit"));
+  system($GS_BIN,split(' ',"-dSAFER -q $size -dNOPAUSE -sDEVICE=$device -sOutputFile=- $tmp_ps -c quit"));
 }
 
 if (param("del") && (param("del") eq "yes")) {unlink "$tmp_ps";}

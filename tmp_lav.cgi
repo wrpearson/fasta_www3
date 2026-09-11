@@ -28,9 +28,12 @@ my $dopts = "";
 $file = param("name") || "";
 $file =~ s/[;><&\*`\|\s]//g;
 
-if (param("file")) {
-    $this_file = param("file");
-    ($this_file) = ($this_file =~ m/([\w\.]+)$/);
+$this_file = '';
+if ($^P) {
+    if (param("file")) {
+	$this_file = param("file");
+	($this_file) = ($this_file =~ m/([\w\.]+)$/);
+    }
 }
 
 $LAV_SVG = "./lav2plt.pl --dev svg -Z 1" . $dopts;
@@ -105,8 +108,10 @@ else {
 #   system(split(/ /,$lav_cmd));
 #  system($lav_cmd);
 
-  if (param("del") && (param("del") eq "yes")) {unlink "$tmp_lav";}
-  exit(0);
+    if (param("del") && (param("del") eq "yes") && ($tmp_lav =~ m/^$TMP_DIR/)) {
+      unlink "$tmp_lav";
+    }
+    exit(0);
 }
 else {
   die(" tmp_lav.cgi - no file to process");
