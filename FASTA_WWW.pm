@@ -840,7 +840,7 @@ sub wait_result {
   my $have_r_host = 0;
 
   if ($q->param("remote_host")) {
-    $r_host = get_safe_string("%s", scalar($q->param("remote_host")));
+    $r_host = get_safe_word("%s", scalar($q->param("remote_host")));
 
     if (grep { $_ eq $r_host } @NODE_HOSTS ) {
 	$have_r_host = 1;
@@ -1000,21 +1000,26 @@ sub status_result {
       for my $del_result ( @del_params ) {
 	if (scalar($q->param($del_result)) =~ m/delete/i) {
 	  $del_result =~ s/del_//;
+	  ## make certain only filename (no suffix)
+	  ($del_result) = ($del_result =~ m/^(\w+)/);
 	  push @del_files, $del_result
 	};
       }
       if (@del_files) {	# have some files to delete
-	# make a list of results in a hash
+
 	my %results = map { $_ => 1 } @results;
 	for my $del_file (@del_files) {
+	    if ($results{$del_file} != 1) {
+		next;
+	    }
 	  print STDERR "Deleting $del_file\n";
 	  if (-e "$TMP_DIR/$del_file".".res_DONE") {
-	    unlink "$TMP_DIR/$del_file".".res_DONE" || carp ("Cannot unlink $TMP_DIR/$del_file".".res_DONE");
-	    unlink "$TMP_DIR/$del_file".".res_PID" || carp ("Cannot unlink $TMP_DIR/$del_file".".res_PID");;
-	    unlink "$TMP_DIR/$del_file".".res" || carp ("Cannot unlink $TMP_DIR/$del_file".".res");;
+	    unlink "$TMP_DIR/$del_file".".res_DONE" || carp ("Cannot unlink TMP_DIR/$del_file".".res_DONE");
+	    unlink "$TMP_DIR/$del_file".".res_PID" || carp ("Cannot unlink TMP_DIR/$del_file".".res_PID");;
+	    unlink "$TMP_DIR/$del_file".".res" || carp ("Cannot unlink TMP_DIR/$del_file".".res");;
 	  }
 	  else {
-	    carp ("Cannot -e $TMP_DIR/$del_file"."_res_DONE");
+	    carp ("Cannot -e TMP_DIR/$del_file"."_res_DONE");
 	  }
 	  # remove it from session data
 	  #$session->param(-name=>$del_file, -value=>undef);
@@ -1051,8 +1056,8 @@ sub status_result {
       else {$result_link = $result_file;}
 
       push @row_list, {STATUS_ROW_INFO=>$ses_params_hr->{pgm_title} .
-			   ": " . $ses_params_hr->{query_info} ." <b>vs</b> " .
-			   $ses_params_hr->{lib_info} . "<br />" . $ses_params_hr->{comments},
+			   ": " . HTML::Entities::encode($ses_params_hr->{query_info}) ." <b>vs</b> " .
+			   HTML::Entities::encode($ses_params_hr->{lib_info}) . "<br />" . HTML::Entities::encode($ses_params_hr->{comments}),
 		       STATUS_DELETE => qq(<input type="checkbox" value="delete"  name="del_) . $result_file . qq(" ></input>),
 		       STATUS_ROW_LINK=>$result_link,
 		       STATUS_TIME => $ses_params_hr->{s_time}
@@ -1702,6 +1707,9 @@ sub get_query {
       $acc_list =~ s/\r//go;
 
       @acc_list = split(/[\n,]/,$acc_list);
+      if (@acc_list > 100) {
+	  @acc_list = @acc_list[0,100];
+      }
 
       chomp(@acc_list);
     } else {		     # param($name) has sequences, return them

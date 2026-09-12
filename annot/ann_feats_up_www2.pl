@@ -158,7 +158,7 @@ unless ($data_file) {
 } else {   # just read the data from a file, give to $get_annot_sub().
   my %annot_data = (seq_info => ">$data_file DATA");
 
-  open(DATA_IN, $data_file) || die "Cannot read $data_file";
+  open(DATA_IN, '<', $data_file) || die "Cannot read $data_file";
 
   my $lwp_data = "";
   while (<DATA_IN>) {

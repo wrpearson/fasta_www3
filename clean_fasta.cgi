@@ -22,6 +22,8 @@ BEGIN {
 use vars qw($DEF_UNLINK $BIN_DIR $BL_DB_DIR $BL_DB_NT_DIR $BL_BIN_DIR
 	    $BL_DATA_DIR $TMP_DIR );
 
+my $OK_CHARS='\'"=!\+\-\w\.@ \\\\/%\:\(\)#';
+
 my $q = new CGI;
 
 my $query_file = $q->param("query_file") || "";
@@ -35,7 +37,9 @@ unless ($sequence) {
     print $q->start_html("No FASTA file");
     print "<pre>\n";
     for my $p ( $q->param() ) {
-	print "$p : ".$q->param($p)."\n";
+	my $value = $q->param($p);
+	$value =~ s/[^$OKCHARS]/_/go;
+	print "$p : ".$value."\n";
     }
     print $q->end_html();
     exit 0;

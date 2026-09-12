@@ -225,13 +225,14 @@ EOS
 	  for my $q_param ( keys(%$run_data_hr)) {
 	    my $value = $run_data_hr->{$q_param};
 	    my $uri_value = $value;
+	    my $s_param = uri_escape($q_param);
 	    if ($value) {
 		$uri_value=uri_escape($value);
 	    }
 	    else {
 		$uri_value="";
 	    }
-	    my $hidden_var = qq(<input type="hidden" name="$q_param" value="$uri_value" />);
+	    my $hidden_var = qq(<input type="hidden" name="$s_param" value="$uri_value" />);
 	    $output .=  $hidden_var;
 	  }
 	}

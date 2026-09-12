@@ -39,7 +39,9 @@ unless ($rm && exists $run_table{$rm}) {
     print $q->start_html("Run-mode undefined");
     print "<pre>\n";
     for my $p ( $q->param() ) {
-	print "$p : ".$q->param($p)."\n";
+	my $value = $q->param($p);
+	$value =~ s/[^$OKCHARS]/_/go;
+	print "$p : ".$value."\n";
     }
     print $q->end_html();
     exit 0;

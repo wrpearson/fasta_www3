@@ -100,7 +100,7 @@ my $ANN_F;
 my @annots = ();
 
 #if it's a file I can open, read and parse it
-if ($query !~ m/\|/ && open($ANN_F, $query)) {
+if ($query !~ m/\|/ && open($ANN_F, '<', $query)) {
 
   while (my $a_line = <$ANN_F>) {
     $a_line =~ s/^>//;

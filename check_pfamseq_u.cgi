@@ -44,7 +44,7 @@ else {
 my $output = join("\t",@f_titles)."\n";
 
 if ($acc) {
-  if ($acc =~ m/^(sp|tr)\|([A-Z][A-Z0-9]{5})\|/i) {
+  if ($acc =~ m/^(sp|tr)\|([A-Z][A-Z0-9]+)\|/i) {
     $acc = $2;
   } elsif ($acc =~ m/^gi\|\d+\|/) {
     my @fields = split(/\|/,$acc);
@@ -102,7 +102,6 @@ unless ($seq_only || $doms_only) {
     my @hfields = map { {'hfield'=> $_} } @f_titles;
     $tmpl->param(theader=>\@hfields);
 
-
     my @d_rows = ();
     for my $dom_ref ( @{$dom_data_ref}) {
       my @d_fields = map { {'dfield'=>$_} } @{$dom_ref}{@pf_fields};
@@ -113,6 +112,9 @@ unless ($seq_only || $doms_only) {
     #$tmpl->param(DOMAIN_INFO=>$output);
     if ($fa_seq) {
       $tmpl->param(sequence => $fa_seq);
+    }
+    else {
+      $tmpl->param(sequence => 0);
     }
     print $tmpl->output();
   }

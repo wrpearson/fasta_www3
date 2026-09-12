@@ -145,7 +145,7 @@ Specifically:
     (a) add "ExecCGI" and "Includes" to the "Options" for the
         directory where the scripts are located
 
-    (b) enable AddHandler cgi-script .cgi .pl
+    (b) enable AddHandler cgi-script .cgi
 
     (c) enable server side includes in the script directory
         AddType text/html .shtml

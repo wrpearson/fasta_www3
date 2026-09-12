@@ -134,7 +134,7 @@ my @annots = ();
 #if it's a file I can open, read and parse it
 
 unless ($data_file) {
-  if ($query !~ m/\|/ && open($ANN_F, $query)) {
+  if ($query !~ m/\|/ && open($ANN_F, '<', $query)) {
 
     while (my $a_line = <$ANN_F>) {
       $a_line =~ s/^>//;
@@ -147,7 +147,7 @@ unless ($data_file) {
 } else {   # just read the data from a file, give to $get_annot_sub().
   my %annot_data = (seq_info => ">$data_file DATA");
 
-  open(DATA_IN, $data_file) || die "Cannot read $data_file";
+  open(DATA_IN, '<', $data_file) || die "Cannot read $data_file";
 
   my $lwp_data = "";
   while (<DATA_IN>) {

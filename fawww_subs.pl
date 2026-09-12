@@ -126,9 +126,7 @@ sub get_safe_word {
 
   unless (defined($p_arg)) {return "";}
 
-  ($p_arg) = ($p_arg =~ m/^(\S+)/);
-  $p_arg =~ s/[^$OK_CHARS]/_/go;
-  ($p_arg) = ($p_arg =~ m/([$OK_CHARS]+)/);
+  ($p_arg) = ($p_arg =~ m/^([\w\.\-]+)/);
 
   if ($opt =~ m/%/) {
     return sprintf($opt, (defined($p_arg) ? $p_arg : ''));
@@ -221,9 +219,9 @@ sub get_file2file {
   while (read($qfh,$buffer,2048)) {$data .= $buffer;}
   close($qfh);
 
-  if ($data =~ m/^.*\n*PSSM:2\n/s) {
-      $data = bz2pssm($data);
-  }
+#  if ($data =~ m/^.*\n*PSSM:2\n/s) {
+#      $data = bz2pssm($data);
+#  }
 
 # create a temporary file
   my $tmp_fh = new File::Temp(DIR=>$TMP_DIR,
@@ -305,10 +303,10 @@ sub get_pssm2file {
   while (read($qfh,$buffer,2048)) {$data .= $buffer;}
   close($qfh);
 
-  if ($data =~ m/^.*\n*PSSM:2\n/s) {
-      $data = bz2pssm($data);
-  }
-  elsif ($data =~ m/^PssmWithParameters/) {
+##  if ($data =~ m/^.*\n*PSSM:2\n/s) {
+##      $data = bz2pssm($data);
+##  }
+  if ($data =~ m/^PssmWithParameters/) {
     $do_asntxt2bin = 1;
   }
 
@@ -722,9 +720,10 @@ sub load_vars {
 
       # otherwise if it is 'this', set it safely from an input parameter
       elsif ($value eq 'this' && $query && ref($q) eq 'CGI') {
-	# some protection from XSS
 	my $u_query = $q->param($query);
-	$tmpl->param($tmpl_var => HTML::Entities::encode($u_query));
+	# some protection from XSS and Javascript
+	$u_query =~ s/[^$OK_CHARS]/_/go;
+	$tmpl->param($tmpl_var => $u_query);
       }
 
       # otherwise (simplest case) just assign the $value to TMPL_VAR
@@ -773,7 +772,17 @@ sub check_bad_query {
 #    my @bad_match_array = ($query =~ m/\+/gi);   # breaks Na(+) in description
 #    return if (scalar(@bad_match_array));
 
-    return $query;
+    my $s_query = '';
+    for my $q_line (split(/\R/,$query)) {
+      if ($q_line =~ m/^>/) {
+	$s_query .= ">".HTML::Entities::encode(substr($query,1))."\n";
+      }
+      else {
+	$q_line =~ s/[^A-Za-z]//go;
+	$s_query .= $q_line . "\n";
+      }
+    }
+    return $s_query;
 }
 
 
