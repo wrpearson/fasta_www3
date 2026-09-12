@@ -36,13 +36,9 @@ if ($size) {
   $size =~ s/[^$OK_CHARS]/_/go;
   my ($size_x, $size_y) = ($size =~ m/^(\d+)x(\d+)$/);
 
-  if ($size_x > 10000) {
-      $size_x = 10000;
-  }
+  if ($size_x && $size_x > 10000) {$size_x = 10000;}
 
-  if ($size_y > 10000) {
-      $size_y = 10000;
-  }
+  if ($size_y && $size_y > 10000) {$size_y = 10000;}
 
   if ($size_x && $size_y) {
       $size = "-g".$size_x.'x'.$size_y;
