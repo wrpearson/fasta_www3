@@ -777,13 +777,15 @@ sub check_bad_query {
     my $s_query = '';
     for my $q_line (split(/\R/,$query)) {
       if ($q_line =~ m/^>/) {
-	$s_query .= ">".HTML::Entities::encode(substr($query,1))."\n";
+	$s_query .= ">".HTML::Entities::encode(substr($q_line,1))."\n";
       }
       else {
 	$q_line =~ s/[^A-Za-z]//go;
 	$s_query .= $q_line . "\n";
       }
     }
+    print STDERR "s_query: $s_query";
+
     return $s_query;
 }
 
