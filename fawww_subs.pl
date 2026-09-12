@@ -784,8 +784,6 @@ sub check_bad_query {
 	$s_query .= $q_line . "\n";
       }
     }
-    print STDERR "s_query: $s_query";
-
     return $s_query;
 }
 
