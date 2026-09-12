@@ -38,6 +38,10 @@ if (! -d $BIN_ROOT ) {
     $BIN_ROOT = "/seqprg";
 }
 
+if ( -r "fawww_envs.pl" ) {
+  require "fawww_envs.pl";
+}
+
 ####
 # DocumentRoot for WWW server if not defined
 #$DEF_ROOT = "/var/www/html";	# MAC OSX
