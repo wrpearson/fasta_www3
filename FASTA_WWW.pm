@@ -19,7 +19,7 @@ use IPC::Run qw(timeout);
 use Text::ParseWords;
 use Data::Dumper;
 use JSON;
-use URI::Encode qw(uri_encode uri_decode);
+## use URI::Encode qw(uri_encode uri_decode);
 
 use vars qw( $DEF_UNLINK $OK_CHARS $ALT_HOST_CGI $HOST_NAME $CGI_DIR
              $DB_HOST $DB_PORT $DB_USER $DB_PASSWORD $DB_NAME
@@ -443,11 +443,11 @@ sub do_search {
 
     ## check for uri_encoded query -- possibly from json??
     if ($query =~ m/^%(25)+3E/) {
-     	$query = uri_decode($query);
+     	$query = uri_unescape($query);
 	print STDERR "URI: $query\n";
     }
     elsif ($query =~ m/%3E.+%0A/) {
-     	$query = uri_decode($query);
+     	$query = uri_unescape($query);
 	print STDERR "URI2: $query\n";
     }
 
@@ -695,7 +695,7 @@ sub do_search {
     my $json_params = $json->encode(\%run_data);
 ##    my $json_params = encode_json(\%run_data);
 
-    $json_params = uri_encode($json_params);
+    $json_params = uri_escape($json_params);
 
     unless (my $pid =fork()) {
 
@@ -898,7 +898,7 @@ sub wait_result {
 
     my $tmpl = $self->load_tmpl("wait.tmpl");
     my $json_params = encode_json($run_data_hr);
-    $json_params = uri_encode($json_params);
+    $json_params = uri_escape($json_params);
     $tmpl->param("E_TIME"=>$elapsed_time,
 		 "RESULT_FILE"=>$res_file,
 		 "REFRESH_TIME"=>$refresh,
@@ -934,7 +934,7 @@ sub wait_result {
 
   if ($q->param("json_parms")) {
     my $json_param = $q->param("json_parms");
-    $json_param= uri_decode($json_param);
+    $json_param= uri_unescape($json_param);
     $run_data_hr = decode_json($json_param);
   }
 
@@ -1115,7 +1115,7 @@ sub retrieve_result {
   close(PFH);
 
   if (defined($param_hash{json_parms})) {
-    $run_data_hr = decode_json(uri_decode($param_hash{json_parms}))
+    $run_data_hr = decode_json(uri_unescape($param_hash{json_parms}))
   }
 
   for my $p_key ( keys(%param_hash) ) {
@@ -1470,7 +1470,7 @@ sub remote {
   my $req;
 
   my $json_parms = encode_json(\%rem_args);
-  $json_parms = uri_encode($json_parms);
+  $json_parms = uri_escape($json_parms);
 
   # I have some files, add them, and use Content_type=>form-data
   for my $rf_args (keys %rem_files) {
@@ -1715,7 +1715,7 @@ sub get_query {
     } else {		     # param($name) has sequences, return them
       my $query = $q_acc_name;
       $query =~ s/\r//go;
-      $query = uri_decode($query);
+      $query = uri_unescape($query);
       if ($name =~ m/^query/i && $query !~ m/^>/) {
 	return ">QUERY\n" . $query ."\n";
       } else {
@@ -2672,7 +2672,7 @@ sub get_remote_params {
 
   my $param_output = "";
   if ($res->is_success) {
-    return decode_json(uri_decode($res->content));
+    return decode_json(uri_unescape($res->content));
   }
   else {
     return 0;
