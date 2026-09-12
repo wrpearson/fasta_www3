@@ -56,6 +56,8 @@ use HTML::Entities;
 use CGI qw(header param start_html end_html);
 use CGI::Carp qw(fatalsToBrowser carpout warningsToBrowser);
 
+$CGI::POST_MAX = 1024 * 1024 * 2;
+
 $ENV{PATH} = ".:/bin:/usr/bin:/seqprg/bin";
 
 BEGIN {
@@ -1238,7 +1240,7 @@ sub parse_regions {
 	$data{virtual} = 1;
       }
 
-      if ($data{descr} =~ m/^(.+)\{([^\}]+)\}\s*$/) {
+      if ($data{descr} =~ m/^(.+)\{([^\{\}]+)\}\s*$/) {
 	$data{descr} = $1;
 	$data{dom_acc} = $2;
       }

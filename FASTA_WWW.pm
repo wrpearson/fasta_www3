@@ -4,6 +4,8 @@
 
 package FASTA_WWW; use base 'CGI::Application';
 
+$CGI::POST_MAX = 1024 * 1024 * 2;
+
 use CGI::Carp;
 use CGI::Application::Plugin::Session;
 

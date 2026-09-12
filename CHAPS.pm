@@ -109,7 +109,8 @@ sub gen_pssm {
   my $is = $q->param("msa_query");
   $is =~ s/\r\n/\n/gs;
   while ( $is =~ m/\n\n$/) {
-      $is =~ s/\n\n$/\n/s;
+#      $is =~ s/\n\n$/\n/s;
+      $is =~ s/\n\n+$/\n/s;
   }
 
 # allow read of $q->param("msa_query") (which is now a clustalw/muscle/t_coffee alignment)

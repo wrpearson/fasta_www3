@@ -38,6 +38,8 @@ use CGI::Carp qw(fatalsToBrowser carpout warningsToBrowser);
 
 use CGI qw(header param start_html end_html);
 
+$CGI::POST_MAX = 1024 * 1024 * 2;
+
 $ENV{PATH} = ".:/bin:/usr/bin:/seqprg/bin";
 BEGIN {
     do "./Fawww_begin.pl";
@@ -197,7 +199,7 @@ sub parse_regions {
 
     $data{descr} =~ s/^C=//;
 
-    if ($data{descr} =~ m/^(.+)\{([^}]+)\}\s*$/) {
+    if ($data{descr} =~ m/^(.+)\{([^\{\}]+)\}\s*$/) {
       $data{descr} = 1;
       $data{dom_acc} = $2;
     }

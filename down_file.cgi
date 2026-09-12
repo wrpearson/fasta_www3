@@ -17,6 +17,8 @@ use CGI::Carp qw(fatalsToBrowser carpout warningsToBrowser);
 use IO::Scalar;
 use File::Temp qw/ tempfile /;
 
+$CGI::POST_MAX = 1024 * 1024 * 2;
+
 require "./fawww_defs.pl";
 
 $ENV{PATH} = "/usr/bin";

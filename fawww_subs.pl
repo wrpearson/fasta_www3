@@ -699,6 +699,8 @@ sub mod_vars {
 sub load_vars {
   my ($input_href, $tmpl, $q, $query) = @_;
 
+  my $BADJS_CHARS = "\|<>;\/'\"&";
+
   for my $tmpl_var ( keys %{$input_href} ) { # keys are TMPL_VAR's
 
     my $value = $input_href->{$tmpl_var};    # get the TMPL_VAR name from the list
@@ -722,7 +724,7 @@ sub load_vars {
       elsif ($value eq 'this' && $query && ref($q) eq 'CGI') {
 	my $u_query = $q->param($query);
 	# some protection from XSS and Javascript
-	$u_query =~ s/[^$OK_CHARS]/_/go;
+	$u_query =~ s/[$BADJS_CHARS]/_/go;
 	$tmpl->param($tmpl_var => $u_query);
       }
 

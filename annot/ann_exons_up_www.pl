@@ -79,16 +79,18 @@ my @annots = ();
 my %annot_set = (); # re-use annotations if they are available (not yet implemented)
 
 #if it's a file I can open, read and parse it
-unless ($query && ($query =~ m/[\|:]/ ||
-		   $query =~ m/^[OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]([A-Z][A-Z0-9]{2}[0-9]){1,2}\s/)) {
+if (! $query || -r $query) {
 
   while (my $a_line = <>) {
-    $a_line =~ s/^>//;
     chomp $a_line;
+    $a_line =~ s/^>//;
+    ## clean up $a_line
+    ($a_line) = ($a_line =~ m/([\w\. ]{5,}+)/);
     push @annots, show_annots($a_line, $get_annot_sub);
   }
 }
 else {
+  ($query) = ($query =~ m/([\w\. ]{5,}+)/);
   push @annots, show_annots("$query\t$seq_len", $get_annot_sub);
 }
 
