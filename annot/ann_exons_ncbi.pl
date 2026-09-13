@@ -30,9 +30,9 @@ my $hostname = `/bin/hostname`;
 
 ## pick up host, etc, from environment variables
 
-my %db_defaults = ("HOST"=>"wrpa48.bioch.virginia.edu",
-		   "USER"=>"web_user",
-		   "PASSWORD"=>"fasta_www",
+my %db_defaults = ("HOST"=>"XXXX",
+		   "USER"=>"XXXX",
+		   "PASSWORD"=>"XXXX",
 		   "NAME"=>"seqdb_demox");
 {
     no strict "refs";

@@ -52,7 +52,7 @@ if (defined $ENV{'DB_HOST'}) {
     $db_host = $ENV{'DB_HOST'};
 }
 
-($host, $db, $a_table, $port, $user, $pass)  = ($db_host, "uniprot", "annot2", 0, "web_user", "fasta_www");
+($host, $db, $a_table, $port, $user, $pass)  = ($db_host, "uniprot", "annot2", 0, "XXXX", "XXXX");
 
 my ($lav, $neg_doms, $no_doms, $no_feats, $no_label, $use_ipr, $acc_comment, $shelp, $help, $no_mod, $dom_db, $db_ref_acc) = 
     (0,0,0,0,0,0,0,0,0,0,0,0);
