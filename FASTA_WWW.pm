@@ -520,10 +520,6 @@ sub do_search {
     }
   }
 
-  if (!defined($ENV{'FASTLIBS'}) && exists $run_href->{lib_env}) {
-    $ENV{'FASTLIBS'} = $run_href->{lib_env}
-  }
-
   if (exists $run_href->{link_url_ref}) {
     set_url_envs($q, $run_href);
   }
