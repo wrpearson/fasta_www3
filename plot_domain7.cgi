@@ -56,7 +56,7 @@ use HTML::Entities;
 use CGI qw(header param start_html end_html);
 use CGI::Carp qw(fatalsToBrowser carpout warningsToBrowser);
 
-$CGI::POST_MAX = 1024 * 1024 * 2;
+$CGI::POST_MAX = 1024 * 1024 * 10;
 
 $ENV{PATH} = ".:/bin:/usr/bin:/seqprg/bin";
 

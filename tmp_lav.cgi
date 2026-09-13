@@ -11,7 +11,7 @@ use lib qw(.);
 use LWP::Simple;
 use CGI qw(header param);
 
-$CGI::POST_MAX = 1024 * 1024 * 2;
+$CGI::POST_MAX = 1024 * 1024 * 10;
 
 BEGIN {
     do "Fawww_begin.pl";
@@ -47,7 +47,7 @@ if ($file =~ /^([\w\.]+)$/) {
 
 $size = param("size") || "";
 if ($size) { 
-  $size =~ s/[^$OK_CHARS]/_/go;
+
   my ($size_x, $size_y) = ($size =~ m/^(\d+)x(\d+)$/);
 
   if ($size_x && $size_x > 10000) {$size_x = 10000;}
