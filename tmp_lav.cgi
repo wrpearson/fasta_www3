@@ -19,7 +19,7 @@ BEGIN {
 
 use vars qw( $OK_CHARS $HOST_NAME $HOST_DIR $CGI_DIR $BIN_DIR 
 	     $TMP_DIR $GS_BIN $DEF_UNLINK $LAV_SVG $LAV_GS $lav_cmd
-	     $PPM_BIN $LOG_FILE $lhost $SQL_DB_HOST
+	     $PPM_BIN $LOG_FILE $lhost 
 	     $file $this_file $device $tmp_lav $size $z_param);
 
 require "./fawww_defs.pl";

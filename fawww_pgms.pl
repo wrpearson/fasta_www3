@@ -38,9 +38,9 @@ require "./process_domain_colors.pl";
 #      every template should get a RUN_MODE
 #
 
-my $pfam_qfo_db=$SQL_DB_NAME;
+my $pfam_qfo_db="pfam38_qfo";
 my $pfam_db="pfam38";
-my $db_host= $SQL_DB_HOST;
+my $db_host= $ENV{DB_HOST};
 my $neg_opt='';
 my $vdom_opt='';
 
@@ -66,8 +66,6 @@ my $vdom_opt='';
 	 qq(-V \!./annot/ann_feats2ipr_e.pl+--host=$db_host+$neg_opt--acc_comment+--no_mod), 	#3
 	 qq(-V \!./annot/ann_upfeats_pfam_www_e.pl+--host=$db_host+$neg_opt$vdom_opt--acc_comment),	#4
 	 qq(-V \!./annot/ann_feats2ipr_e.pl+--host=$db_host+$neg_opt--acc_comment+--no-feats),	#5
-##	 qq(-V \!./annot/ann_pfam_sql.pl+--host=$db_host+--db=$pfam_qfo_db+$neg_opt$vdom_opt--acc_comment),			#6
-##	 qq(-V \!./annot/ann_pfam_www2.pl+$neg_opt$vdom_opt--acc_comment),			#6
 	 qq(-V \!./annot/ann_pfam_sql.pl+--host=$db_host+--db=$pfam_qfo_db+$neg_opt$vdom_opt--acc_comment),		#6
 	 qq(-V \!./annot/ann_pfam_sql.pl+--host=$db_host+--db=$pfam_qfo_db+$neg_opt$vdom_opt--acc_comment),		#7
 	 qq(-V \!./annot/ann_pdb_cath.pl+--host=$db_host+--neg),				#8
@@ -295,7 +293,7 @@ my $vdom_opt='';
    { tmpl=>"select.tmpl",
      pgm_ref=>[@pgm_fslist], pgm_def=>"fap",
      ws_lib_list => \@ws_libs,
-     lib_env=> $FAST_LIBS,
+     lib_env=> $ENV{FASTLIBS},
      CAN_REMOTE => 1,
      inputs =>
      { query => {SEARCH_QUERY => "this", SEARCH_FRM_ACC => "selected",
@@ -324,7 +322,7 @@ my $vdom_opt='';
    'psi2_select' =>
    { tmpl=>"psi2_select.tmpl",
      pgm_ref=>[@pgm_psi2list], pgm_def=>"psi2sw",
-     lib_env=> $FAST_LIBS,
+     lib_env=> $ENV{FASTLIBS},
      CAN_REMOTE => 1,
      inputs =>
      { query => {SEARCH_QUERY => "this", SEARCH_FRM_FA => "selected",
@@ -464,7 +462,7 @@ my $vdom_opt='';
 #      have_ssr => get ssr for query1
 #      query2_type => tmp -> temporary file, q2 for \@, lib for lib selection
 #      get_lib_sub => get a library from lib_p or lib_n
-#      lib_env => FAST_LIBS environment
+#      lib_env => $ENV{FASTLIBS} environment
 #      remote => 1 -> can remote
 #      pgm_args => "default string after program before other options"
 #   opts and post_opts are both parsed by the same code
@@ -763,7 +761,7 @@ my $vdom_opt='';
 	 pgm_ref=>[@pgm_flist, @pgm_slist, @pgm_hlist],
 	 ws_lib_ref => \@ws_libs,
 	 n_q => 1, 
-	 lib_env=> $FAST_LIBS,
+	 lib_env=> $ENV{FASTLIBS},
          remote=>1,
          have_ssr=>1,
 	 run_bkgd => 1,
@@ -995,7 +993,7 @@ my $vdom_opt='';
      },
 
      'psi2_search'=> {
-	 pgm_ref=>\@pgm_psi2list, lib_env => $FAST_LIBS,
+	 pgm_ref=>\@pgm_psi2list, lib_env => $ENV{FASTLIBS},
 	 n_q => 1,
 	 run_bkgd => 0,
 	 remote=>1,
@@ -1034,7 +1032,7 @@ my $vdom_opt='';
 
      'hmm_search'=> {
 	 pgm_ref=> \@pgm_hmmlist,
-	 lib_env => $FAST_LIBS,
+	 lib_env => $ENV{FASTLIBS},
 	 n_q => 1,
 	 run_bkgd => 1,
 	 no_html => 1,
@@ -1054,7 +1052,7 @@ my $vdom_opt='';
 
      'jkhs_search'=> {
 	 pgm_ref=> \@pgm_hmmlist,
-	 lib_env => $FAST_LIBS,
+	 lib_env => $ENV{FASTLIBS},
 	 n_q => 1,
 	 run_bkgd => 1,
 	 no_html => 1,
@@ -1074,7 +1072,7 @@ my $vdom_opt='';
      },
      'phmm_r'=> {
 	 pgm_ref=> \@pgm_phlist,
-	 lib_env => $FAST_LIBS,
+	 lib_env => $ENV{FASTLIBS},
 	 n_q => 1,
 	 run_bkgd => 1,
 	 no_html => 1,

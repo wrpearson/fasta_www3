@@ -55,37 +55,21 @@ $DOC_ROOT = $DEF_ROOT unless($DOC_ROOT);
 
 ## print STDERR "SQL_DB_HOST: $SQL_DB_HOST\n";
 
-my %db_defaults = ("HOST"=>"wrpa48.bioch.virginia.edu",
-		   "USER"=>"web_user",
-		   "PASSWORD"=>"fasta_www",
+my %db_defaults = ("HOST"=>"XXXX",
+		   "USER"=>"XXXX",
+		   "PASSWORD"=>"XXXX",
 		   "NAME"=>"pfam38_qfo");
-
-foreach $k (keys(%db_defaults)) {
-
-  my $sql_var = "SQL_DB_".$k;
-  my $db_var = "DB_".$k;
-
-  if (defined($ENV{$db_var})) {
-##    print STDERR "$k $db_var ..$ENV{$db_var}..\n";
-    ${$sql_var} = $ENV{$db_var};
-  }
-
-  if (!defined(${$sql_var}) || !${$sql_var}) {
-    ${$sql_var} = $db_defaults{$k};
-##    print STDERR "$sql_var default set ${$sql_var}\n";
-  }
-
-  $ENV{$sql_var} = ${$sql_var};
-  ${$db_var} = ${$sql_var};
-
-##  print STDERR "$k $db_var ${$db_var} $sql_var ${$sql_var}\n";
+{
+    no strict "refs";
+    foreach my $k (keys(%db_defaults)) {
+	my $db_var = "DB_".$k;
+	if (defined($ENV{$db_var})) {
+	    ${$db_var} = $ENV{$db_var};
+	} elsif (!defined(${$db_var}) || !${$db_var}) {
+	    ${$db_var} = $db_defaults{$k};
+	}
+    }
 }
-
-
-## if (!$SQL_DB_HOST ) {
-##  $SQL_DB_HOST="wrpa48.bioch.virginia.edu";
-##   $ENV{DB_HOST}=$SQL_DB_HOST;
-## }
 
 ####
 # variables/script used to set temporary file directory
@@ -116,6 +100,7 @@ unless ($TMP_ROOT) {
 $LOG_DIR="$TMP_ROOT/logs";	# log directory
 $LOG_FILE= "$TMP_ROOT/logs/errors.log";	# error log
 $TMP_DIR="$TMP_ROOT/files";	# location for temp files
+
 $ENV{TMP_DIR} = $TMP_DIR;
 
 ## print STDERR "TMP_DIR: $TMP_DIR\n";
@@ -128,28 +113,21 @@ $BL_DATA_DIR="$BIN_ROOT/data";	# for BLAST data
 $GS_BIN="/usr/bin/gs";	# location of gs (ghostscript) binary
 
 ################
+# (2) site-specific location/environment variables for FASTLIBS file
+# default FASTLIBS location for general databases
+if (!defined($ENV{'SLIB2'})) { $ENV{'SLIB2'} = "/slib2";}
+if (!defined($ENV{'RDLIB2'})) { $ENV{'RDLIB2'} = "/rdlib2";}
+if (!defined($ENV{FASTLIBS})) { $ENV{'FASTLIBS'} ="/slib2/info/fast_libs_e.www";}
+
+################
 # (2) site-specific locations for blast database files
 #     (FASTA database files are specified by FASTLIBS)
 #
-$BL_DB_DIR="/slib2/bl_dbs";
-#$BL_DB_NT_DIR="/ecg/slib2/ncbi";
-$BL_DB_NT_DIR="/slib2/ncbi";
+$BL_DB_DIR="$ENV{'SLIB2'}/bl_dbs";
+$BL_DB_NT_DIR="$ENV{'SLIB2'}/ncbi";
 $BL_DUMMY_DB="pir1";
 
-$UP_DB_DIR="/slib2/up_dbs";
-
-################
-# (2) site-specific location/environment variables for FASTLIBS file
-# default FASTLIBS location for general databases
-$FAST_LIBS="/slib2/info/fast_libs_e.www";
-#$ENV{'SLIB2'} = "/slib2";
-#$ENV{'SLIBT'} = "/slib2/info";
-#$ENV{'RDLIB2'} = "/rdlib2";
-$ENV{'SLIB2'} = "/slib2";
-$ENV{'SLIBT'} = "/slib2/info";
-$ENV{'RDLIB2'} = "/rdlib2";
-$ENV{'SLIB3'} = "/l_rdlib2";
-$ENV{'DB_HOST'} = 'a48';
+$UP_DB_DIR="$ENV{'SLIB2'}/up_dbs";
 
 # FASTLIBS location for genome searches
 $FAST_GNMS="/slib2/info/fast_gnms_e.www";

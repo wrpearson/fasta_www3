@@ -28,7 +28,7 @@ use vars qw( $DEF_UNLINK $OK_CHARS $ALT_HOST_CGI $HOST_NAME $CGI_DIR
              $SQL_DB_HOST $SQL_DB_PORT $SQL_DB_USER $SQL_DB_PASSWORD $SQL_DB_NAME
 	     $RUN_URL $SS_ALT_HOST_CGI $SS_HOST_NAME $SS_CGI_DIR  $DOMAIN_PLOT_URL
 	     $SS_RUN_URL $BIN_DIR @NODE_HOSTS $NODE_EXT $NODE_RUN_CGI
-	     $USE_REMOTE $DEBUG $FAST_LIBS $FAST_GNMS $TMP_DIR
+	     $USE_REMOTE $DEBUG $FAST_GNMS $TMP_DIR
 	     $LOG_DIR $TMP_ROOT $GS_BIN $BL_BIN_DIR $BL_DB_DIR $UP_DB_DIR
 	     $BL_DB_NT_DIR $BL_DATA_DIR $fa_footer $fa_footer_s $BACK_TIMEOUT $RUN_TIMEOUT
 	     $HIDE_ALIGN $hide_checked $PFAM_FAM_URL $IPRO_FAM_URL);
@@ -520,7 +520,7 @@ sub do_search {
     }
   }
 
-  if (exists $run_href->{lib_env}) {
+  if (!defined($ENV{'FASTLIBS'}) && exists $run_href->{lib_env}) {
     $ENV{'FASTLIBS'} = $run_href->{lib_env}
   }
 
@@ -2266,12 +2266,6 @@ sub get_remote_files {
     }
   }
   return %rem_files;
-}
-
-sub set_envs {
-
-  $ENV{'FASTLIBS'} = shift;
-
 }
 
 sub set_url_envs {
