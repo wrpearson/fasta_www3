@@ -1,3 +1,8 @@
+13-Sep-2026
+
+release: fasta_www_rel-0.1.8 -- vulnerability fixes,
+	 DB_HOST/_USER/_PASSWORD from environment variables
+
 30-Aug-2026
 release: fasta_www_rel-0.1.7 -- fixes for annotations on blast output
 
