@@ -32,7 +32,6 @@ use strict;
 use Getopt::Long;
 use Pod::Usage;
 use URI::Escape;
-use URI::Encode qw(uri_encode uri_decode);
 use HTML::Entities;
 use CGI::Carp qw(fatalsToBrowser carpout warningsToBrowser);
 
@@ -47,13 +46,12 @@ BEGIN {
 
 use vars qw( $OK_CHARS $HOST_NAME $HOST_DIR $CGI_DIR $BIN_DIR $SQL_DB_HOST
 	     $TMP_DIR $GS_BIN $DEF_UNLINK $LAV_SVG $LAV_GS $lav_cmd
-	     $PPM_BIN $LOG_FILE $lhost $PFAM_FAM_URL $IPRO_FAM_URL
+	     $LOG_FILE $lhost $PFAM_FAM_URL $IPRO_FAM_URL
 	     $file $device $tmp_lav $size $z_param);
 
 require "./fawww_defs.pl";
 
 my $ROK_CHARS = $OK_CHARS.";\{\}\|~";
-my ($HOK_CHARS) = ($ROK_CHARS =~ m/([^%]+)/);
 
 my $q = new CGI;
 
@@ -101,7 +99,7 @@ else {
   for my $arg (@arg_names) {
       if (defined($valid_args{$arg}) && defined($q->param($arg)) && $q->param($arg)) {
 	  $tmp_arg = scalar($q->param($arg));
-	  $tmp_arg = uri_decode(uri_unescape($tmp_arg));
+	  $tmp_arg = uri_unescape($tmp_arg);
 	  $tmp_arg =~ s/[^$ROK_CHARS]/_/go;
 	  $args{$arg} = $tmp_arg;
       }
@@ -122,7 +120,7 @@ if ($q->param('bed_fmt')) {
 my ($q_region_info_r, $region_info_r, $q_dom_info_r, $l_dom_info_r);
 
 if ($args{regions}) {
-    ($q_region_info_r, $region_info_r) = parse_regions(uri_decode($args{regions}));
+    ($q_region_info_r, $region_info_r) = parse_regions(uri_unescape($args{regions}));
 }
 else {$region_info_r = [];}
 

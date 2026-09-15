@@ -20,7 +20,7 @@ use URI::Escape;
 use IPC::Run qw(timeout);
 use Text::ParseWords;
 use Data::Dumper;
-use JSON;
+use JSON::PP;
 ## use URI::Encode qw(uri_encode uri_decode);
 
 use vars qw( $DEF_UNLINK $OK_CHARS $ALT_HOST_CGI $HOST_NAME $CGI_DIR

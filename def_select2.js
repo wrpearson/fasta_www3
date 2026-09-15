@@ -75,10 +75,6 @@ function can_annot(form) {
     document.getElementById('annot2_div').style.display='inline';
     document.getElementById('ann2_cath').selected=true;
   }
-  // do this for everything now using seqdb_demo2 join
-  else if (f_value == 'S') {
-    document.getElementById('annot2_div').style.display='none';
-  }
   else {
     if (document.getElementById('annot2_div')) {
 	document.getElementById('annot2_div').style.display='inline';
@@ -128,8 +124,8 @@ function new_seqtype(form, f_value) {
     upper = 6;
     smatrix = dmatrix;
     dna_off = 20;
-    the_gap.value= -12;
-    the_ext.value= -4;
+    if (the_gap) {the_gap.value= -12;}
+    if (the_ext) {the_ext.value= -4;}
 
     //    alert('Protein/DNA set '+upper);
 
@@ -143,8 +139,8 @@ function new_seqtype(form, f_value) {
     if (form['n_lib']) {form['n_lib'].disabled = true;}
     smatrix = blp_matrix;
     dna_off = 0;
-    the_gap.value= 11;
-    the_ext.value= 1;
+    if(the_gap) {the_gap.value= 11;}
+    if (the_ext) {the_ext.value= 1;}
   }
   else {
     // Protein
@@ -154,8 +150,10 @@ function new_seqtype(form, f_value) {
     if (pgm_val == 'lal' || pgm_val == 'pal' || pgm_val == 'lpal' || pgm_val == 'lnw') {
       the_gap.value = -12;
     }
-    else { the_gap.value = -10;}
-    the_ext.value= -2;
+    else { 
+      if (the_gap) {the_gap.value = -10;}
+    }
+    if (the_ext) {the_ext.value= -2;}
 
     if (form['p_lib']) {
       form['p_lib'].disabled = false;
@@ -173,6 +171,9 @@ function new_seqtype(form, f_value) {
 function update_matrix_menu(form, smatrix, default_val) {
 
   var the_matrix = form['smatrix'];
+
+  if (! the_matrix) { return;}
+
   for (var i=0; i < smatrix.length; i++) {
     the_matrix.options[i]=new Option(smatrix[i].name,smatrix[i].id,false);
   }

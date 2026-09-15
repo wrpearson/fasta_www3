@@ -50,13 +50,12 @@ use lib qw(.);
 use Getopt::Long;
 use Pod::Usage;
 use URI::Escape;
-use URI::Encode qw(uri_encode uri_decode);
 use HTML::Entities;
 
 use CGI qw(header param start_html end_html);
 use CGI::Carp qw(fatalsToBrowser carpout warningsToBrowser);
 
-$CGI::POST_MAX = 1024 * 1024 * 10;
+## $CGI::POST_MAX = 1024 * 1024 * 10;
 
 $ENV{PATH} = ".:/bin:/usr/bin:/seqprg/bin";
 
@@ -66,10 +65,8 @@ BEGIN {
 
 use vars qw( $OK_CHARS $HOST_NAME $HOST_DIR $CGI_DIR $BIN_DIR 
 	     $TMP_DIR $GS_BIN $DEF_UNLINK $LAV_SVG $LAV_GS $lav_cmd
-	     $PPM_BIN $LOG_FILE $lhost $PFAM_FAM_URL $IPRO_FAM_URL
+	     $LOG_FILE $lhost $PFAM_FAM_URL $IPRO_FAM_URL
 	     $file $device $tmp_lav $size $z_param);
-
-#use URI::Escape;
 
 require "./fawww_defs.pl";
 

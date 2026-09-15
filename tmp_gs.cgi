@@ -9,7 +9,7 @@ use lib qw(.);
 use LWP::Simple;
 use CGI qw(header param);
 
-$CGI::POST_MAX = 1024 * 1024 * 10;
+## $CGI::POST_MAX = 1024 * 1024 * 10;
 
 BEGIN {
     do "Fawww_begin.pl";
@@ -19,7 +19,7 @@ use Fawww_begin;
 Fawww_begin::begin_log();
 
 use vars qw( $OK_CHARS $HOST_NAME $HOST_DIR $CGI_DIR $BIN_DIR
-	     $TMP_DIR $GS_BIN $PPM_BIN $LOG_FILE $lhost
+	     $TMP_DIR $GS_BIN $LOG_FILE $lhost
 	     $file $device $tmp_ps $size);
 
 require "./fawww_defs.pl";
