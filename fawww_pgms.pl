@@ -39,7 +39,14 @@ require "./process_domain_colors.pl";
 #
 
 my $pfam_qfo_db="pfam38_qfo";
+if ($ENV{DB_PFAM_QFO_NAME}) {
+  $pfam_qfo_db=$ENV{DB_PFAM_QFO_NAME};
+}
 my $pfam_db="pfam38";
+if ($ENV{DB_PFAM_NAME}) {
+  $pfam_db=$ENV{DB_PFAM_NAME};
+}
+
 my $db_host= $ENV{DB_HOST};
 my $neg_opt='';
 my $vdom_opt='';

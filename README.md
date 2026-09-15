@@ -1,3 +1,6 @@
+15-Sep-2026
+release: fasta_www_rel-0.1.9 -- more consisten DB_ environment variables
+
 13-Sep-2026
 
 release: fasta_www_rel-0.1.8 -- vulnerability fixes,

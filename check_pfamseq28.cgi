@@ -7,12 +7,12 @@ use DBI;
 use CGI qw(header param start_html end_html);
 
 use vars qw($host $db $port $user $pass);
-use vars qw($DB_HOST $DB_NAME $DB_PORT $DB_USER $DB_PASSWORD);
+use vars qw($DB_HOST $DB_PFAM_QFO_NAME $DB_PORT $DB_USER $DB_PASSWORD);
 
-my %db_defaults = ("HOST"=>"wrpa48.bioch.virginia.edu",
-		   "USER"=>"web_user",
-		   "PASSWORD"=>"fasta_www",
-		   "NAME"=>"pfam37_qfo");
+my %db_defaults = ("HOST"=>"XXXX",
+		   "USER"=>"XXXX",
+		   "PASSWORD"=>"XXXX",
+		   "PFAM_QFO_NAME"=>"pfam37_qfo");
 {
     no strict "refs";
     foreach my $k (keys(%db_defaults)) {
@@ -25,7 +25,7 @@ my %db_defaults = ("HOST"=>"wrpa48.bioch.virginia.edu",
     }
 }
 
-($host, $db, $port, $user, $pass)  = ($DB_HOST, $DB_NAME, $DB_PORT, $DB_USER, $DB_PASSWORD);
+($host, $db, $port, $user, $pass)  = ($DB_HOST, $DB_PFAM_QFO_NAME, $DB_PORT, $DB_USER, $DB_PASSWORD);
 
 my $dbh = DBI->connect(qq{dbi:MariaDB:database=$db;host=$host},
 		       $user,

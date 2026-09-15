@@ -45,14 +45,14 @@ use Getopt::Long;
 use Pod::Usage;
 
 use vars qw($host $db $port $user $pass);
-use vars qw($DB_HOST $DB_NAME $DB_PORT $DB_USER $DB_PASSWORD);
+use vars qw($DB_HOST $DB_PFAM_QFO_NAME $DB_PORT $DB_USER $DB_PASSWORD);
 
 ## pick up host, etc, from environment variables
 
 my %db_defaults = ("HOST"=>"XXXX",
 		   "USER"=>"XXXX",
 		   "PASSWORD"=>"XXXX",
-		   "NAME"=>"pfam38_qfo");
+		   "PFAM_QFO_NAME"=>"pfam38_qfo");
 {
     no strict "refs";
     foreach my $k (keys(%db_defaults)) {
@@ -65,7 +65,7 @@ my %db_defaults = ("HOST"=>"XXXX",
     }
 }
 
-($host, $db, $port, $user, $pass)  = ($DB_HOST, $DB_NAME, $DB_PORT, $DB_USER, $DB_PASSWORD);
+($host, $db, $port, $user, $pass)  = ($DB_HOST, $DB_PFAM_QFO_NAME, $DB_PORT, $DB_USER, $DB_PASSWORD);
 
 my ($auto_reg,$rpd2_fams, $neg_doms, $vdoms, $lav, $no_doms, $no_clans, $pf_acc, $acc_comment, $bound_comment, $shelp, $help) = 
   (0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0,);

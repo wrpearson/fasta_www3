@@ -9,7 +9,7 @@ use LWP::Simple;
 use XML::Twig;
 
 use vars qw($host $db $port $user $pass);
-use vars qw($DB_HOST $DB_NAME $DB_PORT $DB_USER $DB_PASSWORD);
+use vars qw($DB_HOST $DB_PFAM_QFO_NAME $DB_PORT $DB_USER $DB_PASSWORD);
 
 my @fields = qw(pfA_acc pfA_id s_start s_end s_len m_start m_end m_len m_cov evalue clan_acc clan_id );
 
@@ -197,7 +197,7 @@ sub init_dbh {
 	}
     }
 
-  ($host, $db, $port, $user, $pass)  = ($DB_HOST, $DB_NAME, $DB_PORT, $DB_USER, $DB_PASSWORD);
+  ($host, $db, $port, $user, $pass)  = ($DB_HOST, $DB_PFAM_QFO_NAME, $DB_PORT, $DB_USER, $DB_PASSWORD);
 
   my $dbh = DBI->connect(qq{dbi:MariaDB:database=$db;host=$host},
 			 $user,
