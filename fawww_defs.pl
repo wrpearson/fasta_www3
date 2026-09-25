@@ -58,7 +58,7 @@ $DOC_ROOT = $DEF_ROOT unless($DOC_ROOT);
 my %db_defaults = ("HOST"=>"XXXX",
 		   "USER"=>"XXXX",
 		   "PASSWORD"=>"XXXX",
-		   "NAME"=>"pfam38_qfo");
+		   "PFAM_QFO_NAME"=>"pfam38_qfo");
 {
     no strict "refs";
     foreach my $k (keys(%db_defaults)) {
