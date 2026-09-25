@@ -243,6 +243,20 @@ sub load_msa {
     $tmpl->param(MSA_QUERY => $is);
     $tmpl->param(MSA_QUERY_UP => 1);
   }
+  elsif ($q->param("psi_msa_name")) {
+      my $this_psi_msa_name = $q->param("psi_msa_name");
+      ($this_psi_msa_name) = ($this_psi_msa_name =~ m/^(\w+)$/);
+
+      if (-r "$TMP_DIR/$this_psi_msa_name.msa") {
+	  open(my $qfh, '<', "$TMP_DIR/$this_psi_msa_name.res.msa");
+	  while (<$qfh>) {
+	      $is .= $_;
+	  }
+	  close $qfh;
+	  $tmpl->param(MSA_QUERY => $is);
+	  $tmpl->param(MSA_QUERY_UP => 1);
+      }
+  }
   else {return "";}
 }
 
