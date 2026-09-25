@@ -60,8 +60,14 @@ Internal residues: <select name="int_mask">
 </td>
 EOS
 
-
 $select_opt2 = <<EOS
+<td>
+<b>Ktup:</b><br />
+<select name="ktup">
+  <option value="2" selected="selected">ktup = 2</option>
+  <option value="1">ktup = 1</option>
+</select>
+</td>
 <td>
 <b>Statistical&nbsp;estimates</b><br />
 <select name = "zstat">
