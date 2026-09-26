@@ -355,7 +355,7 @@ EOS
 	  #   $color_index = 1 if ($color_index > 8);
 	  # }
 	  my ($tmp_color) = ($annot =~ m/~([X\d]+)v?$/);
-	  if ($tmp_color =~ m/X/) {
+	  if (!$tmp_color || $tmp_color =~ m/X/) {
 	    $tmp_color = 'slategrey';
 	  }
 	  else {
