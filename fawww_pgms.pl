@@ -148,8 +148,8 @@ my $vdom_opt='';
     outputs =>
     { TITLE => qq(Misc. Protein Analysis),
       RUN_MODE=>'misc1_rx',
-      OPTION1 => "",
-      OPTION2 => "",
+      OPTION1 => " ",
+      OPTION2 => " ",
       MSA_PSSM_FILE => "",
     }
    },
@@ -198,7 +198,7 @@ my $vdom_opt='';
       HAVE_SSR2 => '1',
       MSA_PSSM_FILE => $shuff_msa_opt,
       TITLE => qq(FASTA Sequence Comparison),
-      OPTION1 => '',
+      OPTION1 => ' ',
       OPTION2 => $comp_opt2,
       OPTION3 => $comp_opt3,
       OPTION4 => $select_opt4,
