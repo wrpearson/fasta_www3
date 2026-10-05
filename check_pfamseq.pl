@@ -4,7 +4,31 @@ use strict;
 use Getopt::Long;
 use DBI;
 
-my ($host,$db, $user, $pass) = ("a48", "pfam27", "web_user", "fasta_www");
+if ( -r "./fawww_envs.pl" ) {
+  require "./fawww_envs.pl";
+}
+
+use vars qw($host $db $port $user $pass);
+use vars qw($DB_HOST $DB_PFAM_NAME $DB_PFAM_QFO_NAME $DB_PORT $DB_USER $DB_PASSWORD);
+
+my %db_defaults = ("HOST"=>"XXXX",
+		   "USER"=>"XXXX",
+		   "PASSWORD"=>"XXXX",
+		   "PFAM_QFO_NAME"=>"pfam38_qfo",
+		   "PFAM_NAME"=>"pfam38");
+{
+    no strict "refs";
+    foreach my $k (keys(%db_defaults)) {
+	my $db_var = "DB_".$k;
+	if (defined($ENV{$db_var})) {
+	    ${$db_var} = $ENV{$db_var};
+	} elsif (!defined(${$db_var}) || !${$db_var}) {
+	    ${$db_var} = $db_defaults{$k};
+	}
+    }
+}
+
+($host, $db, $port, $user, $pass)  = ($DB_HOST, $DB_PFAM_NAME, $DB_PORT, $DB_USER, $DB_PASSWORD);
 
 my $dbh = DBI->connect(qq{dbi:mysql:database=$db;host=$host},
 		       $user,
@@ -14,11 +38,11 @@ my $dbh = DBI->connect(qq{dbi:mysql:database=$db;host=$host},
 ## get total query count grouped by auto_pfamA
 my $st_get_seq_doms_clan = $dbh->prepare(<<EOSQL);
 
-SELECT  auto_pfamA_reg_full, auto_pfamA, pfamA_acc, seq_start, seq_end, length, model_start, model_end, model_length, auto_clan, domain_evalue_score
+SELECT  auto_pfamA_reg_full, pfamA_acc, seq_start, seq_end, length, model_start, model_end, model_length, clan_acc, domain_evalue_score
 FROM    pfamA_reg_full_significant
-JOIN    pfamseq USING(auto_pfamseq)
-JOIN    pfamA USING(auto_pfamA)
-LEFT JOIN clan_membership using(auto_pfamA)
+JOIN    pfamseq USING(pfamseq_acc)
+JOIN    pfamA USING(pfamA_acc)
+LEFT JOIN clan_membership using(pfamA_acc)
 WHERE   pfamseq_acc = ?
  AND    in_full=1
 ORDER BY seq_start
