@@ -28,23 +28,12 @@ $acc=$q->param('acc');
 $doms_only = $q->param('doms_only') || 0;
 ($doms_only) =~ m/(\w+)/;
 
-$show_seq = $q->param('seq') || 0;
-($show_seq) =~ m/(\w+)/;
+$show_seq = 0;
 
-$seq_only = $q->param('seq_only') || 0;
-($seq_only) =~ m/(\w+)/;
+$www_flag=0;
 
-$www_flag = $q->param('www') || 0;
-($www_flag) =~ m/(\w+)/;
+my @f_titles = ("acc", "auto_reg_full", @fields);
 
-my @f_titles = ();
-
-if ($www_flag) {
-  @f_titles = ("acc", @fields);
-}
-else {
-  @f_titles = ("acc", "auto_reg_full", @fields);
-}
 my $output = join("\t",@f_titles)."\n";
 
 if ($acc) {
@@ -60,39 +49,24 @@ if ($acc) {
 
 my ($pfamseq_acc, $pfamseq_id, $descr, $sequence, $fa_seq, $description) = ("","","","",0,"");
 
-my @pf_fields = ();
 my @dom_data = ();
 
-if ($www_flag) {
-  @pf_fields = qw(acc accession id start end length hmm_start hmm_end model_length model_cov evalue clan_acc clan_id);
-}
-else {
-  @pf_fields = qw(acc auto_pfamA_reg_full pfamA_acc pfamA_id seq_start seq_end length model_start model_end model_length model_cov evalue clan_acc clan_id);
-}
+my  @pf_fields = qw(acc auto_pfamA_reg_full pfamA_acc pfamA_id seq_start seq_end length model_start model_end model_length model_cov evalue clan_acc clan_id);
+
 
 my ($dom_data_ref, $seq_data_ref) = (0,0);
 if ($acc) {
-  if ($www_flag) {
-    $dom_data_ref = get_pfam_dom_www($acc);
-    $seq_data_ref = get_pfam_seq_www($acc);
-  }
-  else {
     my $dbh = init_dbh();
     $dom_data_ref = get_pfam_dom_sql($dbh, $acc);
     $seq_data_ref = get_pfam_seq_sql($dbh, $acc);
-  }
 
   for my $dom_ref (@$dom_data_ref) {
     $output .= join("\t",@{$dom_ref}{@pf_fields})."\n";
   }
 
-  my ($pfamseq_acc, $pfamseq_id, $descr, $sequence) = @{$seq_data_ref}{qw(pfamseq_acc pfamseq_id description sequence)};
-  $description = "$pfamseq_acc|$pfamseq_id $descr";
+  my ($pfamseq_acc, $pfamseq_id) = @{$seq_data_ref}{qw(pfamseq_acc pfamseq_id description sequence)};
+  $description = "$pfamseq_acc|$pfamseq_id";
 
-  if ( $show_seq || $seq_only) {
-    $sequence =~ s/(.{60})/$1\n/g;
-    $fa_seq = ">sp|$pfamseq_acc|$pfamseq_id $descr\n$sequence\n";
-  }
 }
 
 unless ($seq_only || $doms_only) {
@@ -172,7 +146,7 @@ sub get_pfam_seq_sql {
 
   my $st_get_sequence = $dbh->prepare(<<EOSQL);
 
-SELECT pfamseq_acc, pfamseq_id, description, sequence
+SELECT pfamseq_acc, pfamseq_id
 FROM pfamseq
 WHERE pfamseq_acc = ?
 EOSQL

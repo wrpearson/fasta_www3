@@ -9,13 +9,10 @@
 </head>
 <body>
 <p>
-<tt>http://fastademo.bioch.virginia.edu/fasta_www2/check_pfamseq_u.cgi</tt>
+<tt>http://fasta.bioch.virginia.edu/fasta_www3/check_pfamseq_u.cgi</tt>
 <form name="myform" action="check_pfamseq_u.cgi" method="post">
 <b>Sequence: </b><input type='text' name='acc' size='10' value='<!-- TMPL_VAR NAME=ACC -->' />
-<input type="submit" name="submit" value="Check sequence"/> &nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="www" value="1">Use pfam.xfam.org</input><br />
-<input type="checkbox" name="seq" value="1" >Show sequence</input>
-<input type="checkbox" name="seq_only" value="1" >Sequence only</input>
-<input type="checkbox" name="doms_only" value="1" >Domains only</input>
+<input type="submit" name="submit" value="Check sequence"/><br />
 </form>
 <hr />
 <!-- TMPL_IF name=not_found -->
